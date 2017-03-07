@@ -1,0 +1,213 @@
+# Wizualizacja danych
+
+Bardzo istotną częścią statystyki jest wizualizacja wyników. Poprawne korzystanie z wykresów wymaga poznania kilku, czasami nieoczywistych, zasad:
+
+- efekt 3D na wykresach zaburza percepcje i utrudnia porównywanie danych,
+- wykresy liniowe służą przede wszystkim do prezentacji zmian w czasie,
+- ...
+
+Zasoby internetowe są pełne przykładów i wzorców tworzenia wykresów:
+
+- [Graficzna prezentacja danych statystycznych - Wykresy, mapy, GIS](http://stat.gov.pl/gfx/portalinformacyjny/userfiles/_public/wspolpraca_rozwojowa/graficzna_prezentacja_danych_stat.pdf)
+- [Zbiór esejów o wizualizacji danych](http://biecek.pl/Eseje/)
+- [Flowing Data](http://flowingdata.com/)
+- [D3](https://d3js.org/)
+
+```{r import, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+options(scipen = 100)
+library(openxlsx)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+# rossmann <- read.xlsx("rossmann.xlsx")
+# 
+# rossmann200 <- rossmann %>%
+#   filter(sklep_id <= 200)
+# 
+# save(rossmann, rossmann200, file="dane.RData")
+
+load("dane.RData")
+
+```
+
+W analizie statystycznej bardzo ważne jest pojęcie rozkładu cechy. 
+
+**Rozkładem empirycznym** cechy nazywamy przyporządkowanie kolejnym wartościom zmiennej ($x_{i}$) odpowiadającym im liczebności ($n_{i}$). Rozkład odzwierciedla strukturę badanej zbiorowości z punktu widzenia określonej cechy.
+
+Najdogodniejszym sposobem graficznej prezentacji rozkładu jest histogram przedstawiający częstość poszczególnych kategorii. Histogram można utworzyć na podstawie tabeli przestawnej. W sytuacji kiedy nie wszystkie wartości są reprezentowane histogram może wyglądać dziwnie, dlatego stosuje się grupowanie wartości. W Excelu jest to możliwe z wykorzystaniem funkcji CZĘSTOŚĆ. Funkcja ta oblicza rozkład częstości występowania wartości w zakresie wartości (działa po zaznaczeniu odpowiedniego zakresu z~kombinacją CTRL+SHIFT+ENTER). Prawe przedziały są domknięte.
+
+## Rodzaje rozkładów
+
+Ze względu na liczbę punktów ekstremalnych i rodzaj zmienności:
+
+```{r rodz-rozkl-1, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE}
+dist=data.frame(jedno=rbeta(20000,5,5),
+                bim=c(rnorm(10000,-1,1),rnorm(10000,2,1)),
+                wiel=c(rnorm(5000,-4,1),rnorm(5000,-1,1),rnorm(5000,2,1),rnorm(5000,6,1)),
+                sym=rbeta(20000,5,5),
+                prawo=rbeta(20000,2,5),
+                lewo=rbeta(20000,5,2))
+
+dist_s <- as.data.frame(scale(dist))
+
+dist_l <- gather(dist_s, rozklad, wart)
+
+dist_l$rozklad <- factor(dist_l$rozklad, levels = unique(dist_l$rozklad), labels = c("Rozkład jednomodalny", "Rozkład bimodalny", "Rozkład wielomodalny",
+                                                                                     "Rozkład symetryczny", "Rozkład prawostronnie \nasymteryczny", 
+                                                                                     "Rozkład lewostronnie \nasymetryczny"),
+                         ordered = T)
+
+ggplot(dist_l, aes(x=wart)) + 
+  geom_histogram(binwidth = 0.05) + 
+  facet_wrap(~ rozklad) +
+  xlab("Wartości") + ylab("Liczebność") +
+  theme_bw()
+
+```
+
+Ze względu na skupienie wokół średniej:
+
+```{r rodz-rozkl-2, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE}
+
+dist_k=data.frame(plato=rnorm(20000,0,4),
+                norm=rnorm(20000,0,1),
+                lepto=rnorm(20000,0,0.5))
+
+dist_lk <- gather(dist_k, rozklad, wart) %>%
+  mutate(wart=scale(wart))
+
+dist_lk$rozklad <- factor(dist_lk$rozklad, 
+                          levels = unique(dist_lk$rozklad), 
+                          labels = c("Rozkład spłaszczony \n(platokurtyczny)",
+                                     "Rozkład normalny \n(mezokurtyczny)",
+                                     "Rozkład wysmukły \n(leptokurtyczny)"),
+                          ordered = T)
+
+
+ggplot(dist_lk, aes(x=wart)) + 
+  geom_histogram(binwidth = 0.01) + 
+  facet_wrap(~ rozklad, scales="free_x") +
+  xlab("Wartości") + ylab("Liczebność") +
+  theme_bw()
+
+
+```
+
+W ten sposób możemy opisywać histogramy, natomiast w dalszej części zajęć dowiemy się jakie miary definiują te cechy.
+
+Przejdźmy do naszego zbioru danych i przeanalizujmy liczbę klientów.
+
+```{r histogram1, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE}
+ggplot(rossmann200, aes(x=liczba_klientow)) + 
+  geom_histogram(binwidth = 1, colour="black") +
+  xlab("Liczba klientów") + ylab("Liczebność") +
+  theme_bw()
+
+
+```
+
+Okazuje się, że występuje bardzo dużo wartości równych 0, wynikających z obserwacji dni, w których sklep był zamknięty. Musimy wyeliminować zera z naszych danych.
+
+```{r histogram2, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE}
+ggplot(subset(rossmann200, liczba_klientow!=0), aes(x=liczba_klientow)) + 
+  geom_histogram(binwidth = 1) +
+  xlab("Liczba klientów") + ylab("Liczebność") +
+  theme_bw()
+
+
+```
+
+Obecnie rozkład liczby klientów jest dużo bardziej czytelny. Niemniej możemy zauważyć wiele wartości, które występują częściej od pozostałych. Zgrupujmy słupki w przedziałach o rozpiętości 100 klientów.
+
+```{r histogram3, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE}
+
+ggplot(subset(rossmann200, liczba_klientow!=0), aes(x=liczba_klientow)) + 
+  geom_histogram(binwidth = 100) +
+  xlab("Liczba klientów") + ylab("Liczebność") +
+  theme_bw()
+
+
+```
+
+Najliczniejszą kategorią stanowią dni, w których liczba klientów pochodziła z przedziału 500-600 osób. Można także zaobserwować, że rozkład charakteryzuje się asymetrią prawostronną.
+
+## Szeregi statystyczne
+
+Przeprowadzając powyższe grupowanie utworzyliśmy kilka rodzajów szeregów statystycznych.
+
+**Szereg statystyczny** jest to ciąg wielkości statystycznych usystematyzowanych według określonego ściśle kryterium. Powstaje on w wyniku grupowania bądź porządkowania. Stanowi podstawę dla prowadzenia numerycznej analizy statystycznej.
+
+- **szereg prosty** to wykaz wszystkich wariantów badanej cechy np. liczba klientów dla każdego sklepu danego dnia
+- **szereg rozdzielczy jednostkowy (punktowy)** wykaz wariantów cechy i liczebności poszczególnego wariantu np. szereg utworzony z wykorzystaniem tabeli przestawnej
+- **szereg rozdzielczy przedziałowy zamknięty o równych przedziałach klasowych** wykaz zgrupowanych wariantów cechy i liczebności poszczególnych wariantów np. szereg utworzony z wykorzystaniem funkcji CZĘSTOŚĆ
+- **szereg rozdzielczy przedziałowy zamknięty o nierównych przedziałach klasowych** 
+- **szereg rozdzielczy przedziałowy otwarty** - kiedy w pierwszej lub/i ostatniej grupie znajduje się przedział otwarty (zwrot poniżej/powyżej)
+
+## Dystrybuanta
+
+Kolejnym zagadnieniem związanym z rozkładem cechy jest **dystrybuanta**.
+
+**Dystrybuanta empiryczna** to funkcja ukazująca skumulowany rozkład cechy w n-elementowej zbiorowości. Funkcję $F(x)$ definiuje się jako skumulowane prawdopodobieństwo wystąpienia - tj. sumę prawdopodobieństw od danego przedziału klasowego w rozkładzie empirycznym badanej cechy. Wyraża się wzorem:
+$$F(x)=\sum\limits_{x_{i}<x}{p_{i}},$$
+gdzie: $p_{i}$ --- prawdopodobieństwo wystąpienia wariantu.
+
+Dystrybuanta empiryczna jest funkcją:
+
+- niemalejącą,
+- lewostronnie ciągłą.
+
+Dystybuanta ciągła liczby klientów
+
+```{r dystrybuanta1, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE}
+
+ggplot(subset(rossmann200, liczba_klientow!=0), aes(x=liczba_klientow)) + 
+  stat_ecdf() +
+  xlab("Liczba klientów") + ylab("Prawdopodobieństwo") +
+  theme_bw()
+
+```
+
+Dystrybuanta skokowa liczby klientów
+
+```{r dystrybuant2, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE}
+
+rossmann200_ecdf <- rossmann200 %>%
+  filter(liczba_klientow!=0) %>%
+  mutate(lk_cat=cut(liczba_klientow, breaks = seq(0, 2900, 100), labels = seq(100, 2900, 100)))
+
+ggplot(rossmann200_ecdf, aes(x=as.numeric(levels(lk_cat)[lk_cat]))) + 
+  stat_ecdf() +
+  scale_x_continuous(breaks = seq(0, 3000, 200)) +
+  xlab("Liczba klientów") + ylab("Prawdopodobieństwo") +
+  theme_bw()
+
+#plot(ecdf(as.numeric(levels(rossmann200_ecdf$lk_cat)[rossmann200_ecdf$lk_cat])))
+
+```
+
+Przykładowo prawdopodobieństwo, że wystąpi dzień, w którym sklep obsłuży do 700 klientów wynosi 55%.
+
+_Zadania_
+
+Z wykorzystaniem histogramu lub innych poznanych podczas zajęć metod określ w jaki dzień tygodnia sklepy Rossmann odwiedza najwięcej klientów.
+
+```{r histogram-zad1, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE}
+
+ggplot(subset(rossmann200, liczba_klientow!=0), aes(x=liczba_klientow)) + 
+  geom_histogram(binwidth = 100) + 
+  facet_wrap(~dzien_tyg) + 
+  xlab("Liczba klientów") + ylab("Liczebność") +
+  theme_bw()
+
+```
+
+```{r histogram-zad2, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE}
+
+ggplot(subset(rossmann200, sprzedaz!=0), aes(x=sprzedaz)) + 
+  geom_histogram(binwidth = 100) + 
+  facet_wrap(~dzien_tyg) + 
+  xlab("Sprzedaż") + ylab("Liczebność") +
+  theme_bw()
+
+```

@@ -1,0 +1,290 @@
+# Analiza struktury
+
+**Kompleksowa analiza struktury** oznacza wyczerpujący opis cech zbiorowości statystycznej. Do charakterystyk najczęściej wykorzystywanych przy opisie struktury zbiorowości należą:
+
+- miary przeciętne - służące do określania tej wartości zmiennej opisanej przez rozkład, wokół której skupiają się pozostałe wartości zmiennej,
+- miary rozproszenia (dyspersji) - służące do badania stopnia zróżnicowania wartości zmiennej,
+- miary asymetrii - służące do badania asymetrii rozkładu,
+- miary koncentracji - służące do analizy stopnia skupienia poszczególnych jednostek wokół średniej.
+
+Analiza struktury bazuje na dwóch typach miar:
+
+- miary klasyczne - obliczane na podstawie wszystkich obserwacji,
+- miary pozycyjne - wartość miary wskazuje dana jednostka.
+
+Celem analizy struktury jest dostarczenie kilku liczb, które w łatwy sposób pozwolą na opis i porównania badanych cech.
+
+**Dominanta** czyli najczęściej występująca wartość. Inaczej moda, modalna, tryb (w Excelu - kalka językowa z angielskiego słowa _mode_. Wartość dominanty można ustalić jedynie dla rozkładów jednomodalnych. 
+
+W Excelu jest funkcja:
+
+- WYST.NAJCZĘSĆIEJ,
+
+jednak dla rozkładów wielomodalnych zwróci ona pierwszą modalną.
+
+## Miary klasyczne
+
+Najpopularniejszym przedstawicielem miar klasycznych jest **średnia arytmetyczna**. Wyrażona jest wzorem:
+
+$$\bar{x}=\frac{\sum\limits_{i=1}^{N}{x_{i}}}{N},$$
+
+gdzie: 
+
+- $\bar{x}$ - symbol średniej arytmetycznej, 
+- $x_{i}$ --- wariant cechy mierzalnej, 
+- $N$ --- liczebność badanej zbiorowości.
+
+Co sprawia, że średnia jest tak powszechną i uniwersalną miarą? Jest to liczba, która ma najwięcej wspólnego z każdą wartością cechy w zbiorowości. Innymi słowy, odległość wartości cechy od średniej jest najmniejsza z możliwych.
+
+Przykładowo, dane są oceny jednego ze studentów: 3, 4, 5, 3+, 2, 4, 3
+
+```{r srednia, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+library(e1071)
+
+oceny <- data.frame(lp=factor(x=c(1:7)),
+                    oceny=c(3,4,5,3.5,2,4,3))
+
+ggplot(oceny, aes(x=lp, y=oceny)) + 
+  geom_point() +
+  geom_hline(yintercept = mean(oceny$oceny), colour = "red") +
+  scale_y_continuous(breaks = c(2,2.5,3,3.5,4,4.5,5)) +
+  xlab("Numer oceny") + ylab("Ocena") +
+  theme_bw()
+```
+
+Na powyższym wykresie punkty oznaczają kolejne oceny, natomiast średnia została zaznaczona kolorem czerwonym - wynosi ona 3,5.
+
+Jako miarę odległości poszczególnych ocen od średniej możemy przyjąć wartość bezwzględną różnicy danej oceny i średniej. W tej sytuacji pierwsza ocena różni się od średniej o 0,5, druga ocena także, natomiast trzecia o 1,5, itd. Po zsumowaniu tych wartości otrzymujemy sumę odchyleń równą `r sum(abs(mean(oceny$oceny)-oceny$oceny))`. Jest to najmniejsza wartość jaką jesteśmy w stanie otrzymać. Jeżeli stwierdzimy, że w naszym mniemaniu wartość 3,55 jest lepszą miarą przeciętną to suma odchyleń będzie już większa i wyniesie `r sum(abs(3.55-oceny$oceny))`.
+
+W Excelu istnieje funkcja:
+
+- ŚREDNIA.
+
+Średnia stanowi także dobrą miarę jeśli chcemy porównać jakieś grupy. Co jednak zrobić w sytuacji, kiedy przykładowo dwaj studenci mają identyczne średnie ocen? Czy to oznacza, że ich oceny są także takie same? Taka sytuacja może się zdarzyć, ale występuje dosyć rzadko. Poniżej zostały przedstawione oceny dwóch studentów, którzy mają identyczną średnią.
+
+```{r s2, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+oceny <- data.frame(id=c(rep("Student 1",7), rep("Student 2",7)),
+                    lp=factor(x=rep(c(1:7),2)),
+                    oceny=c(c(3,4,5,3.5,2,4,3),c(3.5,4,3,3,3.5,4,3.5)))
+
+ggplot(oceny, aes(x=lp, y=oceny)) + 
+  geom_point() +
+  geom_hline(yintercept = mean(oceny$oceny), colour = "red") +
+  facet_wrap(~ id) +
+  scale_y_continuous(breaks = c(2,2.5,3,3.5,4,4.5,5)) +
+  xlab("Numer oceny") + ylab("Ocena") +
+  theme_bw()
+
+n <- 7
+var1 <- round(((n-1)/n)*as.numeric(var(subset(oceny, id=="Student 1")["oceny"])),2)
+var2 <- round(((n-1)/n)*as.numeric(var(subset(oceny, id=="Student 2")["oceny"])),2)
+```
+
+To co możemy zauważyć gołym okiem to fakt, że oceny studenta nr 2 są bliżej średniej. Miarą zróżnicowania cechy jest **wariancja** dana formułą:
+
+$$s^2=\frac{1}{N}\sum\limits_{i=1}^{N}{(x_{i}-\bar{x})^2}$$
+
+gdzie: 
+
+- $s^2$ - symbol wariancji, 
+- $\bar{x}$ - średnia arytmetyczna w zbiorowości, 
+- $x_{i}$ - wariant cechy mierzalnej,
+- $N$ - liczebność badanej zbiorowości.
+
+Jeżeli przeanalizujemy wzór na wariancję jest on bardzo logiczny. W pierwszym kroku liczymy odchylenia wartości cechy od średniej. Następnie otrzymane wartości podnosimy do kwadratu w celu uniknięcia wartości ujemnych, a następnie wszystko uśredniamy. Możemy zatem powiedzieć, że wariancja jest średnią kwadratów odchyleń wartości od średniej. 
+
+Wariancja ocen pierwszego studenta wynosi `r var1`, natomiast drugiego `r var2`. Na podstawie tej miary jesteśmy w stanie stwierdzić, że większe zróżnicowanie ocen występuje u pierwszego studenta. Nie możemy jednak powiedzieć jak bardzo się różnią ponieważ wariancji nie jesteśmy w stanie zinterpretować. Wynika to z faktu, że wynik wariancji jest podawany w jednostkach do kwadratu, co zwykle jest pozbawione sensu. 
+
+W Excelu dysponujemy dwiema funkcjami do wyliczenia wariancji:
+
+- WARIANCJA.POP (we wzorze znajduje się $\frac{1}{N}$),
+- WARIANCJA.PRÓBKI (we wzorze znajduje się $\frac{1}{N-1}$).
+
+W zależności od tego czy mamy informację o populacji czy tylko próbie powinniśmy stosować odpowiednią formułę. Podczas zajęć przyjmujemy, że dysponujemy całą populacją i będziemy stosować odpowiednie funkcje.
+
+Pierwiastek z wariancji czyli **odchylenie standardowe** umożliwia liczbowe określenie zróżnicowania. Informuje o ile jednostki zbiorowości różnią się średnio od średniej. W interpretacji odchylenia standardowego musimy pamiętać o pojawiającym się dwa razy słowie _średnia_. Pierwsze dotyczy średniej zastosowanej we wzorze na wariancje, a drugie określa policzoną wcześniej średnią arytmetyczną.
+
+```{r s, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+sd1 <- round(sqrt(var1),2)
+sd2 <- round(sqrt(var2),2)
+```
+
+
+O pierwszym studencie powiemy, że jego oceny różnią się średnio od średniej o `r sd1` oceny, natomiast oceny drugiego studenta odchylają się średnio od średniej o `r sd2` oceny. 
+
+Podobnie jak w przypadku wariancji w Excelu znajdują się dwie funkcje do wyznaczania odchylenia standardowego:
+
+- ODCH.STAND.POPUL,
+- ODCH.STANDARD.PRÓBKI.
+
+Jak jednak porównać cechy, które mają różne średnie i odchylenia standardowe? 
+
+Przeprowadzono eksperyment, w którym 100 osobom zmierzono długość ręki i nogi.
+
+```{r v_s, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+set.seed(100)
+n <- 100
+rece_nogi <- data.frame(obs=c(rep("Długość ręki",100), rep("Długość nogi",100)),
+                    id=rep(c(1:n),2),
+                    dl=c(round(rnorm(n, 74.75, 9.19),2),round(rnorm(n, 102.84, 11.66),2))) 
+
+rn_stat <- rece_nogi %>%
+  group_by(obs) %>%
+  summarize(sr=mean(dl),
+            sd=sqrt(((n-1)/n)*var(dl)),
+            sk=skewness(dl),
+            ku=kurtosis(dl)+3)
+
+rn <- left_join(rece_nogi, rn_stat)
+
+ggplot(rn, aes(x=id, y=dl)) + 
+  geom_point() +
+  geom_hline(aes(yintercept = sr), colour = "red") +
+  facet_wrap(~ obs) +
+  xlab("Numer osoby") + ylab("Długość (w cm)") +
+  theme_bw()
+
+```
+
+Średnia długość nogi wynosiła `r round(rn_stat$sr[1],2)` cm, a odchylenie standardowe `r round(rn_stat$sd[1],2)` cm. Z kolei długość ręki charakteryzowała się wartością `r round(rn_stat$sr[2],2)` cm z odchyleniem standardowym rzędu `r round(rn_stat$sd[2],2)` cm. Ocena zróżnicowania cech o różnych średnich jest możliwe z wykorzystaniem **klasycznego współczynnika zmienności**:
+
+$$V_{s}=\frac{s}{\bar{x}}\cdot 100,$$
+
+gdzie: 
+
+- $s$ - odchylenie standardowe, 
+- $\bar{x}$ - średnia arytmetyczna.
+
+Współczynnik zmienności wyrażony jest w procentach i można przyjąć kilka umownych progów:
+
+- 0%-20% - cecha mało zróżnicowana,
+- 21%-40% - cecha umiarkowanie zróżnicowana,
+- 41%-60% - cecha silnie zróżnicowana,
+- powyżej 60% - cecha bardzo silnie zróżnicowana.
+
+Oczywiście wszystko zależy od tego jaką cechę analizujemy i jakie jest jej typowe zróżnicowanie.
+
+Obliczając wartość współczynnika zmienności dla długości nogi otrzymamy `r round(rn_stat$sd[1]/rn_stat$sr[1]*100,2)`%, natomiast dla długości ręki `r round(rn_stat$sd[2]/rn_stat$sr[2]*100,2)`%. Na tej podstawie możemy stwierdzić, że długość ręki charakteryzuje się większym zróżnicowaniem.
+
+Klasyczny współczynnik zmienności nie ma oprogramowanej odpowiedniej funkcji w Excelu.
+
+Odchylenie standardowe oraz średnią zestawiamy ze sobą także podczas wyznaczania **typowego obszaru zmienności**:
+
+$$\bar{x} - s < x_{typ} < bar{x} + s$$
+
+Zgodnie z definicją w tym przedziale mieści się około 2/3 wszystkich jednostek analizowanej cechy.
+
+```{r x_typ, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+
+rn_x_typ <- rn %>%
+  filter(obs=="Długość nogi") %>%
+  filter(dl > rn_stat$sr[1]-rn_stat$sd[1] & dl < rn_stat$sr[1]+rn_stat$sd[1]) %>%
+  count() %>%
+  .$n
+
+```
+
+Typowy obszar zmienności dla długości nogi to przedział od `r round(rn_stat$sr[1]-rn_stat$sd[1],2)` cm do `r round(rn_stat$sr[1]+rn_stat$sd[1],2)` cm i w rzeczywistości zawiera `r rn_x_typ/n*100`% obserwacji. 
+
+Patrz też: [Reguła trzech sigm](http://www.naukowiec.org/wiedza/statystyka/regula-trzech-sigm_709.html).
+
+Do kompletnego opisu struktury brakuje tylko miar określających asymetrię oraz skupienie wokół średniej. **Klasyczny współczynnik asymetrii** nazywany także trzecim momentem centralnym albo skośnością jest wyrażony wzorem:
+
+$$\alpha_{3}=\frac{\frac{1}{N}\sum\limits_{i=1}^{N}{(x_{i}-\bar{x})^3}}{s^3},$$
+
+gdzie: 
+
+- $\alpha_{3}$ - symbol klasycznego współczynnika asymetrii,  
+- $s$ - odchylenie standardowe w zbiorowości, 
+- $\bar{x}$ - średnia arytmetyczna w zbiorowości, 
+- $x_{i}$ - wariant cechy mierzalnej, 
+- $N$ - liczebność badanej zbiorowości.
+
+Pozwala określić czy rozkład cechy jest:
+
+- symetryczny - rozkład jest symetryczny, $\alpha_{3}=0$,
+- lewostronnie asymetryczny - wydłużone lewe ramię rozkładu, $\alpha_{3}<0$,
+- prawostronnie asymetryczny - wydłużone prawe ramię rozkładu, $\alpha_{3}>0$. 
+
+Skośność dla długości nogi wynosi `r rn_stat$sk[1]`, co oznacza, że rozkład długości nóg cechuje się lekką prawostronną asymetrią. 
+
+W Excelu znajduje się funkcja o nazwie:
+
+- SKOŚNOŚĆ.
+
+Skupienie wokół średniej definiuje **klasyczny współczynnik koncentracji**, inaczej czwarty moment centralny lub kurtoza:
+
+$$\alpha_{4}=\frac{\frac{1}{N}\sum\limits_{i=1}^{N}{(x_{i}-\bar{x})^4}}{s^4},$$
+
+gdzie: 
+
+- $\alpha_{4}$ - symbol klasycznego współczynnika koncentracji,  
+- $s$ - odchylenie standardowe w zbiorowości, 
+- $\bar{x}$ - średnia arytmetyczna w zbiorowości, 
+- $x_{i}$ - wariant cechy mierzalnej, 
+- $N$ - liczebność badanej zbiorowości.
+
+Pozwala określić czy rozkład cechy jest:
+
+- normalny - $\alpha_{4}=3$,
+- spłaszczony - wartości nie są mocno skoncentrowane wokół średniej, $\alpha_{4}<3$,
+- wysmukły - wartości są mocno skoncentrowane wokół średniej, $\alpha_{4}>3$. 
+
+Niektóre programy zamiast kurtozy wyznaczają tzw. eksces:
+
+$Ex=\alpha_{4}-3$
+
+Wówczas wartość tej miary interpretujemy przyjmując za punkt odniesienia wartość 0.
+
+Kurtoza dla długości nogi wynosi `r rn_stat$ku[1]+3`, co oznacza, że rozkład długości nóg jest wysmukły.
+
+W Excelu znajduje się funkcja o nazwie:
+
+- KURTOZA.
+
+Do wyznaczenia powyższych miar można także wykorzystać dodatek programu Excel: Analiza danych znajdujący się po prawej stronie we wstążce DANE. Jeśli nie widzimy tego dodatku to klikamy _Przycisk pakietu Office_ w lewym górnym rogu ekranu, następnie _Opcje_. W nowym oknie przechodzimy do _Dodatki_ i na dole okna przycisk _Przejdź_. Zaznaczamy _Analysis ToolPak_ i wybieramy _OK_.
+
+_Przykład_
+
+Wykorzystując zbiór danych na temat sklepów Rossmann przeprowadzimy kompleksową analizę porównawczą struktury sprzedaży w dwóch wybranych sklepach. Pierwszy ze sklepów (id=1) posiada asortyment podstawowy i jest typu _c_, natomiast drugi (id=7) posiada asortyment rozszerzony i jest typu _a_. W pierwszym kroku zobaczmy jak wygląda rozkład analizowanej cechy po wyeliminowaniu dni, w którym sklep był zamknięty.
+
+```{r as-ross-hist, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+
+rossmann_1_7 <- rossmann200 %>%
+  filter(sklep_id %in% c(1,7)) %>%
+  filter(liczba_klientow!=0)
+
+ggplot(rossmann_1_7, aes(x=sprzedaz)) + 
+  geom_histogram(binwidth = 1200) +
+  facet_wrap(~ sklep_id) +
+  xlab("Sprzedaż") + ylab("Liczebność") +
+  theme_bw()
+
+```
+
+Już na pierwszy rzut oka widać różnice w rozkładzie sprzedaży dla poszczególnych sklepów. Pierwszy z rozkładów jest bardziej wysmukły, natomiast w drugim przypadku obserwujemy wyższe wartości sprzedaży. Z wykorzystaniem miar klasycznych dokonamy analizy sprzedaży.
+
+```{r as-ross-miary, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+
+r_1_7_stat <- rossmann_1_7 %>%
+  group_by(sklep_id) %>%
+  summarise(n=round(n()),
+            x_sr=round(mean(sprzedaz),2),
+            s=round(sd(sprzedaz),2),
+            v_s=round(s/x_sr*100,2),
+            alpha_3=round(skewness(sprzedaz),2),
+            alpha_4=round(kurtosis(sprzedaz)+3,2))
+
+r_1_7_stat_t <- t(r_1_7_stat)[-1,]
+
+colnames(r_1_7_stat_t) <- c("Sklep_1", "Sklep_7")
+
+knitr::kable(r_1_7_stat_t)
+
+```
+
+
+
+_Zadania_
+
+Przeprowadzić kompleksową analizę struktury dla poszczególnych dni tygodnia.
