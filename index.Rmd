@@ -4,7 +4,9 @@ author: "Łukasz Wawrowski"
 site: bookdown::bookdown_site
 documentclass: book
 output:
-  bookdown::gitbook: default
+  bookdown::gitbook: 
+      includes:
+      after_body: disqus.html
   bookdown::pdf_book: default
 ---
 

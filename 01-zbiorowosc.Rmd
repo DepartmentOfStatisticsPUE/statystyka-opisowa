@@ -30,17 +30,19 @@ Z kolei cechy zmienne dzielą się na:
     
 _Przykład_
 
+
 |----------------:|------------------------------------:|
-| Zbiorowość: | uczniowie liceum |
-| Jednostka: | uczeń liceum |
-| Cecha 1: | płeć |
-| Rodzaj cechy 1: | rzeczowa, jakościowa, dychotomiczna |
-| Cecha 2: | wzrost |
-| Rodzaj cechy 2: | rzeczowa, ilościowa, ciągła |
-| Cecha 3: | data urodzenia |
-| Rodzaj cechy 3: | czasowa |
-| Cecha 4: | miejsce urodzenia |
-| Rodzaj cechy 4: | przestrzenna |
+| Zbiorowość | uczniowie liceum |
+| Jednostka | uczeń liceum |
+| Cecha 1 | płeć |
+| Rodzaj cechy 1 | rzeczowa, jakościowa, dychotomiczna |
+| Cecha 2 | wzrost |
+| Rodzaj cechy 2 | rzeczowa, ilościowa, ciągła |
+| Cecha 3 | data urodzenia |
+| Rodzaj cechy 3 | czasowa |
+| Cecha 4 | miejsce urodzenia |
+| Rodzaj cechy 4 | przestrzenna |
+
 
 _Zadania_
 
