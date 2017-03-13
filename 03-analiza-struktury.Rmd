@@ -170,7 +170,7 @@ Klasyczny współczynnik zmienności nie ma oprogramowanej odpowiedniej funkcji 
 
 Odchylenie standardowe oraz średnią zestawiamy ze sobą także podczas wyznaczania **typowego obszaru zmienności**:
 
-$$\bar{x} - s < x_{typ} < bar{x} + s$$
+$$\bar{x} - s < x_{typ} < \bar{x} + s$$
 
 Zgodnie z definicją w tym przedziale mieści się około 2/3 wszystkich jednostek analizowanej cechy.
 
@@ -252,7 +252,7 @@ Wykorzystując zbiór danych na temat sklepów Rossmann przeprowadzimy komplekso
 
 rossmann_1_7 <- rossmann200 %>%
   filter(sklep_id %in% c(1,7)) %>%
-  filter(liczba_klientow!=0)
+  filter(czy_otwarty=="Tak")
 
 ggplot(rossmann_1_7, aes(x=sprzedaz)) + 
   geom_histogram(binwidth = 1200) +
@@ -284,7 +284,203 @@ knitr::kable(r_1_7_stat_t)
 ```
 
 
+## Miary pozycyjne
+
+Podstawą miar pozycyjnych jest podział cechy zbiorowości na cztery równe części. Punkty podziału wskazują nam kwartyle. Najpopularniejszą z miar pozycyjnych jest **mediana** (kwartyl 2, wartość środkowa, $Q_2$), która wyznacza wartość dla której 50% jednostek zbiorowości ma wartości cechy niższe bądź równe medianie, a 50% równe bądź wyższe od mediany.
+
+Medianę wyznacza się poprzez posortowanie wartości cechy rosnąco i wybór wartości środkowej (jeśli $N$ jest nieparzyste) lub średniej z wartości środkowych (jeśli $N$ jest parzyste).
+
+Zaletą mediany jest mniejsza wrażliwość na obserwacje odstające. Rozważmy przypadek wynagrodzeń w pewnych przedsiębiorstwach:
+
+```{r mediana, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+
+wynagrodzenia <- data.frame(id=c(rep("Firma A",14), rep("Firma B",14)),
+                    lp=factor(x=rep(c(1:14),2)),
+                    wyn=c(c(2000,2100,2400,2500,2700,2900,3500,3500,3800,3850,4100,4250,4400,5000),
+                          c(2000,2100,2100,2200,2350,2400,2500,2550,2700,2700,4900,4950,5000,5000)))
+
+wyn_stat <- wynagrodzenia %>%
+  group_by(id) %>%
+  summarise(srednia=round(mean(wyn)),
+            mediana=round(median(wyn)),
+            min=round(min(wyn)),
+            q1=round(quantile(wyn, 0.25)),
+            q3=round(quantile(wyn, 0.75)),
+            max=round(max(wyn))) %>%
+  mutate(q=round((q3-q1)/2),
+         vq=round(q/mediana*100),
+         aq=round((q1+q3-2*mediana)/(2*q),2))
+
+wyn_stat$id <- factor(wyn_stat$id, levels = rev(unique(wyn_stat$id)), ordered = T)
+
+wynagrodzenia <- left_join(wynagrodzenia, wyn_stat)
+
+ggplot(wynagrodzenia, aes(x=lp, y=wyn)) + 
+  geom_point() +
+  facet_wrap(~ id) +
+  geom_hline(aes(yintercept = srednia), colour = "red") +
+  geom_hline(aes(yintercept = mediana), colour = "blue") +
+  xlab("Numer pracownika") + ylab("Wynagrodzenie") +
+  theme_bw()
+
+```
+
+W firmie A wynagrodzenia pracowników nie są zróżnicowane, ale nie występują pomiędzy nimi zbyt duże różnice. Średnia pensja (kolor czerwony) wynosi `r wyn_stat$srednia[1]` zł, natomiast mediana (kolor niebieski) odpowiada wynagrodzeniom 7 i 8 pracownika - `r wyn_stat$mediana[1]` zł. Można powiedzieć, że obie wartości dobrze odzwierciedlają realne zarobki pracowników. Z kolei w firmie B nierówności dochodowe są znacznie większe, możliwe że zestawiono wynagrodzenia pracowników szeregowych oraz kadry zarządzającej. Średnia wynosząca `r wyn_stat$srednia[2]` zł nie oddaje prawdziwych zarobków ani pierwszej ani drugiej grupy. Natomiast wartość mediany wynosząca `r wyn_stat$mediana[2]` zł jest bardziej odporna na wartości odstające. Mediana wynagrodzenia w firmie B oznacza, że 50% pracowników otrzymuje pensję w wysokości `r wyn_stat$mediana[2]` zł lub mniej, natomiast drugie 50% zatrudnionych uzyskuje wynagrodzenie w wysokości `r wyn_stat$mediana[2]` zł lub więcej.
+
+W Excelu możemy skorzystać z funkcji:
+
+- MEDIANA(wartości cechy),
+- KWARTYL.PRZEDZ.ZAMK(wartości cechy, 2).
+
+Mediana podzieliła nam jednostki zbiorowości na dwie połowy. Jeśli podzielimy pierwszą połową ponownie na pół otrzymamy wartość **kwartyla pierwszego (dolnego)**, który informuje, że 25% jednostek zbiorowości ma wartości cechy niższe bądź równe kwartylowi pierwszemu $Q_{1}$, a 75\% równe bądź wyższe od tego kwartyla. Z kolei po podzieleniu drugiej połowy obserwacji uzyskujemy wartość **kwartyla trzeciego (górnego)**, który informuje, że 75\% jednostek zbiorowości ma wartości cechy niższe bądź równe kwartylowi trzeciemu $Q_{3}$, a 25\% równe bądź wyższe od tego kwartyla.
+
+Do wyznaczenia wartości kwartyli w Excelu korzystamy z funkcji:
+
+- KWARTYL.PRZEDZ.ZAMK(wartości cechy, numer kwartyla),
+
+gdzie numer kwartyla to:
+
+- 0 - minimum,
+- 1 - kwartyl dolny,
+- 2 - mediana,
+- 3 - kwartyl górny,
+- 4 - maksimum.
+
+W firmie A kwartyl dolny wynagrodzeń wyniósł `r wyn_stat$q1[1]` zł, co oznacza, że 25% pracowników uzyskuje pensją równą bądź niższą niż `r wyn_stat$q1[1]` zł, a 75% równą bądź wyższą niż `r wyn_stat$q1[1]`. Z kolei 75% pracowników otrzymuje wynagrodzenie mniejsze lub równe `r wyn_stat$q3[1]` zł, a 25% większe bądź równe `r wyn_stat$q3[1]` zł. W firmie B kwartyl pierwszy jest równy `r wyn_stat$q1[2]` zł, a trzeci `r wyn_stat$q3[2]` zł.
+
+Wartości kwartyli można przedstawić na wykresie pudełkowym (ang. boxplot):
+
+```{r boxplot, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+
+ggplot(wyn_stat, aes(x = id, ymin = min, lower = q1, middle = mediana, upper = q3, ymax = max)) +
+  geom_boxplot(stat = "identity") +
+  coord_flip() +
+  xlab("") + ylab("Wynagrodzenie") +
+  theme_bw()
+
+```
+
+W miarach pozycyjnych opartych na kwartylach zróżnicowanie wartości od mediany mierzy **odchylenie ćwiartkowe**:
+
+$$Q=\frac{Q_{3}-Q_{1}}{2}$$
+
+gdzie:
+
+- $Q$ - symbol odchylenia ćwiartkowego, 
+- $Q_{1}$ - kwartyl pierwszy, 
+- $Q_{3}$ - kwartyl trzeci.
+
+Mierzy ono przeciętne odchylenie wartości cechy zbiorowości od mediany u 50% środkowych jednostek - między kwartylem dolnym i górnym. Przykładowo w firmie A przeciętne odchylenie wynagrodzenia od mediany wynosi `r wyn_stat$q[1]` zł.
+
+Zestawienie ochylenia ćwiartkowego oraz mediany pozwala na obliczenie **pozycyjnego współczynnika zmienności**:
+
+$$V_{Q}=\frac{Q}{Q_2} \cdot 100$$
+
+gdzie: 
+
+- $V_{Q}$ - symbol pozycyjnego współczynnika zmienności, 
+- $Q$ - odchylenie ćwiartkowe, 
+- $Q_2$ - mediana.
+
+Podobnie jak w przypadku klasycznego współczynnika zmienności korzystamy z umownych progów dotyczących zróżnicowania. W firmie A pozycyjny współczynnik zmienności był równy `r wyn_stat$vq[1]`% co oznacza, że wynagrodzenia w tej firmie cechowały się umiarkowanym zróżnicowaniem, natomiast w firmie B było to `r wyn_stat$vq[2]`% czyli silne zróżnicowanie wynagrodzeń.
+
+Ostatnią miarą opartą na kwartylach jest **pozycyjny współczynnik asymetrii**, który określa kierunek i siłę asymetrii jednostek znajdujących się między pierwszym i trzecim kwartylem:
+
+$$A_{Q}=\frac{Q_{1}+Q_{3}-2 \cdot Q_2}{2 \cdot Q}$$
+
+gdzie: 
+
+- $A_{Q}$ --- symbol pozycyjnego współczynnika asymetrii, 
+- $Q_{1}$ --- kwartyl pierwszy, 
+- $Q_{3}$ --- kwartyl trzeci, 
+- $Q_{2}$ --- mediana, 
+- $Q$ --- odchylenie ćwiartkowe.
+
+Interpretacja pozycyjnego współczynnika asymetrii przebiega identycznie jak w przypadku klasycznego współczynnika asymetrii:
+
+- symetryczny - mediana pomiędzy wartościami kwartyli dolnego i górnego, $A_{Q}=0$,
+- lewostronnie asymetryczny - mediana bliżej wartości kwartyla górnego, $A_{Q}<0$,
+- prawostronnie asymetryczny - mediana bliżej wartości kwartyla dolnego, $A_{Q}>0$.
+
+Tę informację możemy także odczytać z wykresu pudełkowego, określając umiejscowienie mediany względem pozostałych kwartyli:
+
+```{r asymetria, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+
+as <- c("Brak asymetrii", "Asymetria \nlewostronna", "Asymetria \nprawostronna")
+box_sym <- data.frame(x = factor(x = as, levels = rev(as),  ordered = T),
+                      min=c(0,0,0),
+                      q1=c(15,10,15),
+                      q2=c(40,45,35),
+                      q3=c(65,65,70),
+                      max=c(80,80,80))
+
+
+ggplot(box_sym, aes(x = x, ymin = min, lower = q1, middle = q2, upper = q3, ymax = max)) +
+  geom_boxplot(stat = "identity") +
+  coord_flip() +
+  xlab("") + ylab("") +
+  theme_bw()
+
+```
+
+W firmie A pozycyjny współczynnik asymetrii był równy `r wyn_stat$aq[1]`, co pociąga za sobą informację o asymetrii lewostronnej, natomiast w firmie B występowała asymetria prawostronna (`r wyn_stat$aq[2]`). 
+
+_Przykład_
+
+Wyznaczmy miary pozycyjne dla dwóch sklepów Rossmann analizowanych wcześciej:
+
+```{r as-ross-miary-poz, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+
+r_1_7_stat_p <- rossmann_1_7 %>%
+  group_by(sklep_id) %>%
+  summarise(n=round(n()),
+            q1=round(quantile(sprzedaz,0.25)),
+            q2=round(quantile(sprzedaz,0.5)),
+            q3=round(quantile(sprzedaz,0.75)),
+            q=round((q3-q1)/2,2),
+            v_q=round(q/q2*100,2),
+            aq=round((q1+q3-2*q2)/(2*q),2))
+
+r_1_7_stat_p_t <- t(r_1_7_stat_p)[-1,]
+
+colnames(r_1_7_stat_p_t) <- c("Sklep_1", "Sklep_7")
+
+knitr::kable(r_1_7_stat_p_t)
+
+```
 
 _Zadania_
 
-Przeprowadzić kompleksową analizę struktury dla poszczególnych dni tygodnia.
+Przeprowadzić kompleksową analizę struktury sprzedaży/liczby klientów dla poszczególnych dni tygodnia.
+
+```{r as-ross-sprzed, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+
+sprzedaz_stat <- rossmann200 %>%
+  filter(czy_otwarty=="Tak") %>%
+  group_by(dzien_tyg) %>%
+  summarise(n=round(n()),
+            x_sr=round(mean(sprzedaz),2),
+            s=round(sd(sprzedaz),2),
+            v_s=round(s/x_sr*100,2),
+            alpha_3=round(skewness(sprzedaz),2),
+            alpha_4=round(kurtosis(sprzedaz)+3,2))
+
+sprzedaz_stat_t <- t(sprzedaz_stat)
+
+```
+
+```{r as-ross-klienci, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+
+klienci_stat <- rossmann200 %>%
+  filter(czy_otwarty=="Tak") %>%
+  group_by(dzien_tyg) %>%
+  summarise(n=round(n()),
+            x_sr=round(mean(liczba_klientow),2),
+            s=round(sd(liczba_klientow),2),
+            v_s=round(s/x_sr*100,2),
+            alpha_3=round(skewness(liczba_klientow),2),
+            alpha_4=round(kurtosis(liczba_klientow)+3,2))
+
+klienci_stat <- t(klienci_stat)
+
+```
