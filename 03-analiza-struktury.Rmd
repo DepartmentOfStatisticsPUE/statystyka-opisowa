@@ -582,3 +582,32 @@ gdzie:
 - $cQ_{3}$ - rozpiętość przedziału zawierającego kwartyl trzeci.
 
 Po wyznaczeniu wartości kwartyli pozostałe miary liczymy w tradycyjny sposób.
+
+
+## Podsumowanie miar
+
+### Miary klasyczne
+
+| Miara                |Oznaczenie | Wzór                | Interpretacja i wykorzystanie    | Funkcja w Excelu |
+|----------------------|-----------|--------------------------------|--------------------|--------------------|
+| Średnia arytmetyczna |$\bar{x}$  | $\frac{\sum_{i=1}^n x_i}{n}$   | Wartość przeciętna | `ŚREDNIA()`       |
+| Średnia harmoniczna  |$\bar{x}_h$| $\frac{n}{\sum_{i=1}^n\frac{1}{x_i}}$ | Wartość przeciętna | `ŚREDNIA.GEOMETRYCZNA()` |
+| Średnia geometryczna |$\bar{x}_g$| $\sqrt{x_1 x_2 ... x_n}$ | Wartość przeciętna | `ŚREDNIA.HARMONICZNA()`  |
+| Odchylenie przeciętne (średnie)  |  $d$  | $\frac{1}{n}\sum \mid x_i - \bar{x} \mid$ | O ile wszystkie jednostki badanej zbiorowości różnią się średnio ze względu na wartość zmiennej od średniej arytmetycznej tej zmiennej | `ODCH.ŚREDNIE()`  |
+| Odchylenie kwadratowe |  $d^2$ | $\sum_{i=1}^n (x_i - \bar{x})^2$ | Kwadrat odchylenia przeciętnego | `ODCH.KWADRATOWE()` |
+| Odchylenie standardowe (dla populacji) | $s$ | $\sqrt{\frac{\sum_{i=1}^n (x_i - \bar{x})^2}{n}}$ | O ile przeciętnie odchylają się wartości od średniej  | `ODCH.STAND.POPUL()`  |
+| Odchylenie standardowe (dla próby) | $s$ | $\sqrt{\frac{\sum_{i=1}^n (x_i - \bar{x})^2}{n-1}}$ | O ile przeciętnie odchylają się wartości od średniej  | `ODCH.STANDARD.PRÓBKI()`  |
+| Wariancja (dla populacji) | $s^2$ | $\frac{\sum_{i=1}^n (x_i - \bar{x})^2}{n}$ | Informuje o zróżnicowaniu populacji | `WARIANCJA.POP()`  |
+| Wariancja (dla próby) | $s^2$ | $\frac{\sum_{i=1}^n (x_i - \bar{x})^2}{n-1}$ | Informuje o zróżnicowaniu próby | `WARIANCJA.PRÓBKI()`  |
+| Rozstęp | $R$ | $max_x - min_x$ | Empiryczny obszar zmienności  | --  |
+| Typowy obszar zmiennośći |-- | $\bar{x} - s < x_{typ} < \bar{x} + s$ | Informuje o relatywnym zróżnicowaniu populacji (próby). Zwykle wykorzystujemy do porównań dwóch lub więcej grup.  | --  |
+| Współczynnik zmienności | $V_x$ | $\frac{s}{\bar{x}} \times 100\%$ | Informuje o relatywnym zróżnicowaniu populacji (próby). Zwykle wykorzystujemy do porównań dwóch lub więcej grup.  | --  |
+| Współczynnik asymetrii | $\alpha_3$ | $\frac{\frac{1}{n}\sum_{i=1}^{n}{(x_{i}-\bar{x})^3}}{s^3}$ | Pozwala zidentyfikować czy rozkład jest symetryczny lub asymetryczny | `SKOŚNOŚĆ()`  |
+| Współczynnik koncentracji | $\alpha_4$ | $\frac{\frac{1}{n}\sum_{i=1}^{n}{(x_{i}-\bar{x})^4}}{s^4}$ | Pozwala zidentyfikować czy rozkład jest wysmukły czy spłaszczony | `KURTOZA()`  |
+| Eksces | $Ex$ | $\alpha_4-3$ | Pozwala zidentyfikować czy rozkład jest wysmukły czy spłaszczony (porównujemy do 0) | --  |
+
+
+### Miary pozycyjne
+
+
+

@@ -10,6 +10,17 @@ output:
   bookdown::pdf_book: default
 ---
 
+```{r pakiety i ustawienia, include=FALSE, warning=FALSE, message=FALSE}
+options(scipen = 100)
+library(openxlsx)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+knitr::opts_chunk$set(cache = TRUE, 
+                      echo = FALSE)
+```
+
+
 # Wprowadzenie {-}
 
 Niniejszy skrypt stanowi pomoc dydaktyczną na przedmiocie Statystyka Opisowa. Celem przedmiotu jest poznanie metod statystycznych, ich zastosowań oraz interpretacja otrzymanych wyników. Treści zajęć umożliwią odpowiedź na m.in. następujące pytania:
@@ -18,3 +29,5 @@ Niniejszy skrypt stanowi pomoc dydaktyczną na przedmiocie Statystyka Opisowa. C
 - Co jest lepszą miarą - średni dochód czy mediana dochodu?
 - Czy istnieje zależność pomiędzy wynikiem z egzaminu a płcią?
 - W jaki sposób planować dostawy do sklepów?
+
+

@@ -14,12 +14,6 @@ Zasoby internetowe są pełne przykładów i wzorców tworzenia wykresów:
 - [D3](https://d3js.org/)
 
 ```{r import, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
-options(scipen = 100)
-library(openxlsx)
-library(dplyr)
-library(ggplot2)
-library(tidyr)
-
 # rossmann <- read.xlsx("rossmann.xlsx")
 # 
 # rossmann200 <- rossmann %>%
@@ -210,4 +204,157 @@ ggplot(subset(rossmann200, sprzedaz!=0), aes(x=sprzedaz)) +
   xlab("Sprzedaż") + ylab("Liczebność") +
   theme_bw()
 
+```
+
+## Histogramy 
+
+Jak utworzyć histogram?
+
+
+```{r dane}
+set.seed(123)
+dane <- rnorm(n = 1000, mean = 100, sd = 10)
+```
+
+Aby utworzyć histogram musimy określić szerokość przedziału. Istnieje wiele metod tworzenia tych przedziałów, najcześciej występujące przedstawiam poniżej.
+
+Poniżej przedstawiam tabelę z rozkładem zmiennej, którą badamy
+
+```{r rozkład}
+knitr::kable(broom::tidy(summary(dane)))
+```
+
+### Metoda arbitralnie ustalanej szerokosci przedziałów
+
+$$
+k = \left \lceil \frac{\max x - \min x}{h} \right \rceil,
+$$
+
+gdzie $x$ oznacza badaną cechę ciągłą, $h$ oznacza arbitralnie ustawioną szerokość przedziałów, a $k$ liczba przedziałów.
+
+```{r metoda1}
+h <- 10
+k <- ceiling((max(dane) - min(dane)) / h)
+lower <- floor(min(dane)) - 1
+upper <- ceiling(max(dane))
+hist(x = dane, 
+     breaks = seq(lower, upper + h, h),
+     main = 'Histogram (ustalona szerokość)',
+     xlab = 'Dane',
+     ylab = 'Częstość')
+```
+
+### Metoda pierwiastkowa
+
+$$
+k = \sqrt{n}
+$$
+
+gdzie $n$ oznacza liczbę obserwacji.
+
+```{r metoda2}
+k <- sqrt(length(dane))
+lower <- floor(min(dane)) 
+upper <- ceiling(max(dane)) 
+hist(x = dane,
+     breaks = seq(lower,upper + h, h),
+     main = 'Histogram (metoda pierwiastkowa)',
+     xlab = 'Dane',
+     ylab = 'Częstość')
+```
+
+### Metoda Struges'a
+
+Sturges, H. A. (1926). The choice of a class interval. Journal of the american statistical association, 21(153), 65-66. [LINK](http://www.esalq.usp.br/departamentos/lce/arquivos/aulas/2013/LCE0216/Sturges1926.pdf)
+
+$$
+k = \lceil \log_2 n \rceil+ 1
+$$
+
+gdzie $\lceil \bullet \rceil$ oznacza sufit lub cecha górna liczby rzeczywistej.
+
+```{r metoda3}
+hist(x = dane, breaks = 'sturges',
+     main = 'Histogram (metoda Strugesa)',
+     xlab = 'Dane',
+     ylab = 'Częstość')
+```
+
+**UWAGA:** Tej metody nie należy stosować dla małych prób (np. $n < 30$) oraz asymetrycznych rozkładów (tj. innych niż rozkład normalny). Zachęcam do zapoznania się z dyskusją na temat tej metody: http://www.robjhyndman.com/papers/sturges.pdf
+
+### Metoda Uniwersytetu Rice
+
+$$
+k = \lceil 2 n^{1/3} \rceil 
+$$
+
+```{r rice}
+k <- ceiling(2*length(dane) ^ {1 / 3})
+
+lower <- floor(min(dane))
+upper <- ceiling(max(dane))
+hist(x = dane, 
+     breaks = k,
+     main = 'Histogram (metoda Uniwersytetu Rice)',
+     xlab = 'Dane',
+     ylab = 'Częstość')
+```
+
+### Metoda Doane'a
+
+Doane, D. P. (1976). Aesthetic frequency classifications. The American Statistician, 30(4), 181-183. [LINK](http://amstat.tandfonline.com/doi/pdf/10.1080/00031305.1976.10479172)
+
+$$
+k = 1 + \log_2( n ) + \log_2 \left( 1 +  \frac { |g_1| }{\sigma_{g_1}} \right) 
+$$
+
+gdzie $g_1$ oznacza trzeci moment (asymetrię), a  $\sigma_{g_1} = \sqrt { \frac { 6(n-2) }{ (n+1)(n+3) } }$.
+
+```{r Doane}
+g1 <- e1071::skewness(dane)
+n <- length(dane)
+sg1 <- sqrt( (6*(n-2)) / ((n+1)*(n+3)))
+k <- ceiling(1 + log2(n) + log2(1+ abs(g1)/sg1))
+
+hist(x = dane, 
+     breaks = k,
+     main = 'Histogram (metoda Uniwersytetu Rice)',
+     xlab = 'Dane',
+     ylab = 'Częstość')
+```
+
+### Metoda Scott'a
+
+Scott, D. W. (1979). On optimal and data-based histograms. Biometrika, 605-610. [LINK](http://www.stat.cmu.edu/~rnugent/PCMI2016/papers/ScottBandwidth.pdf)
+
+$$
+h = \frac{3.5 \operatorname{s}(x)}{n^{1/3}}
+$$
+
+gdzie $\operatorname{s}(x)$ to odchylenie standardowe (np. z próby).
+
+```{r scotts}
+hist(x = dane, 
+     breaks = 'scott',
+     main = 'Histogram (metoda Scotta)',
+     xlab = 'Dane',
+     ylab = 'Częstość')
+```
+
+### Metoda Freedmana–Diaconis'a
+
+Freedman, D., & Diaconis, P. (1981). On the histogram as a density estimator: L 2 theory. Zeitschrift für Wahrscheinlichkeitstheorie und verwandte Gebiete, 57(4), 453-476. [LINK](http://link.springer.com/content/pdf/10.1007/BF01025868.pdf)
+
+$$
+h = 2 \frac{\operatorname{R}(x)}{n^{1/3}}
+$$
+
+gdzie $R(x) = Q3 - Q1$, a $Q1$ oznacza kwartyl pierwszy, a $Q3$ kwartyl trzeci.
+
+```{r fd}
+hist(x = dane, 
+     breaks = 'fd',
+     main = 'Histogram (metoda Freedmana-Diaconisa)',
+     xlab = 'Dane',
+     ylab = 'Częstość')
 ```
