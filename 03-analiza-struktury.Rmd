@@ -496,7 +496,7 @@ $$\bar{x}=\frac{1}{N}\sum\limits_{i=1}^{N}{x_{i}n_{i}}$$
 
 $$s^2=\frac{1}{N}\sum\limits_{i=1}^{N}{(x_{i}-\bar{x})^2 \cdot n_{i}}$$
 
-$$\alpha_{3}=\frac{\frac{1}{N}\sum\limits_{i=1}^{N}{(x_{i}-\bar{x})^3}}{s^3}$$
+$$\alpha_{3}=\frac{\frac{1}{N}\sum\limits_{i=1}^{N}{(x_{i}-\bar{x})^3}\cdot n_{i}}{s^3}$$
 
 $$\alpha_{4}=\frac{\frac{1}{N}\sum\limits_{i=1}^{N}{(x_{i}-\bar{x})^4 \cdot n_{i}}}{s^4}$$
 
@@ -521,7 +521,7 @@ $$\bar{x}=\frac{1}{N}\sum\limits_{i=1}^{N}{x_{i}'n_{i}}$$
 
 $$s^2=\frac{1}{N}\sum\limits_{i=1}^{N}{(x_{i}'-\bar{x})^2 \cdot n_{i}}$$
 
-$$\alpha_{3}=\frac{\frac{1}{N}\sum\limits_{i=1}^{N}{(x_{i}'-\bar{x})^3}}{s^3}$$
+$$\alpha_{3}=\frac{\frac{1}{N}\sum\limits_{i=1}^{N}{(x_{i}'-\bar{x})^3}\cdot n_{i}}{s^3}$$
 
 $$\alpha_{4}=\frac{\frac{1}{N}\sum\limits_{i=1}^{N}{(x_{i}'-\bar{x})^4 \cdot n_{i}}}{s^4}$$
 
@@ -551,6 +551,7 @@ gdzie:
 Dla szeregu rozdzielczego możemy także wyznaczyć wartości kwartyli stosując wzory interpolacyjne:
 
 $$Q_{1}=xQ_{1}+\frac{\frac{N}{4}-cumQ_{1}^{-1}}{nQ_{1}} \cdot cQ_{1}$$
+
 gdzie:
 
 - $Q_{1}$ - oznaczenie kwartyla pierwszego, 
@@ -563,6 +564,7 @@ gdzie:
 $$Q_{2}=xQ_{2}+\frac{\frac{N}{2}-cumQ_{2}^{-1}}{nQ_{2}} \cdot cQ_{2}$$
 
 gdzie: 
+
 - $Q_{2}$ - oznaczenie mediany, 
 - $N$ - liczebność badanej zbiorowości, 
 - $xQ_{2}$ - początek przedziału, w którym znajduje się mediana, 
