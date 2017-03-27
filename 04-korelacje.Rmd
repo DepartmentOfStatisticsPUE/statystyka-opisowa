@@ -1,0 +1,111 @@
+# Korelacje 
+
+Korelacja [łac.], mat. wzajemne powiązanie, współzależność zjawisk lub obiektów; w teorii prawdopodobieństwa i statystyce — współzależność liniowa zmiennych losowych (jej liczbową miara jest współczynnik korelacji) [źródło: słownik PWN].
+
+## Cechy jakościowe
+
+Celem analizy współzależności jest określenie siły związku pomiędzy dwiema cechami. Sprawdźmy czy istnieje zależność pomiędzy wynikiem z egzaminu a płcią?
+
+Podstawą takiej analizy jest tablica kontyngencji albo tablica krzyżowa. W przypadku obserwacji statystycznej dotyczącej dużej ilości zmiennych, operowanie wartościami szczegółowymi jest uciążliwe. W celu stwierdzenia istnienia lub braku związku korelacyjnego konstruuje się tablicę korelacyjną. Na skrzyżowaniu kolumn z wierszami wpisuje się liczebności jednostek zbiorowości statystycznej, u których zaobserwowano jednoczesne występowanie określonej wartości $x_{i}$ i $y_{i}$. Ogólna postać tablicy krzyżowej jest następująca:
+
+| cecha X / cecha Y | $y_{1}$ | $y_{2}$ | $\cdots$ | $y_{j}$ | $\cdots$ | $y_{r}$ | $\sum\limits_{j}$ |
+|---|---|---|---|---|---|---|---|
+| $x_{1}$  |  $n_{11}$  | $n_{12}$  | $\cdots$  | $n_{1j}$  | $\cdots$  | $n_{1r}$   | $n_{1.}$  |
+| $x_{2}$  | $n_{21}$   |$n_{22}$    |$\cdots$  |  $n_{2j}$ | $\cdots$    |$n_{2r}$  | $n_{2.}$  |
+| $\cdots$  | $\cdots$  |$\cdots$   | $\cdots$  | $\cdots$  | $\cdots$  | $\cdots$  | $\cdots$  |
+| $x_{i}$   | $n_{i1}$  | $n_{i2}$  |$\cdots$ |  $n_{ij}$   |  $\cdots$  | $n_{ir}$  | $n_{i.}$   |
+| $\cdots$  | $\cdots$  | $\cdots$  | $\cdots$  | $\cdots$  | $\cdots$  | $\cdots$  | $\cdots$  |
+| $x_{k}$   | $n_{k1}$  | $n_{k2}$  |  $\cdots$ | $n_{kj}$  | $\cdots$  |   $n_{kr}$ | $n_{k.}$  |
+| $\sum\limits_{i}$  | $n_{.1}$  | $n_{.2}$  | $\cdots$  | $n_{.j}$  |$\cdots$   |  $n_{.r}$ | $n$  |
+
+Jak wynika z tablicy zmienna losowa $X$ przyjmuje $k$ wariantów (i=1,2,...,k), zaś zmienna losowa $Y$ przyjmuje $r$ wariantów (j=1,2,...,r). 
+
+Symbol $n_{.j}$ oznacza liczbę jednostek, które mają wariant $y_{j}$ zmiennej Y, natomiast symbol $n_{i.}$ - liczbę jednostek, które mają wariant $x_{i}$ zmiennej X. Symbole $n_{ij}$ oznaczają liczbę jednostek, które posiadają jednocześnie wariant $x_{i}$ cechy X i warianty $y_{j}$ cechy Y. Symbol $n$ oznacza liczebność próby, przy czym:
+
+$$n=\sum\limits_{i=1}^{k}{n_{i.}}=\sum\limits_{j=1}^{r}{n_{.j}}=\sum\limits_{i=1}^{k}\sum\limits_{j=1}^{r}{n_{ij}}$$
+
+W analizowanym przykładzie pozyskaliśmy informację od 500 osób na temat wyniku egzaminu oraz płci. Tablica krzyżowa tych danych wygląda następująco:
+
+| Płeć / Wynik | Nie zdany | Zdany | Suma |
+|--------------|----------:|------:|-----:|
+| Mężczyzna    |       100 |    70 |  170 |
+| Kobieta      |       130 |   200 |  330 |
+| Suma         |       230 |   270 |  500 |
+
+Do odpowiedzi na pytanie czy istnieje zależność pomiędzy tymi cechami wykorzystamy statystykę chi-kwadrat ($\chi^2$). Nazwę tej statystyki czytamy tak samo jak piszemy.
+
+W pierwszym kroku musimy obliczyć **oczekiwane (teoretyczne) częstości** dla każdej komórki czyli wartości jakie musiałyby występować, żeby zależności nie było. Wzór na liczebności teoretyczne jest następujący:
+
+$$\hat{n}_{ij}=\frac{n_{i.} \cdot n_{.j}}{n}$$
+
+Przykładowo, liczebność teoretyczna dla mężczyzn, którzy nie zdali egzaminu to iloczyn liczby wszystkich mężczyzn i liczby wszystkich, którzy nie zdali egzaminu podzielony przez wszystkie obserwacje:
+
+$$\hat{n}_{11}=\frac{170 \cdot 230}{500}=78,2$$
+
+Liczebności oczekiwane po wstawieniu do tabeli:
+
+| Płeć / Wynik | Nie zdany | Zdany | Suma |
+|--------------|----------:|------:|-----:|
+| Mężczyzna    |      78,2 |  91,8 |  170 |
+| Kobieta      |     151,8 | 178,2 |  330 |
+| Suma         |       230 |   270 |  500 |
+
+Częstości teoretyczne nie muszą być wartościami całkowitymi, ale suma w wierszu, kolumnie i dla całej tablicy krzyżowej musi pozostać taka sama.
+
+W kolejnym kroku wyznaczamy **standardowe współczynniki różnicy** pomiędzy częstościami oczekiwanymi a zaobserwowanymi. Suma tych współczynników da nam wartość **statystyki $\chi^2$**.
+
+$$\chi^{2}=\sum\limits_{i=1}^{k}\sum\limits_{j=1}^{r}{\frac{(n_{ij}-\hat{n}_{ij})^2}{\hat{n}_{ij}}}$$
+
+gdzie:
+
+- $r$ - liczba wariantów cechy Y,
+- $k$ - liczba wariantów cechy X,
+- $n_{ij}$ - liczebności empiryczne dla i-tego wariantu cechy X i j-tego wariantu cechy Y,
+- $\hat{n}_{ij}$ - liczebności teoretyczne dla i-tego wariantu cechy X i j-tego wariantu cechy Y.
+
+$$\chi^{2}=\frac{(100-78,2)^2}{78,2}+\frac{(70-91,8)^2}{91,8}+\frac{(130-151,8)^2}{151,8}+\frac{(200-178,2)^2}{178,2}=17$$
+
+W przypadku, gdy dysponujemy tablicą o wymiarach 2x2 możemy skorzystać z prostszego sposobu wyznaczenia statystyki $\chi^2$ korzystając ze wzoru. Jeśli tablica kontyngencji jest w postaci:
+
+| cecha X / cecha Y  | $y_{1}$  |  $y_{2}$  | $n_{i.}$  |
+|---|---|---|---|
+| $x_{1}$   |  a   |   b  |  a+b |
+| $x_{2}$   |  c   |   d  |  c+d |
+| $n_{.j}$  | a+c  |  b+d |   n  |
+
+a liczebności w komórkach większe niż 5 to wzór na chi-kwadrat jest następujący:
+
+$$\chi^{2}=\frac{n \cdot (a \cdot d - b \cdot c)^2}{(a+b) \cdot (c+d) \cdot (a+c) \cdot (b+d)}$$
+
+W przypadku występowania częstości mniejszych od 5 musimy zastosować wzór uwzględniający poprawkę Yatesa:
+
+$$\chi^{2}=\frac{n \cdot (|a \cdot d - b \cdot c| - 0,5 \cdot n)^2}{(a+b) \cdot (c+d) \cdot (a+c) \cdot (b+d)}$$
+
+W analizowanym przypadku zależności płci i wyniku z egzaminu wartości w komórkach a, b, c i d są większe od 5, więc można wykorzystać pierwszą formułę:
+
+$$\chi^2=\frac{500\cdot(100\cdot200-70\cdot130)^2}{170\cdot330\cdot230\cdot270}=\frac{59405000000}{3483810000}=17$$
+
+Sama wartość statystyki chi-kwadrat nie informuje sile zależności pomiędzy analizowanymi zmiennymi. W celu określenia siły zależności musimy wyznaczyć jedną z dostępnych miar korelacji: **współczynnik V-Cramera** lub **współczynnik zbieżności T-Czuprowa**:
+
+$$V=\sqrt{\frac{\chi^2}{n \cdot min(k-1,r-1)}}$$
+
+$$T=\sqrt{\frac{\chi^2}{n \cdot \sqrt{(k-1)(r-1)}}}$$
+
+gdzie: 
+
+- $\chi^2_{emp}$ --- wyznaczona wartość statystyki $\chi^2$,
+- $n$ - liczba wszystkich obserwacji,
+- $k$ - liczba kolumn tabeli kontyngencji bez sumy (liczba wariantów pierwszej cechy),
+- $r$ - liczba wierszy tabeli kontyngencji bez sumy (liczba wariantów drugiej cechy).
+
+Możemy przyjąć pewne umowne progi dotyczące interpretacji tych miar:
+
+- od 0,00 do 0,29 - słaby związek pomiędzy zmiennymi,
+- od 0,30 do 0,49 - umiarkowany związek pomiędzy zmiennymi,
+- od 0,50 do 1,00 - silny związek pomiędzy zmiennymi.
+
+W naszym przykładzie współczynnik V-Cramera jest równy współczynnikowi T-Czuprowa i wynosi $V=T=0,18$, co oznacza, że pomiędzy płcią a wynikiem z egzaminu występuje słaba zależność.
+
+_Zadania_
+
+Oceń siłę zależności pomiędzy faktem wejścia promocji, a liczbą klientów (poniżej/powyżej średniej) w sklepie numer 7.
