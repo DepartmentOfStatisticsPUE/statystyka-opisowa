@@ -110,6 +110,10 @@ _Zadania_
 
 Oceń siłę zależności pomiędzy faktem wejścia promocji, a liczbą klientów (poniżej/powyżej średniej) w sklepie numer 7.
 
+# Miary korelacji cech jakościowych w Excelu
+
+Niestety, aktualnie w MS Excel nie ma funkcji, które umożliwiają obliczenie statystyki $\chi^2$. Istnieje natomiast funkcja `CHI.TEST`, która liczy statystykę $\chi^2$ ale jej nie zwraca. Informuje jedynie o istotności statystycznej, która wykracza poza zakres materiału realizowanego w ramach tych zajęć.
+
 ## Cechy ciągłe
 
 W przypadku cech ciągłych chcemy określić siłę oraz kierunek zależności pomiędzy dwoma zmiennymi. Silnie skorelowane ze sobą zmienne zachowują się "jak gdyby równocześnie się poruszały".
