@@ -4,7 +4,7 @@ Korelacja [łac.], mat. wzajemne powiązanie, współzależność zjawisk lub ob
 
 ## Cechy jakościowe
 
-Celem analizy współzależności jest określenie siły związku pomiędzy dwiema cechami. Sprawdźmy czy istnieje zależność pomiędzy wynikiem z egzaminu a płcią?
+Celem analizy współzależności jest określenie siły związku pomiędzy dwiema cechami jakościowymi. Sprawdźmy czy istnieje zależność pomiędzy wynikiem z egzaminu a płcią?
 
 Podstawą takiej analizy jest tablica kontyngencji albo tablica krzyżowa. W przypadku obserwacji statystycznej dotyczącej dużej ilości zmiennych, operowanie wartościami szczegółowymi jest uciążliwe. W celu stwierdzenia istnienia lub braku związku korelacyjnego konstruuje się tablicę korelacyjną. Na skrzyżowaniu kolumn z wierszami wpisuje się liczebności jednostek zbiorowości statystycznej, u których zaobserwowano jednoczesne występowanie określonej wartości $x_{i}$ i $y_{i}$. Ogólna postać tablicy krzyżowej jest następująca:
 
@@ -93,7 +93,7 @@ $$T=\sqrt{\frac{\chi^2}{n \cdot \sqrt{(k-1)(r-1)}}}$$
 
 gdzie: 
 
-- $\chi^2_{emp}$ --- wyznaczona wartość statystyki $\chi^2$,
+- $\chi^2$ - wyznaczona wartość statystyki $\chi^2$,
 - $n$ - liczba wszystkich obserwacji,
 - $k$ - liczba kolumn tabeli kontyngencji bez sumy (liczba wariantów pierwszej cechy),
 - $r$ - liczba wierszy tabeli kontyngencji bez sumy (liczba wariantów drugiej cechy).
@@ -109,3 +109,70 @@ W naszym przykładzie współczynnik V-Cramera jest równy współczynnikowi T-C
 _Zadania_
 
 Oceń siłę zależności pomiędzy faktem wejścia promocji, a liczbą klientów (poniżej/powyżej średniej) w sklepie numer 7.
+
+## Cechy ciągłe
+
+W przypadku cech ciągłych chcemy określić siłę oraz kierunek zależności pomiędzy dwoma zmiennymi. Silnie skorelowane ze sobą zmienne zachowują się "jak gdyby równocześnie się poruszały".
+
+Sprawdźmy czy liczba klientów jest skorelowana ze sprzedażą w sklepie nr 1. Pierwszym krokiem w analizie korelacji jest stworzenie wykresu rozrzutu:
+
+```{r ross-scatter, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+
+rossmann_1 <- filter(rossmann_1_7, sklep_id==1)
+
+ggplot(rossmann_1, aes(x=sprzedaz, y=liczba_klientow)) + 
+  geom_point() +
+  xlab("Sprzedaż") + ylab("Liczba klientów") +
+  theme_bw()
+
+cov <- mean((rossmann_1$sprzedaz-mean(rossmann_1$sprzedaz))*(rossmann_1$liczba_klientow-mean(rossmann_1$liczba_klientow)))
+
+```
+
+Na tej podstawie możemy już stwierdzić, że zależność jest liniowa oraz dodatnia - wzrost wartości jednej cechy pociąga za sobą wzrost wartości drugiej cechy. Z korelacją ujemną mielibyśmy do czynienia, gdy wartości jednej cechy by rosły, a drugiej malały. 
+
+Wartością liczbową, która określa kierunek korelacji jest **kowariancja**. Wyznaczenie kowariancji polega na policzeniu różnic wartości obu cech od średniej, a następnie ich przemnożeniu i uśrednieniu, zgodnie ze wzorem:
+
+$$cov(x,y)=cov(y,x)=\frac{1}{n}\sum\limits_{i=1}^{n}{(x_{i}-\bar{x})\cdot(y_{i}-\bar{y})}$$
+
+Jeśli kowariancja będzie:
+
+- $cov(x,y)=0$ --- brak zależności,
+- $cov(x,y)<0$ --- ujemna zależność,
+- $cov(x,y)>0$ --- dodatnia zależność.
+
+W przypadku sklepu nr 1 kowariancja wynosi `r round(cov)`, co oczywiście pociąga za sobą dodatnią zależność. Na podstawie kowariancji nie możemy natomiast wyznaczyć siły zależności ponieważ jest wyznaczona w dziwnych jednostkach - osobo-euro. Standaryzując kowariancję z wykorzystaniem odchylenia standardowego każdej cechy otrzymamy **współczynnik korelacji liniowej Pearsona**:
+
+$$r_{xy}=r_{yx}=\frac{cov(X,Y)}{S_{x}\cdot S_{y}}$$
+
+lub 
+
+$$r_{xy}=\frac{\sum\limits_{i=1}^{n}{(x_{i}-\bar{x})\cdot(y_{i}-\bar{y})}}{\sqrt{\sum\limits_{i=1}^{n}{(x_{i}-\bar{x})^2\cdot(y_{i}-\bar{y})^2}}}$$
+
+Współczynnik ten jest wielkością unormowaną, przyjmuje wartości z przedziału $r\in<-1;1>$.
+
+Jeśli:
+
+- $r_{xy}=1$ --- korelacja dodatnia doskonała,
+- $0<r_{xy}<1$ --- korelacja dodatnia niedoskonała (słaba/umiarkowana/silna)
+- $r_{xy}=0$ --- brak zależności,
+- $-1<r_{xy}<0$ --- korelacja ujemna niedoskonała (słaba/umiarkowana/silna)
+- $r_{xy}=-1$ --- korelacja ujemna doskonała.
+
+W sklepie nr 1 współczynnik korelacji liniowej Pearona wynosi `r round(cor(rossmann_1$sprzedaz, rossmann_1$liczba_klientow),2)`, co oznacza, że pomiędzy wartością sprzedaży a liczbą klientów występuje silna dodatnia korelacja liniowa.
+
+W przypadku, gdy w zbiorze analizowanych cech znajdą się wartości odstające, które zaburzają liniowość relacji, współczynnik korelacji liniowej może nie spełniać swojej funkcji. Wówczas należy skorzystać ze **współczynnika korelacji rang Spearmana**, który jest współczynnikiem korelacji liniowej Pearsona, ale obliczanym na **rangach**. 
+
+Rangowanie polega na posortowaniu wartości jednej cechy rosnąco - przypisanie kolejnych wartości od $1$ do $n$ (jak w sporcie), na następnie powtórzenie operacji dla drugiej cechy. Jeśli jakaś wartość będzie się powtarzać (_ex aequo_), wówczas wyznaczamy wartość tzn. rangi wiązanej - średniej arytmetycznej z rang tej wartości.
+
+W Excelu można wyznaczyć wyłącznie współczynnik korelacji liniowej Pearsona korzystając z funkcji:
+
+- PEARSON(tablica1, tablica2).
+
+Korelacja nie oznacza przyczynowości - mogą występować inne czynniki będące przyczyną silnej zależności cech.
+
+_Zadania_
+
+Przeanalizuj sprzedaż oraz liczbę klientów w sklepie nr 7 w maju. Utwórz wykres rozrzutu oraz oblicz i zinterpretuj współczynnik korelacji liniowej Pearsona korzystając z funkcji Excela.
+
+Patrz też: [Korelacja](https://www.mathsisfun.com/data/correlation.html)
