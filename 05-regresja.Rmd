@@ -1,0 +1,52 @@
+# Regresja 
+
+Metoda regresji wykorzystywana jest do funkcyjnego odwzorowania zależności pomiędzy badanymi zmiennymi. Jej celem jest poszukanie określonej klasy funkcji, która w możliwie najlepszy sposób charakteryzowałaby zależność pomiędzy zmiennymi. Funkcję tą określa się mianem funkcji regresji. Budując model chcemy osiągnąć określone cele poznawcze.
+
+## Regresja prosta
+
+Celem regresji jest określenie, na podstawie dostępnych informacji, nieznanej wartości analizowej cechy. Znamy wartości sprzedaży oraz liczby klientów w danym sklepie Rossmann i chcielibyśmy wyznaczyć możliwy poziom sprzedaży przy danej liczbie klientów np. 1000 klientów. 
+
+Podobnie jak w analizie korelacji punktem wyjścia w regresji prostej jest utworzenie wykresu rozrzutu. Ażeby móc zastosować model regresji musi występować związek korelacyjny pomiędzy zmiennymi oraz musi to być związek liniowy. Następnie na podstawie kryteriów merytorycznych określamy zmienną objaśnianą ($y$) oraz zmienną objaśniającą ($x$).
+
+W analizowanym przez nas przypadku zmienną objaśnianą będzie poziom sprzedaży ($y$), który będziemy wyjaśniać liczbą klientów ($x$). Naszym celem jest znalezienie wzoru prostej, która będzie przebiegać możliwie najbliżej wszystkich punktów wykresu. W tym celu stosuje się Klasyczną Metodę Najmniejszych Kwadratów (KMNK). Musimy wyznaczyć współczynnik kierunkowy tej prostej ($a_1$) oraz punkt przecięcia z osią OY ($a_0$) określany mianem wyrazu wolnego.
+
+```{r ross-reg, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
+
+ggplot(rossmann_1, aes(y=sprzedaz, x=liczba_klientow)) + 
+  geom_smooth(method = "lm", se = F, colour="grey80") + 
+  geom_point() +
+  ylab("Sprzedaż") + xlab("Liczba klientów") +
+  theme_bw()
+
+```
+
+Wartości tych współczynników możemy policzyć z wykorzystaniem następujących wzorów:
+
+$$
+a_{1}=\frac{\sum\limits_{i=1}^{n}{(x_{i}-\bar{x})(y_{i}-\bar{y})}}{\sum\limits_{i=1}^{n}{(x_{i}-\bar{x})^{2}}} 
+(\#eq:wsp_a1)
+$$
+
+lub znając wartość współczynnika korelacji liniowej Pearsona:
+
+$$a_{1}=r\frac{S_{y}}{S_{x}}$$
+
+z kolei wartość wyrazu wolnego można uzyskać ze wzoru:
+
+$$a_{0}=\bar{y}-a_{1}\bar{x}$$
+
+gdzie:
+
+- $r$ --- współczynnik korelacji liniowej Pearsona pomiędzy cechą $x$ i $y$,
+- $S_y$ --- odchylenie standardowe dla cechy $y$,
+- $S_x$ --- odchylenie standardowe dla cechy $x$,
+- $\bar{y}$ --- średnia dla cechy $y$,
+- $\bar{x}$ --- średnia dla cechy $x$.
+
+W Excelu możemy wykorzystać funkcję REGLINP, którą definujemy w następujący sposób:
+
+- REGLINP(znane_y, znane_x, 1, 1),
+
+gdzie wartości 1 odpowiadają wartościom logicznym PRAWDA dla argumentów _stała_ (uwzględnienie wyrazu wolnego) oraz _statystyka_ (dodatkowe statystyki). Po wywołaniu funkcji zaznaczamy komórki o rozmiarze 5 wierszy x 2 kolumny, tak żeby wynik wywołania funkcji znalazł się lewym górnym rogu zaznaczenia, przechodzimy do Paska formuły i naciskamy kombinację klawiszy CTRL+SHIFT+ENTER. 
+
+

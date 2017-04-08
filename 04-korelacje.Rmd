@@ -106,13 +106,13 @@ Możemy przyjąć pewne umowne progi dotyczące interpretacji tych miar:
 
 W naszym przykładzie współczynnik V-Cramera jest równy współczynnikowi T-Czuprowa i wynosi $V=T=0,18$, co oznacza, że pomiędzy płcią a wynikiem z egzaminu występuje słaba zależność.
 
+**Miary korelacji cech jakościowych w Excelu**
+
+Niestety, aktualnie w MS Excel nie ma funkcji, które umożliwiają obliczenie statystyki $\chi^2$. Istnieje natomiast funkcja `CHI.TEST`, która liczy statystykę $\chi^2$ ale jej nie zwraca. Informuje jedynie o istotności statystycznej, która wykracza poza zakres materiału realizowanego w ramach tych zajęć.
+
 _Zadania_
 
 Oceń siłę zależności pomiędzy faktem wejścia promocji, a liczbą klientów (poniżej/powyżej średniej) w sklepie numer 7.
-
-# Miary korelacji cech jakościowych w Excelu
-
-Niestety, aktualnie w MS Excel nie ma funkcji, które umożliwiają obliczenie statystyki $\chi^2$. Istnieje natomiast funkcja `CHI.TEST`, która liczy statystykę $\chi^2$ ale jej nie zwraca. Informuje jedynie o istotności statystycznej, która wykracza poza zakres materiału realizowanego w ramach tych zajęć.
 
 ## Cechy ciągłe
 
