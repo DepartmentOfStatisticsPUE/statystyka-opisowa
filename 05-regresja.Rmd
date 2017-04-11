@@ -211,3 +211,16 @@ Zależności:
 _Zadania_
 
 Ilu klientów powinno przyjść do sklepu nr 7, żeby możliwe było osiągnięcie sprzedaży na poziomie 20000 euro? Zapisz uzyskany model, zinterpretuj parametry regresji oraz oceń jakość dopasowania.
+
+**Zadanie egzaminacyjne**
+
+Postanowiono zbadać zależność pomiędzy dzienną liczbą klientów (w tys. osób) a dziennym przychodem (w tys. zł) w pewnej sieci sklepów.
+W tym celu wybrano 16 sklepów (po jednym z każdego województwa), w których badano te wielkości.
+Analiza wykazała, że średnia liczba klientów wynosiła 1,5 tys. osób, a dziennego przychodu 40 tys. zł.
+Współczynnik zmienności dla liczby klientów był równy 13%, a dla przychodu 17%.
+Suma kwadratów reszt wynosiła 70, a współczynnik korelacji liniowej Pearsona 0,89.
+
+a) Wyznacz parametry funkcji regresji i zapisz jej postać.
+b) Oceń jakość otrzymanej funkcji.
+c) Ile wynosi prognozowany dzienny przychód (oraz błąd prognozy) dla sklepu obsługującego dziennie 800 osób?
+
