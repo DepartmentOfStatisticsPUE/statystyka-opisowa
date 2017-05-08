@@ -37,8 +37,7 @@ ggplot(rossmann_1, aes(y=sprzedaz, x=liczba_klientow)) +
 Wartości tych współczynników możemy policzyć z wykorzystaniem następujących wzorów:
 
 $$
-a_{1}=\frac{\sum\limits_{i=1}^{n}{(x_{i}-\bar{x})(y_{i}-\bar{y})}}{\sum\limits_{i=1}^{n}{(x_{i}-\bar{x})^{2}}} 
-(\#eq:wsp_a1)
+a_{1}=\frac{\sum\limits_{i=1}^{n}{(x_{i}-\bar{x})(y_{i}-\bar{y})}}{\sum\limits_{i=1}^{n}{(x_{i}-\bar{x})^{2}}}
 $$
 
 lub znając wartość współczynnika korelacji liniowej Pearsona:
@@ -212,6 +211,58 @@ _Zadania_
 
 Ilu klientów powinno przyjść do sklepu nr 7, żeby możliwe było osiągnięcie sprzedaży na poziomie 20000 euro? Zapisz uzyskany model, zinterpretuj parametry regresji oraz oceń jakość dopasowania.
 
+## Trend liniowy
+
+Oprócz określania nieznanych wartości cechy, regresja jest także wykorzystywana do prognozowania w czasie. Przykładowo mając dane dotyczące miesięcznej sprzedaży w roku 2014 spróbujemy określić możliwą sprzedaż w wybranym miesiącu 2015 roku. 
+
+Sposób postępowania jest bardzo podobny do regresji prostej z tym, że zamiast wartości cechy $x$ mamy kolejne numery okresów $t=1,2,3,..., n$. Wówczas równanie trendu ma następującą postać:
+
+$$\hat{y}_{i}=a_{1}t_{i}+a_{0}$$
+
+Po oszacowaniu parametrów $a_1$ i $a_0$ nieco inaczej je zinterpretujemy. Wartość parametru $a_1$ informuje o średniej zmianie cechy $y$ z okresu na okres, z kolei $a_0$ to wartość wynikająca z modelu dla okresu poprzedzającego analizę.
+
+Spróbujmy określić możliwą sprzedaż w styczniu 2015 roku dla sklepu nr 7. W tym zagregowaliśmy dane do postaci miesięcznej. Model regresji ma następującą postać:
+
+$$\hat{y}_{i}=4850t_{i}+196592$$
+
+Wynika z niego, że z miesiąca na miesiąc sprzedaż rosła średnio o 4850 euro. Natomiast możliwa sprzedaż w grudniu 2013 roku wynosiła 196592 euro. 
+
+Ocena jakości modelu przebiega analogicznie jak w przypadku regresji prostej. Inaczej wyznacza się błąd prognozy, co wynika z faktu, że im bardziej "oddalimy" się od okresu na podstawie którego oszacowaliśmy parametry trendu, tym błąd prognozy będzie większy.
+
+Przy obliczaniu błędu prognozy korzystamy ze wzoru:
+
+$$D(y_{T}^{P})=S_u\sqrt{1+\frac{1}{n}+\frac{(T-\bar{t})^2}{\sum\limits_{t=1}^{n}{(t_i-\bar{t})^2}}}$$
+
+gdzie:
+
+- $S_u$ --- odchylenie standardowe składnika resztowego,
+- $n$ --- liczba znanych okresów,
+- $\bar{t}$ --- średnia z numerów okresów,
+- $T$ --- numer okresu, na który stawiana jest prognoza.
+
+Odchylenie standardowe składnika resztowego wynosiło 20031 euro, co oznacza, że znane wartości miesięcznej sprzedaży odchylają się od wartości wynikających z trendu średnio o $+/-$ 20031 euro. 
+
+Wyznaczając błąd prognozy musimy uwzględnić dodatkowy składnik uwzględniający czas. W związku z tym prognozowana sprzedaż w styczniu 2015 roku wyniesie:
+
+$$\hat{y}_{13}=4850\cdot13+196592=259639$$
+
+a błąd prognozy:
+
+$$D(y_{13}^{P})=20031\sqrt{1+\frac{1}{12}+\frac{(13-6,5)^2}{143}}=23521$$
+
+Czyli prognozowana miesiączna sprzedaż w styczniu 2015 roku wyniesie 259 639 euro +/- 23 521 euro.
+
+Natomiast dla lutego wartość błędu prognozy będzie już większa:
+
+$$\hat{y}_{14}=4850\cdot14+196592=264489$$
+
+
+$$D(y_{14}^{P})=20031\sqrt{1+\frac{1}{12}+\frac{(14-6,5)^2}{143}}=24341$$
+
+_Zadania_
+
+Ile wynosi prognozowana miesięczna sprzedaż (oraz błąd prognozy) w sklepie nr 5 w kwietniu 2015 roku.
+
 **Zadanie egzaminacyjne**
 
 Postanowiono zbadać zależność pomiędzy dzienną liczbą klientów (w tys. osób) a dziennym przychodem (w tys. zł) w pewnej sieci sklepów.
@@ -224,3 +275,24 @@ a) Wyznacz parametry funkcji regresji i zapisz jej postać.
 b) Oceń jakość otrzymanej funkcji.
 c) Ile wynosi prognozowany dzienny przychód (oraz błąd prognozy) dla sklepu obsługującego dziennie 800 osób?
 
+**Rozwiązanie**
+
+Dane:
+
+- $\bar{x}=1,5$
+- $\bar{y}=40$
+- $V_x=0,13$
+- $V_y=0,17$
+- $\sum{(y-\hat{y})^2}=70$
+- $n=16$
+- $r=0,89$
+
+Na podstawie powyższych danych wyznaczamy $S_x=V_x\cdot \bar{x}=0,13\cdot 1,5=0,195$ oraz $S_y=V_y\cdot \bar{y}=0,17\cdot 40=6,8$. Następnie $S_u=\sqrt{\frac{\sum{(y-\hat{y})^2}}{n-2}}=\sqrt{\frac{70}{16-2}}=2,24$.
+
+Na podstawie odpowiednich wzorów wyznaczamy parametry regresji: $a_1=r\cdot\frac{S_y}{S_x}=0,89\cdot \frac{6,8}{0,195}=31,04$ oraz $a_0=\bar{y}-a_1\cdot\bar{x}=40-31,04\cdot1,5=-6,55$. W związku z tym funkcja regresji ma następującą postać:
+
+$$\hat{y}=31,04\cdot x - 6,55$$
+
+Jakość modelu oceniamy na podstawie wartości $S_u$ oraz $R^2=r^2=0,89^2=0,79$.
+
+Dzienny przychód dla sklepu obsługującego dziennie 800 osób będzie wynosił $\hat{y}(0,8)=31,04 \cdot 0,8 -6,55=18,27$ tys. zł $+/- 2,24$ tys. zł.
