@@ -1,0 +1,102 @@
+# Indeksy indywidualne i zespołowe
+
+Indeksy indywidualne i zespołowe umożliwiają ocenę zmian w dwóch różnych okresach uwzględniając stałą ilość bądź wartość dla danego koszyka produktów. Najbardziej znanym przykładem indeksu zespołowego jest wskaźnik cen towarów i usług konsumpcyjnych czyli miara inflacji/deflacji.
+
+## Indeksy indywidualne
+
+**Indeksem indywidualnym** nazywamy stosunek poziomów tego samego pojedynczego zjawiska z dwóch różnych okresów (momentów). W statystyce społeczno-ekonomicznej rozpatruje się zwykle trzy rodzaje indywidualnych wskaźników dynamiki, a mianowicie: indeksy cen, ilości i wartości. 
+
+**Indeks indywidualny cen** wyraża relację poziomu cen określonego dobra w okresie badanym i w okresie podstawowym, co można zapisać następująco:
+
+$$i_p=\frac{p_1}{p_0}$$
+
+gdzie:
+
+- $i_p$ --- indywidualny indeks cen,
+- $p_1$ --- cena jednostki wyrobu w okresie badanym,
+- $p_0$ --- cena jednostki wyrobu w okresie podstawowym.
+
+**Indeks indywidualny ilości** oblicza się jako stosunek ilości określonego wyrobu wytworzonego w okresie badanym i w okresie podstawowym:
+
+$$i_q=\frac{q_1}{q_0}$$
+
+gdzie:
+
+- $i_q$ --- indywidualny indeks ilości,
+- $q_1$ --- ilość wyrobu wyprodukowanego w okresie badanym,
+- $q_0$ --- ilość wyrobu wyprodukowanego w okresie podstawowym.
+
+Iloczyn ilości wyrobu wytworzonego w okresie badanym i ceny tego wyrobu z okresu badanego daje w wyniku wartość wyrobu w okresie badanym. Podobnie wylicza się wartość wyrobu w okresie podstawowym. W związku z tym **indywidualny indeks wartości** to iloraz wartości wyrobu wytworzonego w okresie badanym i w okresie podstawowym:
+
+$$i_w=\frac{q_1p_1}{q_0p_0}=\frac{w_1}{w_0}$$
+
+gdzie:
+
+- $i_w$ --- indywidualny indeks wartości,
+- $w_1$ --- wartość wyrobu w okresie badanym,
+- $w_0$ --- wartość wyrobu w okresie podstawowym.
+
+Indywidualne indeksy cen, ilości i wartości informują o zmianie (wzroście lub spadku) tych wielkości w okresie badanym w porównaniu z okresem przyjętym za podstawę porównań. Między indywidualnymi indeksami cen, ilości i wartości obliczonymi dla tego samego produktu zachodzi następujący związek:
+
+$$i_w=i_pi_q$$
+
+Relacja określona powyższym wzorem nosi nazwę **równości indeksowej dla indeksów indywidualnych**. W przypadku gdy nie dysponujemy informacjami wyjściowymi, równość indeksowa umożliwia --- przy znajomości dowolnej pary spośród trzech indeksów --- obliczenie trzeciego indeksu. 
+
+## Indeksy zespołowe (agregatowe)
+
+W praktyce badań statystycznych niejednokrotnie zachodzi potrzeba obliczenia indeksów dotyczących nie indywidualnych jednostek, ale całego zespołu (agregatu, zbioru) jednostek. Do badania dynamiki całego zespołu zjawisk --- zwykle niejednorodnych i bezpośrednio niesumowalnych --- stosowane są indeksy zespołowe (agregatowe). Konstrukcja indeksów zespołowych opiera się na wykorzystaniu określonych współczynników przeliczeniowych, odgrywających rolę wag. Rolę wag najczęściej spełniają ceny lub ilości. 
+
+**Agregatowy indeks wartości** określonego zespołu artykułów jest ilorazem sum wartości badanych dóbr w okresie badanym i w okresie podstawowym:
+
+$$I_w=\frac{\sum q_1p_1}{\sum q_0p_0}$$
+
+gdzie:
+
+- $I_w$ --- agregatowy indeks wartości badanego zespołu artykułów,
+- $\sum q_1p_1$ --- suma wartości badanego zespołu w okresie badanym,
+- $\sum q_0p_0$ --- suma wartości badanego zespołu w okresie podstawowym.
+
+Agregatowy indeks wartości wyraża zmiany, jakie nastąpiły w okresie badanym w porównaniu z okresem podstawowym zarówno w ilościach określonego zespołu artykułów, jak i w ich cenach. W celu obliczenia siły i kierunku zmian wyłącznie ilości lub wyłącznie cen wyrobów wschodzących w skład agregatu buduje się agregatowe indeksy ilości i agregatowe indeksy cen. Do uzyskania agregatowego indeksu ilości unieruchamiane (ustalane na stałym poziomie) są ceny, natomiast do uzyskania agregatowego indeksu cen unieruchamiane są ilości. Każdy z tych indeksów może być wyliczony w oparciu o dwie formuły --- Laspeyresa i Paaschego. W indeksie Laspeyresa unieruchamia się ilość lub cenę na poziomie okresu podstawowego, natomiast we wzorze Paaschego stała jest ilość bądź cena na poziomie okresu badanego.
+
+**Agregatowy indeks ilości Laspeyresa** ma postać:
+
+$$I_q^L=\frac{\sum q_1p_0}{\sum q_0p_0}$$
+
+**Agregatowy indeks ilości Paaschego** oblicza się następująco:
+
+$$I_q^P=\frac{\sum q_1p_1}{\sum q_0p_1}$$
+
+Agregatowe indeksy ilości informują o tym, o ile --- przeciętnie biorąc --- wzrosła lub zmalała ilość określonego zbioru artykułów w okresie badanym w porównaniu z odpowiednim okresem podstawowym.
+
+**Agregatowy indeks cen Laspeyresa** ma postać:
+
+$$I_p^L=\frac{\sum q_0p_1}{\sum q_0p_0}$$
+
+**Agregatowy indeks cen Paaschego** oblicza się następująco:
+
+$$I_p^P=\frac{\sum q_1p_1}{\sum q_1p_0}$$
+
+Agregatowe indeksy cen odpowiadają na pytanie, jak zmieniły się --- przeciętnie biorąc --- ceny danego zbioru artykułów w okresie badanym w porównaniu z okresem podstawowym, przy unieruchomieniu ilości w obu okresach, zgodnie z przyjętą formułą. 
+
+W przypadku niezbyt odległych okresów porównawczych (tzn. okresu podstawowego i badanego) obliczane są też agregatowe indeksy cen i ilości według formuły Fishera. 
+
+**Agregatowy indeks ilości Fishera** wyrażony jest formułą:
+
+$$I_q^F=\sqrt{I_q^L \cdot I_q^P}$$
+
+**Agregatowy indeks cen Fishera** oblicza się następująco:
+
+$$I_p^F=\sqrt{I_p^L \cdot I_p^P}$$
+
+Agregatowe indeksy cen i ilości Fishera informują o tym, o ile --- przeciętnie biorąc --- wzrosła lub zmalała ilość lub cena określonego zbioru artykułów w badanym okresie.
+
+Pomiędzy agregatowymi indeksami wartości, cen i ilości zachodzą następujące związki:
+
+$$I_w = I_p^L \cdot I_q^P = I_p^P \cdot I_q^L = I_p^F \cdot I_q^F$$
+
+Związek określony powyższą relacją nosi nazwę **równości indeksowej dla indeksów agregatowych (zespołowych)**. Jeśli dysponujemy informacjami o poziomach dwóch spośród trzech omawianych indeksów agregatowych, to możemy obliczyć wielkość trzeciego indeksu.
+
+## Przykład
+
+
+Opracowano na podstawie: Sobczyk Mieczysław, 2002, _Statystyka_, Wydawnictwo Naukowe PWN. 

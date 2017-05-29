@@ -104,14 +104,16 @@ W praktyce badań statystycznych częściej wykorzystuje się indeksy niż przyr
 
 $$\frac{y_i}{y_1}/\frac{y_{i-1}}{y_1}=\frac{y_i}{y_{i-1}}$$
 
+W praktyce indeksy łańcuchowe na podstawie indeksów jednopodstawowych liczymy tak samo jak zwykłe indeksy łańcuchowe, tylko zamiast wartości bezwzględnych podstawiamy wartości indeksów jednopodstawowych.
+
 **Zamiany indeksów łańcuchowych na jednopodstawowe** dokonuje się według następujących zasad:
 
-1. indeks jednopodstawowy w okresie następującym bezpośrednio po okresie przyjętym za podstawę jest taki sam jak indeks łańcuchowy;
-2. indeks jednopodstawowy w okresie przyjętym za podstawę wynosi 100%;
-3. dalsze indeksy jednopodstawowe po okresie przyjętym za podstawę otrzymujemy, mnożąc w sposób narastający kolejne indeksy łańcuchowe, licząc od wskaźnika łańcuchowego znajdującego się tuż po okresie podstawowym;
-4. indeksy jednopodstawowe przed okresem podstawowym są odwrotnością narastających iloczynów kolejnych indeksów łańcuchowych, licząc od okresu przyjętego za podstawę.
+1. indeks jednopodstawowy w okresie przyjętym za podstawę wynosi 100%;
+2. indeks jednopodstawowy w okresie następującym bezpośrednio po okresie przyjętym za podstawę jest taki sam jak indeks łańcuchowy;
+3. dalsze indeksy jednopodstawowe po okresie przyjętym za podstawę otrzymujemy, mnożąc wyznaczony indeks jednopodstawowy z okresu wcześniejszego przez indeks łańcuchowy dla analizowanego okresu;
+4. indeksy jednopodstawowe przed okresem podstawowym są ilorazem indeksu jednopodstawowego z okresu następnego oraz indeksu łańcuchowego z okresu następnego.
 
-**Zmiany podstawy w indeksach jednopodstawowych** dokonuje się poprzez dzielenie poszczególnych indeksów przy danej podstawie przez indeks jednopodstawowy tego okresu, który przyjmuje się za nową podstawę.
+**Zmiany podstawy w indeksach jednopodstawowych** dokonuje się poprzez dzielenie poszczególnych indeksów przy danej podstawie przez indeks jednopodstawowy tego okresu, który przyjmuje się za nową podstawę. Innymi słowy, indeks jednopodstawowy o nowej podstawie liczymy w taki sam sposób jak byśmy liczyli indeks jednopodstawowy na podstawie wartości bezwzględnych, ale zamiast nich podstawiamy wartości indeksów jednopodstawowych.
 
 ## Średnie tempo zmian
 
@@ -155,13 +157,13 @@ _Zadania_
 1. Na podstawie danych dotyczących liczby sprzedanych sztuk piwa w województwie mazowieckim:
 
 - oblicz średnie tempo zmian i je zinterpretuj
-- jak zmieniła się sprzedaż piwa w marcu w porównaniu do czerwca?
+- o ile procent zmieniła się sprzedaż piwa w marcu w porównaniu do czerwca?
 - jaka jest prognozowana sprzedaż piwa w październiku?
 
 2. Wyznacz indeksy łańcuchowe dla liczby sprzedanych sztuk piwa w sklepach sieci detalicznej. Wyłącznie na ich podstawie określ:
 
-- jak zmieniła się sprzedaż piwa w sierpniu w porównianiu do czerwca?
+- o ile procent zmieniła się sprzedaż piwa w sierpniu w porównianiu do czerwca?
 - sprzedaż piwa w listopadzie wiedząc, że w sierpniu sprzedano 4146 sztuk
 - ile wynosiła sprzedaż piwa w lutym?
-- w których miesiącach sprzedaż piwa była mniejsza niż w poprzedzającym?
+- w których miesiącach sprzedaż piwa była mniejsza niż w miesiącu poprzedzającym?
 
