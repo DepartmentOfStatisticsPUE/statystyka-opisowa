@@ -157,6 +157,15 @@ Agregatowy indeks cen Fishera informuje o tym, że ceny sprzedanych piw spadły 
 
 _Zadania_
 
-Przeprowadź wszechstronną analizę dynamiki cen i ilości w sklepach typu dyskont, hypermarket, sieci detalicznej, spożywczych oraz supermarketach w miesiącach maj i lipiec.
+1. Przeprowadź wszechstronną analizę dynamiki cen i ilości w sklepach typu dyskont, hypermarket, sieci detalicznej, spożywczych oraz supermarketach w miesiącach maj i lipiec.
+
+2. Wartość produkcji dwóch wyrobów trwałego użytku w Polsce w latach 2004-2005 przedstawia następująca tabela. Wiedząc, że łączna wartość sprzedaży tych dóbr w 2004 wynosiła 262479 mln zł, scharakteryzuj jej dynamikę, uwzględniając zmiany cen oraz ilości.
+
+| Nazwa wyrobu          | Wartość sprzedaży w 2005 (mln zł.) | Zmiany ilości |
+|-----------------------|------------------------------------|---------------|
+| Radio     | 38410                              | Spadek o 35%  |
+| Telewizor | 423800                             | Wzrost o 49%  |
+| Suma                  | 462210                             | x             |
+
 
 Opracowano na podstawie: Sobczyk Mieczysław, 2002, _Statystyka_, Wydawnictwo Naukowe PWN. 
