@@ -588,6 +588,10 @@ Po wyznaczeniu wartości kwartyli pozostałe miary liczymy w tradycyjny sposób.
 
 ## Podsumowanie miar
 
+### Schemat
+
+![Analiza struktury w zależności od typu szeregu](schemat.png)
+
 ### Miary klasyczne
 
 | Miara                |Oznaczenie | Wzór                | Interpretacja i wykorzystanie    | Funkcja w Excelu |

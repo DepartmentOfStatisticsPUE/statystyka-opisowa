@@ -29,6 +29,6 @@ Niniejszy skrypt stanowi pomoc dydaktyczną na przedmiocie Statystyka Opisowa. C
 - Czy wykresy 3D są najlepszym sposobem prezentacji danych?
 - Co jest lepszą miarą - średni dochód czy mediana dochodu?
 - Czy istnieje zależność pomiędzy wynikiem z egzaminu a płcią?
-- W jaki sposób planować dostawy do sklepów?
+- W jaki prognozować miesiączną sprzedaż w sklepie?
 
 
