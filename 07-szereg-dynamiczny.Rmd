@@ -152,6 +152,8 @@ piwa_wlkp_9 <- round(piwa_wlkp$liczba_sztuk[8]*sr_geom/100^(9-8))
 
 Zakładając, że we wrześniu popyt na piwo nie spadnie, prognozowana sprzedaż wyniesie `r piwa_wlkp_9` sztuk.
 
+Znając wartość cechy w ostatnim okresie możemy, z wykorzystaniem indeksów łańcuchowych, odtworzyć wartości cechy dla okresów wcześniejszych dzieląc wartość cechy przez indeks łańcuchowy.
+
 _Zadania_
 
 1. Na podstawie danych dotyczących liczby sprzedanych sztuk piwa w województwie mazowieckim:
