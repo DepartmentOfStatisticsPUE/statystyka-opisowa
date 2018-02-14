@@ -7,11 +7,11 @@ Jednym z rodzajów szeregu statystycznego jest szereg czasowy, który można zde
 - wahania cykliczne ($C_t$) --- związane z cyklem koniunkturalnym, 
 - wahania przypadkowe ($I_t$) --- nieregularne zmiany.
 
-Analiza danych, które mogą charakteryzować się sezonowością rozpoczyna się od wizualizacji oraz estymacji parametrów modelu liniowego. W tym celu posłużymy się dwoma przykładami. Pierwszy będzie dotyczył zużycia energii elektrycznej, a drugi przewozów ładunków w Polsce.
+Analiza danych, które mogą charakteryzować się sezonowością rozpoczyna się od wizualizacji oraz estymacji parametrów modelu liniowego. W tym celu posłużymy się dwoma przykładami. Pierwszy będzie dotyczył zużycia energii elektrycznej, a drugi przewozów ładunków w Polsce - [plik](zbiory/sezonowosc.xlsx).
 
-![Zużycie energii - dane oryginalne](przyklad1.png)
+![Zużycie energii - dane oryginalne](img/przyklad1.png)
 
-![Przewóz ładunków - dane oryginalne](przyklad2.png)
+![Przewóz ładunków - dane oryginalne](img/przyklad2.png)
 
 W obu przypadkach dysponujemy danymi kwartalnymi za lata 2003--2005. Na pierwszy rzut oka możemy wskazać pewne prawidłowości: zużycie energii jest widocznie wyższe w drugich i czwartych kwartałach analizowanych lat. Z kolei przewozy ładunków wzrastają od kwartału pierwszego do trzeciego (w którym osiągają maksimum w danym roku), by następnie spaść. 
 
@@ -35,8 +35,8 @@ co oznacza, że z kwartału na kwartał przewóz ładunków wzrastał średnio o
 
 Na podstawie wyznaczonych funkcji regresji można obliczyć wartości teoretyczne ($\hat{y}_t$) zużycia energii oraz przewozów ładunków i pod postacią prostej przestawić na wykresie.
 
-![Zużycie energii - trend liniowy](przyklad1_trend.png)
-![Przewóz ładunków - trend ilniowy](przyklad2_trend.png)
+![Zużycie energii - trend liniowy](img/przyklad1_trend.png)
+![Przewóz ładunków - trend ilniowy](img/przyklad2_trend.png)
 
 Otrzymane wartości wynikające z funkcji trendu ($\hat{y}_t$) mają charakter liniowy i prawdę rzecz ujmując słabo dopasowują się do danych empirycznych. Współczynnik $R^2$ w przykładzie pierwszym wynosi 41%, a w przykładzie drugim tylko 37%. Ponadto, jeśli chcielibyśmy prognozować na kolejne okresy to według funkcji trendu wartości zużycia energii dla kwartałów pierwszych byłyby przeszacowane, a dla kwartałów czwartych niedoszacowane. Stąd zachodzi potrzeba uwzględnienia w modelu występowania sezonowości, którą obserwujemy w danych.
 
@@ -81,7 +81,7 @@ $$\hat{y}^*=\hat{y}+So_i$$
 
 Wartości $\hat{y}^*$ przedstawione na wykresie już znacznie lepiej pasują do posiadanych danych empirycznych:
  
-![Zużycie energii - trend z sezonowością](przyklad1_sezon.png)
+![Zużycie energii - trend z sezonowością](img/przyklad1_sezon.png)
 
 
 Na podstawie tak zmodyfikowanego modelu można prognozować przyszłe wartości z dużo większą precyzją. Prognozowanie w modelu addytywnym polega na podstawieniu numeru okresu dla którego się prognozuje do funkcji trendu, a następnie dodanie odpowiedniego wskaźnika sezonowości:
@@ -133,7 +133,7 @@ $$\hat{y}^*=\hat{y} \cdot So_i$$
 
 Wartości $\hat{y}^*$ przedstawione na wykresie już znacznie lepiej pasują do posiadanych danych empirycznych:
 
-![Przewóz ładunków - trend z sezonowością](przyklad2_sezon.png)
+![Przewóz ładunków - trend z sezonowością](img/przyklad2_sezon.png)
 
 Na podstawie tak zmodyfikowanego modelu można prognozować przyszłe wartości z dużo większą precyzją. Prognozowanie w modelu multiplikatywnym polega na podstawieniu numeru okresu dla którego się prognozuje do funkcji trendu, a następnie przemnożenie przez odpowiedni wskaźnik sezonowości:
 

@@ -21,7 +21,7 @@ Zasoby internetowe są pełne przykładów i wzorców tworzenia wykresów:
 # 
 # save(rossmann, rossmann200, file="dane.RData")
 
-load("dane.RData")
+load("zbiory/dane.RData")
 
 ```
 
@@ -52,11 +52,18 @@ dist_l$rozklad <- factor(dist_l$rozklad, levels = unique(dist_l$rozklad), labels
                                                                                      "Rozkład lewostronnie \nasymetryczny"),
                          ordered = T)
 
-ggplot(dist_l, aes(x=wart)) + 
-  geom_histogram(binwidth = 0.05) + 
+ggplot(dist_l, aes(x=wart)) +
+  geom_histogram(binwidth = 0.05) +
   facet_wrap(~ rozklad) +
   xlab("Wartości") + ylab("Liczebność") +
   theme_bw()
+
+# ggplot(dist_l, aes(x=wart)) + 
+#   geom_density() + 
+#   facet_wrap(~ rozklad) +
+#   xlab("Wartości") + ylab("Gęstość") +
+#   theme_bw()
+
 
 ```
 
@@ -79,11 +86,17 @@ dist_lk$rozklad <- factor(dist_lk$rozklad,
                           ordered = T)
 
 
-ggplot(dist_lk, aes(x=wart)) + 
-  geom_histogram(binwidth = 0.01) + 
+ggplot(dist_lk, aes(x=wart)) +
+  geom_histogram(binwidth = 0.01) +
   facet_wrap(~ rozklad, scales="free_x") +
   xlab("Wartości") + ylab("Liczebność") +
   theme_bw()
+
+# ggplot(dist_lk, aes(x=wart)) + 
+#   geom_density() + 
+#   facet_wrap(~ rozklad, scales="free_x") +
+#   xlab("Wartości") + ylab("Gęstość") +
+#   theme_bw()
 
 
 ```
