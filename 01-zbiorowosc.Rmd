@@ -27,21 +27,22 @@ Z kolei cechy zmienne dzielą się na:
     - mierzalne (ilościowe)
         - ciągłe, np. wzrost, waga, wiek, średnia ocen
         - skokowe, np. liczba rodzeństwa, liczba pokoi
-    
-_Przykład_
+        
+Wyżej wprowadzone definicje najlepiej zobrazuje przykład ankiety.
 
-| | |
-|----------------:|------------------------------------:|
-| Zbiorowość: | uczniowie liceum |
-| Jednostka: | uczeń liceum |
-| Cecha 1: | płeć |
-| Rodzaj cechy 1: | rzeczowa, jakościowa, dychotomiczna |
-| Cecha 2: | wzrost |
-| Rodzaj cechy 2: | rzeczowa, ilościowa, ciągła |
-| Cecha 3: | data urodzenia |
-| Rodzaj cechy 3: | czasowa |
-| Cecha 4: | miejsce urodzenia |
-| Rodzaj cechy 4: | przestrzenna |
+![Wprowadzenie do ankiety](img/ankieta1.png)
+  
+Na podstawie zdania wprowadzającego do ankiety możemy zdefiniować zbiorowość oraz jednostkę. Zbiorowością są studenci pierwszego roku UEP, co jest ich cechą stałą (wspólną). Jednostką jest z kolei student pierwszego roku UEP - pojedyńczy ankietowany. 
+
+Cechy zmienne można z kolei przypisać do kolejnych pytań w ankiecie:
+
+![Pytania metryczkowe](img/ankieta2.png)
+
+Płeć jest przykładem cechy rzeczowej, jakościowej i dychotomicznej. Data urodzenia to cecha czasowa, a miejsce urodzenia jest cechą przestrzenną.
+
+![Kolejne pytania](img/ankieta3.png)
+
+Preferowane miejsce pracy jest cechą rzeczową, jakościową i politomiczną, natomiast wysokość oczekiwanych zarobków brutto to cecha rzeczowa, ilościowa, ciągła.
 
 _Zadania_
 
