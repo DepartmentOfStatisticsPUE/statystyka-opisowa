@@ -44,12 +44,13 @@ library(e1071)
 oceny <- data.frame(lp=factor(x=c(1:7)),
                     oceny=c(3,4,5,3.5,2,4,3))
 
-ggplot(oceny, aes(x=lp, y=oceny)) + 
+ggplot(oceny, aes(x=lp, y=oceny)) +
   geom_point() +
   geom_hline(yintercept = mean(oceny$oceny), colour = "red") +
   scale_y_continuous(breaks = c(2,2.5,3,3.5,4,4.5,5)) +
   xlab("Numer oceny") + ylab("Ocena") +
   theme_bw()
+
 ```
 
 Na powyższym wykresie punkty oznaczają kolejne oceny, natomiast średnia została zaznaczona kolorem czerwonym - wynosi ona 3,5.

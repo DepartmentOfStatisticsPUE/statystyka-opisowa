@@ -3,7 +3,7 @@
 Badanie szeregu dynamicznego umożliwia dokładne określenie zmian jakie zachodzą w kolejnych okresach. Za przykład posłuży sprzedaż piwa w województwie wielkopolskim w kolejnych okresach.
 
 ```{r, echo=FALSE}
-piwa <- read.xlsx("piwa.xlsx")
+piwa <- read.xlsx("zbiory/piwa.xlsx")
 
 piwa_wlkp <- piwa %>%
   filter(wojewodztwo=="Wielkopolskie") %>%

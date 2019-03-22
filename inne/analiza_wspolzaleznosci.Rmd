@@ -1,0 +1,118 @@
+---
+title: "Analiza współzależności"
+output:
+  word_document: default
+---
+
+# Korelacja cech jakościowych i ciągłych
+
+$X$ - zmienna losowa o $k$ wariantach cechy ($i=1,2,...,k$)
+
+$Y$ - zmienna losowa o $r$ wariantach cechy ($j=1,2,...,j$)
+
+$n_{i \cdot}$ - liczba jednostek, które mają wariant $x_i$ zmiennej $X$
+
+$n_{\cdot j}$ - liczba jednostek, które mają wariant $y_j$ zmiennej $Y$
+
+$n_{ij}$ - liczba jednostek, które posiadają jednocześnie wariant $x_i$ zmiennej $X$ i które mają wariant $y_j$ zmiennej $Y$
+
+$n$ - liczba wszystkich jednostek
+
+$\chi^2$ - statystyka chi-kwadrat
+
+$\hat{n}_{ij}$ - liczebności teoretyczne (oczekiwane), oznaczające brak zależności
+
+$T_{xy}=T_{yx}$ - współczynnik zbieżności Czuprowa
+
+$V$ - współczynnik V Cramera
+
+$C$ - współczynnik kontyngencji C Pearsona
+
+$C_{kor}$ - skorygowany współczynnik kontyngencji C Pearsona
+
+$\varphi$ - współczynnik Yule'a
+
+$\varphi_{kor}$ - skorygowany współczynnik Yule'a
+
+$r_{xy}=r_{yx}$ - współczynnik korelacji liniowej Pearsona
+
+$r_S$ - współczynnik korelacji rang Spearmana
+
+$cov(x,y)=cov(y,x)$ - kowariancja
+
+# Regresja dwóch zmiennych
+
+Funkcja regresji I rodzaju opisująca zależność zmiennej losowej $Y$ od $X$:
+
+$\hat{Y}=f(X)=\alpha_0+\alpha_1X+\xi$
+
+$\hat{Y}$ - teoretyczne wartości funkcji regresji $\hat{Y}=f(X)$ odpowiadające danemu poziomowi realizacji zmiennej X
+
+$\alpha_0, \alpha_1$ - parametry strukturalne liniowej funkcji regresji $Y$ względem $X$
+
+$\xi$ - składnik losowy
+
+Funkcja regresji I rodzaju opisująca zależność zmiennej losowej $X$ od $Y$:
+
+$\hat{X}=g(Y)=\beta_0+\beta_1Y+\xi'$
+
+$\hat{X}$ - teoretyczne wartości funkcji regresji $\hat{X}=g(Y)$ odpowiadające danemu poziomowi realizacji zmiennej Y
+
+$\beta_0, \beta_1$ - parametry strukturalne liniowej funkcji regresji $X$ względem $Y$
+
+$\xi'$ - składnik losowy
+
+Oszacowaniem funkcji regresji I rodzaju $Y$ względem $X$ w populacji generalnej jest funkcja regresji $y$ względem $x$ w próbie losowej:
+
+$\hat{y_i}=a_0+a_1x_i$
+
+$\hat{y_i}$ - teoretyczne wartości zmiennej $y$
+
+$a_0$ - wyraz wolny
+
+$a_1$ - współczynnik regresji liniowej
+
+$x_i$ - wartości zmiennej $x$, gdzie $i = 1,2,...,n$ - kolejne numery jednostek
+
+$u_i$ - reszta
+
+$s^2(u_i)$ - wariancja składnika resztowego, wariancja resztowa
+
+$s(u_i)$ - odchylenie standardowe składnika resztowego
+
+$s(a_0)$ - odchylenie standardowe zmiennej $a_0$
+
+$s(a_1)$ - odchylenie standardowe zmiennej $a_1$
+
+Oszacowaniem funkcji regresji I rodzaju $X$ względem $Y$ w populacji generalnej jest funkcja regresji $x$ względem $y$ w próbie losowej:
+
+$\hat{x_i}=b_0+b_1y_i$
+
+$\hat{x_i}$ - teoretyczne wartości zmiennej $x$
+
+$b_0$ - wyraz wolny
+
+$b_1$ - współczynnik regresji liniowej
+
+$y_i$ - wartości zmiennej $y$, gdzie $i = 1,2,...,n$ - kolejne numery jednostek
+
+$z_i$ - reszta
+
+$s^2(z_i)$ - wariancja składnika resztowego, wariancja resztowa
+
+$s(z_i)$ - odchylenie standardowe składnika resztowego
+
+$s(b_0)$ - odchylenie standardowe zmiennej $b_0$
+
+$s(b_1)$ - odchylenie standardowe zmiennej $b_1$
+
+
+$\varphi^2_{xy}$ - współczynnik zbieżności
+
+$r^2_{xy}$ - współczynnik określoności (determinacji)
+
+# Korelacja i regresja wielu zmiennych
+
+$r_{ij\cdot kl...z}$ - współczynnik korelacji cząstkowej
+
+$R_w$ - współczynnik korelacji wielorakiej
