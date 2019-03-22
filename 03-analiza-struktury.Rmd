@@ -617,9 +617,111 @@ Po wyznaczeniu wartości kwartyli pozostałe miary liczymy w tradycyjny sposób.
 
 | Miara                |Oznaczenie | Wzór                | Interpretacja i wykorzystanie    | Funkcja w Excelu |
 |----------------------|-----------|--------------------------------|--------------------|--------------------|
-| Kwartyl 1 |$Q_1$  | $$   | Dzieli populację na dwie części w stosunku 25 / 75 | `KWARTYL.PRZEDZ.ZAMK(x,1)`   |
-| Kwartyl 2, Mediana |$Q_2, Me$  | $$   | Dzieli populację na dwie części w stosunku 50 / 50 | `KWARTYL.PRZEDZ.ZAMK(,2)` lub `MEDIANA(x)`   |
-| Kwartyl 3 |$Q_3$  | $$   | Dzieli populację na dwie części w stosunku 75 / 25 | `KWARTYL.PRZEDZ.ZAMK(x,3)`   |
+| Kwartyl 1 |$Q_1$  |  | Dzieli populację na dwie części w stosunku 25 / 75 | `KWARTYL.PRZEDZ.ZAMK(x,1)`   |
+| Kwartyl 2, Mediana |$Q_2, Me$  |  | Dzieli populację na dwie części w stosunku 50 / 50 | `KWARTYL.PRZEDZ.ZAMK(,2)` lub `MEDIANA(x)`   |
+| Kwartyl 3 |$Q_3$  |  | Dzieli populację na dwie części w stosunku 75 / 25 | `KWARTYL.PRZEDZ.ZAMK(x,3)`   |
 | Odchylenie ćwiartkowe |$Q$  | $Q=\frac{Q3-Q1}{2}$   | Mierzy ono przeciętne odchylenie wartości cechy zbiorowości od mediany | -- |
 | Pozycyjny współczynnik zmienności |$V_Q$  | $\frac{Q}{Me}$   | Mierzy przeciętne zróżnicowanie cechy | -- |
 | Pozycyjny współczynnik asymetrii |$A_Q$  | $\frac{Q_1+Q3-2Me}{2Q}$   | Mierzy (a)symetrię rozkładu | -- |
+
+## Przedziały ufności
+
+Dotyczas analizowane dane dotyczyły populacji, zatem obliczone wartości statystyk można uznać za precyzyjne i nieobciążone błędem. Natomiast większość prowadzonych badań ogranicza się do analizy jedynie fragmentu populacji. Wówczas, oprócz obliczenia interesującej nas miary ważne jest także podanie możliwego błędu. Popularną praktyką jest obliczanie **przedziałów ufności**, które prezentują zakres, w którym z określonym prawdopodobieństwem znajduje się prawdziwa wartość parametru. Zwykle bierze się pod uwagę następujące prawdopodobieństwa: 90%, 95% i 99%, niemniej można wybrać dowolną wartość z przedziału 0-100%. We wzorach operuje się pojeciem **poziomu istotności** oznaczanym przez $\alpha$. W tabeli przedstawiono relację przyjętego poziomu istotności, prawdopodobieństwa oraz wartości kwantyli rozkładu normalnego.
+
+| Prawdopodobieństwo | Poziom istotności | Kwantyl rozkł. norm.|
+|-------------------:|------------------:|--------------------:|
+| 99% (0,99) | 0,01 | 2,58 | 
+| 95% (0,95) | 0,05 | 1,96 |
+| 90% (0,90) | 0,10 | 1,64 |
+
+Skupimy się na wyznaczaniu następujących przedziałów ufności:
+
+- dla średniej w populacji normalnym ze znanym odchyleniem standardowym,
+- dla średniej w populacji normalnym z nieznanym odchyleniem standardowym dla małej próby,
+- dla średniej w populacji normalnym z nieznanym odchyleniem standardowym dla dużej próby,
+- dla odsetka (proporcji, frakcji).
+
+### Średnia w populacji normalnej ze znanym odchyleniem standardowym
+
+W sytuacji, w której znane jest odchylenie standardowe w populacji np. z wcześniejszych badań można wykorzystać następujący wzór:
+
+$$P\left\{\bar{X}-z_{(1-\alpha/2)}\frac{\sigma}{\sqrt{n}}<m<\bar{X}+z_{(1-\alpha/2)}\frac{\sigma}{\sqrt{n}}\right\}=1-\alpha$$
+gdzie:
+
+- $m$ - prawdziwa wartość średniej w populacji,
+- $\bar{X}$ - estymator średniej,
+- $z_{(1-\alpha/2)}$ - kwantyl rozkładu normalnego obliczony dla poziomu istotności $\alpha$,
+- $\sigma$ - znane odchylenie standardowe,
+- $n$ - liczebność próby.
+
+Weźmy pod uwagę następujący przykład.
+
+W zakładzie produkcyjnym postanowiono zbadać staż pracy pracowników. W tym celu z populacji pracowników wylosowano próbę o liczebności 196 osób, na podstawie której obliczono, że $\bar{x}=6,9$ lat. Dotychczasowe doświadczenie wskazuje, że rozkład stażu pracowników jest opisany rozkładem normalnym z odchyleniem standardowym 2,8 lat. Dla $\alpha=0,05$ zbudować przedział ufności.
+
+Kwantyl rozkładu normalnego można obliczyć z wykorzystaniem formuły `ROZKŁ.NORMALNY.S.ODWR`. W tym przypadku zostanie użyta formuła `ROZKŁ.NORMALNY.S.ODWR(1-0,05/2)`, co skutkuje otrzymaniem wartości 1,96. Po podstawieniu do wzoru:
+
+$$6,9-1,96\frac{2,8}{\sqrt{196}} < m < 6,9+1,96\frac{2,8}{\sqrt{196}}$$
+
+$$6,508 < m < 7,292$$
+
+Przedział od 6,5 do 7,3 lat z prawdopodobieństwem 95% pokrywa prawdziwą wartość stażu pracy wszystkich pracowników.
+
+### Średnia w populacji normalnej z nieznanym odchyleniem standardowym - mała próba
+
+Jeśli odchylenie standardowe w populacji nie jest znane to można wykorzystać wzór, w którym używa się wartości odchylenia standardowego obliczonego na podstawie próbie. Trzeba jednak rozróżnić małą oraz dużą próbę. Przyjętym w statystyce progiem jest $n > 30$, kiedy uznaje się próbę za dużą. Podstawową różnicą jest wykorzystanie we wzorze przedziału ufności dla małej próby kwantyla rozkładu t-Studenta, a dla dużej kwantyla rozkładu normalnego. 
+
+$$P\left\{\bar{X}-t_{(1-\alpha/2,n-1)}\frac{s}{\sqrt{n-1}}<m<\bar{X}+t_{(1-\alpha/2,n-1)}\frac{s}{\sqrt{n-1}}\right\}=1-\alpha$$
+
+gdzie:
+
+- $m$ - prawdziwa wartość średniej w populacji,
+- $\bar{X}$ - estymator średniej,
+- $t_{(1-\alpha/2,n-1)}$ - kwantyl rozkładu t-Studenta dla poziomu istotności $\alpha$ z $n-1$ stopniami swobody,
+-	$s$ - odchylenie standardowe z próby, 
+-	$n$ - liczebność próby.
+
+Postanowiono oszacować średni czas potrzebny do wykonania detalu. Z populacji robotników wylosowano próbę 17 osób i dokonano pomiaru czasu wykonywania detalu. Okazało się, że średni czas wykonania detalu wynosił 15 minut, a odchylenie standardowe 2 minuty. Rozkład czasu wykonania tego detalu ma rozkład normalny i przyjęto poziom istotności $\alpha=0,05$.
+
+Wartość kwantyla rozkładu t-Studenta obliczamy za pomocą formuły `ROZKŁ.T.ODWR(1-0,05/2;16)` lub `ROZKŁ.T.ODWR.DS(0,05;16)`, co daje wartość 2,12.
+
+$$15-2,12\frac{2}{\sqrt{16}}<m<15+2,12\frac{2}{\sqrt{16}}$$
+
+$$13,94 < m < 16,06$$
+
+Średni czas wykonania detalu z 95\% prawdopodobieństwem jest nie mniejszy niż 13,94 i nie większy niż 16,06 minuty.
+
+### Średnia w populacji normalnej z nieznanym odchyleniem standardowym - duża próba
+
+W przypadku dużej próby przedział ufności można przybliżyć z wykorzystaniem kwantyla rozkładu normalnego.
+
+$$P\left\{\bar{X}-z_{(1-\alpha/2)}\frac{s}{\sqrt{n}}<m<\bar{X}+z_{(1-\alpha/2)}\frac{s}{\sqrt{n}}\right\} \approx 1-\alpha$$
+
+gdzie:
+
+- $m$ - prawdziwa wartość średniej w populacji,
+- $\bar{X}$ - estymator średniej,
+- $z_{(1-\alpha/2)}$ - kwantyl rozkładu normalnego obliczony dla poziomu istotności $\alpha$,
+- $s$ - odchylenie standardowe z próby,
+- $n$ - liczebność próby.
+
+### Proporcja
+
+Na podobnej zasadzie można także wyznaczyć przdział ufności dla odsetka.
+
+$$	P\left\{\frac{m}{n}-z_{(1-\alpha/2)}\sqrt{\frac{\frac{m}{n}\left(1-\frac{m}{n}\right)}{n}}<p<\frac{m}{n}+z_{(1-\alpha/2)}\sqrt{\frac{\frac{m}{n}\left(1-\frac{m}{n}\right)}{n}}\right\} \approx 1-\alpha$$
+
+gdzie:
+
+- $p$ - wartość proporcji w populacji,
+-	$z_{(1-\alpha/2)}$ - kwantyl rozkładu normalnego obliczony dla poziomu istotności $\alpha$,
+-	$m$ - liczba jednostek posiadających daną cechę,
+-	$n$ - liczebność próby.
+
+Spośród 10 tysięcy pracowników wylosowano próbę liczącą 200 osób i przeprowadzono badanie dotyczące opuszczenia zakładu pracy. Okazało się, że 20 z 200 respondentów zamierza, z różnych względów, opuścić zakład pracy. Dla poziomu ufności 90% wyznaczyć przedział ufności dla wskaźnika pracowników planujących opuścić bieżące miejsce pracy.
+
+$$\frac{20}{200}-1,64\sqrt{\frac{\frac{20}{200}\left(1-\frac{20}{200}\right)}{200}} < p < \frac{20}{200}+1,64\sqrt{\frac{\frac{20}{200}\left(1-\frac{20}{200}\right)}{200}}$$
+$$0,065 < p < 0,135$$
+
+$$6,5\% < p < 13,5\%$$
+
+Z prawdopodobieństwem 90% możemy stwierdzić, że pracowników planujących opuścić zakład pracy jest nie mniej niż 6,5% i nie więcej niż 13,5%.
