@@ -24,4 +24,6 @@ knitr::opts_chunk$set(cache = TRUE,
 
 # Wprowadzenie {-}
 
-Niniejszy skrypt stanowi pomoc dydaktyczną na przedmiocie Statystyka Opisowa. Celem przedmiotu jest poznanie metod statystycznych, ich zastosowań oraz interpretacja otrzymanych wyników.
+Niniejszy skrypt stanowi pomoc dydaktyczną do przedmiotów Statystyka oraz Statystyka opisowa. Celem przedmiotu jest poznanie metod statystycznych, ich zastosowań oraz interpretacja otrzymanych wyników. 
+
+

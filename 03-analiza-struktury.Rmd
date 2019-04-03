@@ -589,6 +589,10 @@ Po wyznaczeniu wartości kwartyli pozostałe miary liczymy w tradycyjny sposób.
 
 ## Podsumowanie miar
 
+### Schemat
+
+![Analiza struktury w zależności od typu szeregu](schemat.png)
+
 ### Miary klasyczne
 
 | Miara                |Oznaczenie | Wzór                | Interpretacja i wykorzystanie    | Funkcja w Excelu |
@@ -614,9 +618,233 @@ Po wyznaczeniu wartości kwartyli pozostałe miary liczymy w tradycyjny sposób.
 
 | Miara                |Oznaczenie | Wzór                | Interpretacja i wykorzystanie    | Funkcja w Excelu |
 |----------------------|-----------|--------------------------------|--------------------|--------------------|
-| Kwartyl 1 |$Q_1$  | $$   | Dzieli populację na dwie części w stosunku 25 / 75 | `KWARTYL.PRZEDZ.ZAMK(x,1)`   |
-| Kwartyl 2, Mediana |$Q_2, Me$  | $$   | Dzieli populację na dwie części w stosunku 50 / 50 | `KWARTYL.PRZEDZ.ZAMK(,2)` lub `MEDIANA(x)`   |
-| Kwartyl 3 |$Q_3$  | $$   | Dzieli populację na dwie części w stosunku 75 / 25 | `KWARTYL.PRZEDZ.ZAMK(x,3)`   |
+| Kwartyl 1 |$Q_1$  |  | Dzieli populację na dwie części w stosunku 25 / 75 | `KWARTYL.PRZEDZ.ZAMK(x,1)`   |
+| Kwartyl 2, Mediana |$Q_2, Me$  |  | Dzieli populację na dwie części w stosunku 50 / 50 | `KWARTYL.PRZEDZ.ZAMK(,2)` lub `MEDIANA(x)`   |
+| Kwartyl 3 |$Q_3$  |  | Dzieli populację na dwie części w stosunku 75 / 25 | `KWARTYL.PRZEDZ.ZAMK(x,3)`   |
 | Odchylenie ćwiartkowe |$Q$  | $Q=\frac{Q3-Q1}{2}$   | Mierzy ono przeciętne odchylenie wartości cechy zbiorowości od mediany | -- |
 | Pozycyjny współczynnik zmienności |$V_Q$  | $\frac{Q}{Me}$   | Mierzy przeciętne zróżnicowanie cechy | -- |
 | Pozycyjny współczynnik asymetrii |$A_Q$  | $\frac{Q_1+Q3-2Me}{2Q}$   | Mierzy (a)symetrię rozkładu | -- |
+
+## Przedziały ufności
+
+Dotyczas analizowane dane dotyczyły populacji, zatem obliczone wartości statystyk można uznać za precyzyjne i nieobciążone błędem. Natomiast większość prowadzonych badań ogranicza się do analizy jedynie fragmentu populacji. Wówczas, oprócz obliczenia interesującej nas miary ważne jest także podanie możliwego błędu. Popularną praktyką jest obliczanie **przedziałów ufności**, które prezentują zakres, w którym z określonym prawdopodobieństwem znajduje się prawdziwa wartość parametru. Zwykle bierze się pod uwagę następujące prawdopodobieństwa: 90%, 95% i 99%, niemniej można wybrać dowolną wartość z przedziału 0-100%. We wzorach operuje się pojeciem **poziomu istotności** oznaczanym przez $\alpha$. W tabeli przedstawiono relację przyjętego poziomu istotności, prawdopodobieństwa oraz wartości kwantyli rozkładu normalnego.
+
+| Prawdopodobieństwo | Poziom istotności | Kwantyl rozkł. norm.|
+|-------------------:|------------------:|--------------------:|
+| 99% (0,99) | 0,01 | 2,58 | 
+| 95% (0,95) | 0,05 | 1,96 |
+| 90% (0,90) | 0,10 | 1,64 |
+
+Skupimy się na wyznaczaniu następujących przedziałów ufności:
+
+- dla średniej w populacji normalnym ze znanym odchyleniem standardowym,
+- dla średniej w populacji normalnym z nieznanym odchyleniem standardowym dla małej próby,
+- dla średniej w populacji normalnym z nieznanym odchyleniem standardowym dla dużej próby,
+- dla odsetka (proporcji, frakcji).
+
+### Średnia w populacji normalnej ze znanym odchyleniem standardowym
+
+W sytuacji, w której znane jest odchylenie standardowe w populacji np. z wcześniejszych badań można wykorzystać następujący wzór:
+
+$$P\left\{\bar{X}-z_{(1-\alpha/2)}\frac{\sigma}{\sqrt{n}}<m<\bar{X}+z_{(1-\alpha/2)}\frac{\sigma}{\sqrt{n}}\right\}=1-\alpha$$
+gdzie:
+
+- $m$ - prawdziwa wartość średniej w populacji,
+- $\bar{X}$ - estymator średniej,
+- $z_{(1-\alpha/2)}$ - kwantyl rozkładu normalnego obliczony dla poziomu istotności $\alpha$,
+- $\sigma$ - znane odchylenie standardowe,
+- $n$ - liczebność próby.
+
+Weźmy pod uwagę następujący przykład.
+
+W zakładzie produkcyjnym postanowiono zbadać staż pracy pracowników. W tym celu z populacji pracowników wylosowano próbę o liczebności 196 osób, na podstawie której obliczono, że $\bar{x}=6,9$ lat. Dotychczasowe doświadczenie wskazuje, że rozkład stażu pracowników jest opisany rozkładem normalnym z odchyleniem standardowym 2,8 lat. Dla $\alpha=0,05$ zbudować przedział ufności.
+
+Kwantyl rozkładu normalnego można obliczyć z wykorzystaniem formuły `ROZKŁ.NORMALNY.S.ODWR`. W tym przypadku zostanie użyta formuła `ROZKŁ.NORMALNY.S.ODWR(1-0,05/2)`, co skutkuje otrzymaniem wartości 1,96. Po podstawieniu do wzoru:
+
+$$6,9-1,96\frac{2,8}{\sqrt{196}} < m < 6,9+1,96\frac{2,8}{\sqrt{196}}$$
+
+$$6,508 < m < 7,292$$
+
+Przedział od 6,5 do 7,3 lat z prawdopodobieństwem 95% pokrywa prawdziwą wartość stażu pracy wszystkich pracowników.
+
+### Średnia w populacji normalnej z nieznanym odchyleniem standardowym - mała próba
+
+Jeśli odchylenie standardowe w populacji nie jest znane to można wykorzystać wzór, w którym używa się wartości odchylenia standardowego obliczonego na podstawie próbie. Trzeba jednak rozróżnić małą oraz dużą próbę. Przyjętym w statystyce progiem jest $n > 30$, kiedy uznaje się próbę za dużą. Podstawową różnicą jest wykorzystanie we wzorze przedziału ufności dla małej próby kwantyla rozkładu t-Studenta, a dla dużej kwantyla rozkładu normalnego. 
+
+$$P\left\{\bar{X}-t_{(1-\alpha/2,n-1)}\frac{s}{\sqrt{n-1}}<m<\bar{X}+t_{(1-\alpha/2,n-1)}\frac{s}{\sqrt{n-1}}\right\}=1-\alpha$$
+
+gdzie:
+
+- $m$ - prawdziwa wartość średniej w populacji,
+- $\bar{X}$ - estymator średniej,
+- $t_{(1-\alpha/2,n-1)}$ - kwantyl rozkładu t-Studenta dla poziomu istotności $\alpha$ z $n-1$ stopniami swobody,
+-	$s$ - odchylenie standardowe z próby, 
+-	$n$ - liczebność próby.
+
+Postanowiono oszacować średni czas potrzebny do wykonania detalu. Z populacji robotników wylosowano próbę 17 osób i dokonano pomiaru czasu wykonywania detalu. Okazało się, że średni czas wykonania detalu wynosił 15 minut, a odchylenie standardowe 2 minuty. Rozkład czasu wykonania tego detalu ma rozkład normalny i przyjęto poziom istotności $\alpha=0,05$.
+
+Wartość kwantyla rozkładu t-Studenta obliczamy za pomocą formuły `ROZKŁ.T.ODWR(1-0,05/2;16)` lub `ROZKŁ.T.ODWR.DS(0,05;16)`, co daje wartość 2,12.
+
+$$15-2,12\frac{2}{\sqrt{16}}<m<15+2,12\frac{2}{\sqrt{16}}$$
+
+$$13,94 < m < 16,06$$
+
+Średni czas wykonania detalu z 95\% prawdopodobieństwem jest nie mniejszy niż 13,94 i nie większy niż 16,06 minuty.
+
+### Średnia w populacji normalnej z nieznanym odchyleniem standardowym - duża próba
+
+W przypadku dużej próby przedział ufności można przybliżyć z wykorzystaniem kwantyla rozkładu normalnego.
+
+$$P\left\{\bar{X}-z_{(1-\alpha/2)}\frac{s}{\sqrt{n}}<m<\bar{X}+z_{(1-\alpha/2)}\frac{s}{\sqrt{n}}\right\} \approx 1-\alpha$$
+
+gdzie:
+
+- $m$ - prawdziwa wartość średniej w populacji,
+- $\bar{X}$ - estymator średniej,
+- $z_{(1-\alpha/2)}$ - kwantyl rozkładu normalnego obliczony dla poziomu istotności $\alpha$,
+- $s$ - odchylenie standardowe z próby,
+- $n$ - liczebność próby.
+
+### Proporcja
+
+Na podobnej zasadzie można także wyznaczyć przdział ufności dla odsetka.
+
+$$	P\left\{\frac{m}{n}-z_{(1-\alpha/2)}\sqrt{\frac{\frac{m}{n}\left(1-\frac{m}{n}\right)}{n}}<p<\frac{m}{n}+z_{(1-\alpha/2)}\sqrt{\frac{\frac{m}{n}\left(1-\frac{m}{n}\right)}{n}}\right\} \approx 1-\alpha$$
+
+gdzie:
+
+- $p$ - wartość proporcji w populacji,
+-	$z_{(1-\alpha/2)}$ - kwantyl rozkładu normalnego obliczony dla poziomu istotności $\alpha$,
+-	$m$ - liczba jednostek posiadających daną cechę,
+-	$n$ - liczebność próby.
+
+Spośród 10 tysięcy pracowników wylosowano próbę liczącą 200 osób i przeprowadzono badanie dotyczące opuszczenia zakładu pracy. Okazało się, że 20 z 200 respondentów zamierza, z różnych względów, opuścić zakład pracy. Dla poziomu ufności 90% wyznaczyć przedział ufności dla wskaźnika pracowników planujących opuścić bieżące miejsce pracy.
+
+$$\frac{20}{200}-1,64\sqrt{\frac{\frac{20}{200}\left(1-\frac{20}{200}\right)}{200}} < p < \frac{20}{200}+1,64\sqrt{\frac{\frac{20}{200}\left(1-\frac{20}{200}\right)}{200}}$$
+$$0,065 < p < 0,135$$
+
+$$6,5\% < p < 13,5\%$$
+
+Z prawdopodobieństwem 90% możemy stwierdzić, że pracowników planujących opuścić zakład pracy jest nie mniej niż 6,5% i nie więcej niż 13,5%.
+
+## Testy statystyczne
+
+Test statystyczna to procedura pozwalająca oszacować prawdopodobieństwo spełnienia pewnej hipotezy statystycznej w populacji na podstawie danych pochodzących z próby losowej. Hipoteza statystyczna to układ dwóch hipotez: zerowej i alternatywnej.
+
+- hipoteza zerowa $H_0$ - zakładamy, że pomiędzy estymatorem i parametrem lub rozkładem empirycznym i teoretycznym nie ma różnic ($H_0$ zawsze zawiera znak równości):
+
+$$H_0: m=m_0$$
+- hipoteza alternatywna $H_1$ - dopuszcza istnienie różnic pomiędzy estymatorem a parametrem. Może przyjmować trzy warianty:
+
+$$H_1: m \neq m_0$$
+$$H_1: m > m_0$$
+
+$$H_1: m < m_0$$
+
+gdzie $m_0$ - hipotetyczna wartość średniej w populacji generalnej.
+
+Weryfikacja testu statystycznego polega na obliczeniu wartości statystyki testowej oraz kwantyla odpowiedniego rozkładu i sprawdzenie czy wartość statystyki testowej wpada do przedziału odrzucenia. Obecnie wszystkie programy do analiz statystycznych zwracają także wartość p czyli najmniejszy poziom istotności przy którym można odrzucić hipotezę zerową. Jest to jednak bardzo uproszczona definicja i warto zgłębić temat np. korzystając z [Wikipedii](https://pl.wikipedia.org/wiki/Warto%C5%9B%C4%87_p).
+
+### Test t dla jednej średniej
+
+Sprawdzamy czy średnia w populacji jest równa określonej wartości. Testowany jest jeden z poniższych układów hipotez:
+
+- $H_0:m=m_0;H_1:m\neq m_0$
+- $H_0:m=m_0;H_1:m > m_0$
+- $H_0:m=m_0;H_1:m < m_0$
+
+Statystyka testowa jest następująca:
+
+$$t=\frac{\bar{x}-m_0}{s}\sqrt{n}$$
+
+i ma rozkład t-Studenta o $n-1$ stopniach swobody.
+
+Z 24 gospodarstw zebrano dane na temat plonów żyta (w tonach na hektar): 30, 31, 27, 35, 31, 32, 36, 25, 31, 32, 28, 29, 24, 30, 25, 31, 25, 29, 25, 27, 22, 29, 32, 29. Czy prawdziwa jest hipoteza, że w gospodarstwach w województwie uzyskuje się średnio 30 ton z hektara żyta? Przyjmij poziom istotności 0,05.
+
+Układ hipotez jest następujący:
+
+- $H_0: m = 30$
+- $H_1: m \neq 30$
+
+```{r}
+zyto <- c(30, 31, 27, 35, 31, 32, 36, 25, 31, 32, 28, 29, 24, 30, 25, 31, 25, 29, 25, 27, 22, 29, 32, 29)
+
+srednia <- round(mean(zyto),2)
+odch <- round(sd(zyto),2)
+
+t <- (srednia-30)/odch*sqrt(length(zyto))
+```
+
+Wartość statystyki testowej obliczamy ze wzoru:
+
+$$t=\frac{29-30}{3,5}\sqrt{24}=-1,47$$
+
+Natomiast wartość kwantyla rozkładu t-Studenta z 23 stopniami swobody dla poziomu istotności $\alpha=0,05$ wynosi 2,07. Obszar odrzucenia hipotezy zerowej to przedział od $-\infty$ do -2,07 i od 2,07 do $+\infty$. Wartość statystyki testowej nie znajduje się w tym przedziale, zatem nie ma podstaw do odrzucenia hipotezy zerowej - średnia w populacji nie różni się od 30 ton z hektara.
+
+### Test t dla dwóch średnich niezależnych
+
+Test ma za zadanie sprawdzić czy średnie w dwóch grupach różnią się od siebie w sposób istotny statystycznie. Możemy rozpatrywać następujące układy hipotez:
+
+- $H_0:m_1=m_2;H_1:m_1 \neq m_2$
+- $H_0:m_1=m_2;H_1:m_1 > m_2$
+- $H_0:m_1=m_2;H_1:m_1 < m_2$
+
+A statystyka testowa ma następującą postać:
+
+$$t=\frac{\bar{x}_1-\bar{x}_2}{\sqrt{\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{n_1+n_2-2}(\frac{1}{n_1}+\frac{1}{n_2})}}$$
+
+Statystyka testowa ma rozkład t-Studenta o $n_1+n_2-2$ stopniach swobody.
+
+Na grupie 50 mężczyzn i kobiet przeprowadzono badanie dotyczące zarobków i zebrano następujące wyniki: 
+
+- Kobiety: 4330, 3063, 3012, 3486, 3415, 3097, 2451, 3418, 2970, 4050, 2828, 4076, 3011, 3575, 3939, 3089, 3733, 3347, 2719, 3238, 4372, 3272, 2909, 3368, 3598
+- Mężczyźni: 4182, 4258, 3840, 4266, 3494, 2862, 3611, 3594, 2874, 4025, 3486, 3710, 3165, 4019, 4556, 3449, 3755, 4579, 4174, 4565, 3798, 3739, 3596, 4374, 3286
+
+Czy średnie zarobki różnią się w grupach płci? Przyjmij poziom istotności równy 0.1.
+
+- $H_0:$ średnie w grupach płci są takie same
+- $H_0:$ średnie w grupach płci różnią się
+
+```{r}
+k <- c(4330, 3063, 3012, 3486, 3415, 3097, 2451, 3418, 2970, 4050, 2828, 4076, 3011, 3575, 3939, 3089, 3733, 3347, 2719, 3238, 4372, 3272, 2909, 3368, 3598)
+
+m <- c(4182, 4258, 3840, 4266, 3494, 2862, 3611, 3594, 2874, 4025, 3486, 3710, 3165, 4019, 4556, 3449, 3755, 4579, 4174, 4565, 3798, 3739, 3596, 4374, 3286)
+
+t.test(k, m, var.equal = T)
+```
+
+W Excelu najprościej przeprowadzić ten test wykorzystując funkcję `T.TEST` zakładając równość wariancji. Funkcja w rezultacie zwraca wartość p, która wynosi 0,003034 i jest mniejsza od przyjętego poziomu istotności $alfa=0,1$, co oznacza, że są podstawy do odrzucenia hipotezy zerowej. Średnie w grupach płci różnią się między sobą. 
+
+### Test istotności proporcji
+
+Testowany jest jeden z poniższych układów hipotez:
+
+- $H_0:p=p_0;H_1:p\neq p_0$
+- $H_0:p=p_0;H_1:p > p_0$
+- $H_0:p=p_0;H_1:p < p_0$
+
+Statystyka testowa:
+
+$$Z=\frac{\frac{m}{n}-p_0}{\sqrt{\frac{p_0(1-p_0)}{n}}}$$
+
+Statystyka testowa ma rozkład normalny standaryzowany.
+
+### Test istotności dwóch proporcji
+
+Testowany jest jeden z poniższych układów hipotez:
+
+- $H_0:p_1=p_2;H_1:p_1\neq p_2$
+- $H_0:p_1=p_2;H_1:p_1 > p_2$
+- $H_0:p_1=p_2;H_1:p_1 < p_2$
+
+Statystyka testowa:
+
+$$Z=\frac{\frac{m_1}{n_1}-\frac{m_2}{n_2}}{\sqrt{\frac{\bar{p}\bar{q}}{n}}}$$
+
+gdzie: 
+
+- $\bar{p}=\frac{m_1+m_2}{n_1+n_2}$
+- $\bar{q}=1-\bar{p}$
+- $n=\frac{n_1\cdot n_2}{n_1+n_2}$
+
+Statystyka testowa ma rozkład normalny standaryzowany.
