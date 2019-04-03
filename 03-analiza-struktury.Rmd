@@ -655,7 +655,7 @@ gdzie:
 - $\sigma$ - znane odchylenie standardowe,
 - $n$ - liczebność próby.
 
-Weźmy pod uwagę następujący przykład.
+**Przykład**
 
 W zakładzie produkcyjnym postanowiono zbadać staż pracy pracowników. W tym celu z populacji pracowników wylosowano próbę o liczebności 196 osób, na podstawie której obliczono, że $\bar{x}=6,9$ lat. Dotychczasowe doświadczenie wskazuje, że rozkład stażu pracowników jest opisany rozkładem normalnym z odchyleniem standardowym 2,8 lat. Dla $\alpha=0,05$ zbudować przedział ufności.
 
@@ -680,6 +680,8 @@ gdzie:
 - $t_{(1-\alpha/2,n-1)}$ - kwantyl rozkładu t-Studenta dla poziomu istotności $\alpha$ z $n-1$ stopniami swobody,
 -	$s$ - odchylenie standardowe z próby, 
 -	$n$ - liczebność próby.
+
+**Przykład**
 
 Postanowiono oszacować średni czas potrzebny do wykonania detalu. Z populacji robotników wylosowano próbę 17 osób i dokonano pomiaru czasu wykonywania detalu. Okazało się, że średni czas wykonania detalu wynosił 15 minut, a odchylenie standardowe 2 minuty. Rozkład czasu wykonania tego detalu ma rozkład normalny i przyjęto poziom istotności $\alpha=0,05$.
 
@@ -716,7 +718,9 @@ gdzie:
 - $p$ - wartość proporcji w populacji,
 -	$z_{(1-\alpha/2)}$ - kwantyl rozkładu normalnego obliczony dla poziomu istotności $\alpha$,
 -	$m$ - liczba jednostek posiadających daną cechę,
--	$n$ - liczebność próby.
+-	$n$ - liczebność 
+
+**Przykład**
 
 Spośród 10 tysięcy pracowników wylosowano próbę liczącą 200 osób i przeprowadzono badanie dotyczące opuszczenia zakładu pracy. Okazało się, że 20 z 200 respondentów zamierza, z różnych względów, opuścić zakład pracy. Dla poziomu ufności 90% wyznaczyć przedział ufności dla wskaźnika pracowników planujących opuścić bieżące miejsce pracy.
 
@@ -743,7 +747,9 @@ $$H_1: m < m_0$$
 
 gdzie $m_0$ - hipotetyczna wartość średniej w populacji generalnej.
 
-Weryfikacja testu statystycznego polega na obliczeniu wartości statystyki testowej oraz kwantyla odpowiedniego rozkładu i sprawdzenie czy wartość statystyki testowej wpada do przedziału odrzucenia. Obecnie wszystkie programy do analiz statystycznych zwracają także wartość p czyli najmniejszy poziom istotności przy którym można odrzucić hipotezę zerową. Jest to jednak bardzo uproszczona definicja i warto zgłębić temat np. korzystając z [Wikipedii](https://pl.wikipedia.org/wiki/Warto%C5%9B%C4%87_p).
+Weryfikacja testu statystycznego polega na obliczeniu wartości statystyki testowej oraz kwantyla odpowiedniego rozkładu i sprawdzenie czy wartość statystyki testowej wpada do przedziału odrzucenia. Jeśli wartość statystyki testowej jest większa od wartości kwantyla rozkładu (np. $|t|>t_\alpha$) to są podstawy do odrzucenia hipotezy zerowej, natomiast w przypadku kiedy $|t|<t_\alpha$ to nie ma podstaw do odrzucenia hipotezy zerowej.
+
+Obecnie wszystkie programy do analiz statystycznych zwracają także wartość p czyli najmniejszy poziom istotności przy którym nie ma podstaw do odrzucenia hipotezy zerowej. Przyjmuje się, że jeśli $p < \alpha$ to są podstawy do odrzucenia hipotezy zerowej, natomiast w przypadku $p \geq \alpha$ nie ma podstaw do odrzucenia $H_0$. Jest to jednak bardzo uproszczona definicja i warto zgłębić temat np. korzystając z [Wikipedii](https://pl.wikipedia.org/wiki/Warto%C5%9B%C4%87_p).
 
 ### Test t dla jednej średniej
 
@@ -758,6 +764,12 @@ Statystyka testowa jest następująca:
 $$t=\frac{\bar{x}-m_0}{s}\sqrt{n}$$
 
 i ma rozkład t-Studenta o $n-1$ stopniach swobody.
+
+Jeśli wartość statystyki testowej jest większa od wartości kwantyla rozkładu ($|t|>t_\alpha$) to są podstawy do odrzucenia hipotezy zerowej, natomiast w przypadku kiedy $|t|<t_\alpha$ nie ma podstaw do odrzucenia hipotezy zerowej.
+
+Hipotezę zerową w teście t dla jednej średniej można także zweryfikować na podstawie przedziału ufności. Nie będzie podstaw do odrzucenia hipotezy zerowej jeśli weryfikowana wartość $m_0$ będzie znajdować się w wyznaczonym przedziale ufności. Jeśli będzie poza nim to są podstawy do odrzucenia $H_0$.
+
+**Przykład**
 
 Z 24 gospodarstw zebrano dane na temat plonów żyta (w tonach na hektar): 30, 31, 27, 35, 31, 32, 36, 25, 31, 32, 28, 29, 24, 30, 25, 31, 25, 29, 25, 27, 22, 29, 32, 29. Czy prawdziwa jest hipoteza, że w gospodarstwach w województwie uzyskuje się średnio 30 ton z hektara żyta? Przyjmij poziom istotności 0,05.
 
@@ -775,11 +787,15 @@ odch <- round(sd(zyto),2)
 t <- (srednia-30)/odch*sqrt(length(zyto))
 ```
 
-Wartość statystyki testowej obliczamy ze wzoru:
+W pierwszej kolejności obliczamy wartość średnią, odchylenie standardowe i na tej podstawie wartość statystyki testowej:
 
-$$t=\frac{29-30}{3,5}\sqrt{24}=-1,47$$
+$$t=\frac{\bar{x}-m_0}{s}\sqrt{n}=\frac{29-30}{3,5}\sqrt{24}=-1,47$$
 
-Natomiast wartość kwantyla rozkładu t-Studenta z 23 stopniami swobody dla poziomu istotności $\alpha=0,05$ wynosi 2,07. Obszar odrzucenia hipotezy zerowej to przedział od $-\infty$ do -2,07 i od 2,07 do $+\infty$. Wartość statystyki testowej nie znajduje się w tym przedziale, zatem nie ma podstaw do odrzucenia hipotezy zerowej - średnia w populacji nie różni się od 30 ton z hektara.
+Natomiast wartość kwantyla rozkładu t-Studenta z 23 stopniami swobody dla poziomu istotności $\alpha=0,05$ wynosi 2,07 (`ROZKŁ.T.ODWR(1-0,05/2;24-1)`). W takim razie obszar odrzucenia hipotezy zerowej to przedział od $-\infty$ do -2,07 i od 2,07 do $+\infty$. Wartość statystyki testowej nie znajduje się w tym przedziale, zatem nie ma podstaw do odrzucenia hipotezy zerowej - średnia w populacji nie różni się od 30 ton z hektara.
+
+Z kolei przedział ufności dla średniej z plonów żyta to 27,46 do 30,46 ton i można zauważyć, że weryfikowana wartość $m_0$ znajduje się w tym przedziale. 
+
+Natomiast w sytuacji, w której $m_0$ zostałoby przyjęte na poziomie 32 ton to wówczas statystyka testowa wynosi -4,29 i wpada do obszaru odrzucenia w rozkładzie t-Studenta. Ponadto można zauważyć, że ta wartość znajduje się poza wyznaczonym przedziałem ufności. 
 
 ### Test t dla dwóch średnich niezależnych
 
@@ -795,12 +811,14 @@ $$t=\frac{\bar{x}_1-\bar{x}_2}{\sqrt{\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{n_1+n_2-2}
 
 Statystyka testowa ma rozkład t-Studenta o $n_1+n_2-2$ stopniach swobody.
 
+**Przykład**
+
 Na grupie 50 mężczyzn i kobiet przeprowadzono badanie dotyczące zarobków i zebrano następujące wyniki: 
 
 - Kobiety: 4330, 3063, 3012, 3486, 3415, 3097, 2451, 3418, 2970, 4050, 2828, 4076, 3011, 3575, 3939, 3089, 3733, 3347, 2719, 3238, 4372, 3272, 2909, 3368, 3598
 - Mężczyźni: 4182, 4258, 3840, 4266, 3494, 2862, 3611, 3594, 2874, 4025, 3486, 3710, 3165, 4019, 4556, 3449, 3755, 4579, 4174, 4565, 3798, 3739, 3596, 4374, 3286
 
-Czy średnie zarobki różnią się w grupach płci? Przyjmij poziom istotności równy 0.1.
+Czy średnie zarobki różnią się w grupach płci? Przyjmij poziom istotności równy 0,1.
 
 - $H_0:$ średnie w grupach płci są takie same
 - $H_0:$ średnie w grupach płci różnią się
@@ -810,10 +828,10 @@ k <- c(4330, 3063, 3012, 3486, 3415, 3097, 2451, 3418, 2970, 4050, 2828, 4076, 3
 
 m <- c(4182, 4258, 3840, 4266, 3494, 2862, 3611, 3594, 2874, 4025, 3486, 3710, 3165, 4019, 4556, 3449, 3755, 4579, 4174, 4565, 3798, 3739, 3596, 4374, 3286)
 
-t.test(k, m, var.equal = T)
+# t.test(k, m, var.equal = T)
 ```
 
-W Excelu najprościej przeprowadzić ten test wykorzystując funkcję `T.TEST` zakładając równość wariancji. Funkcja w rezultacie zwraca wartość p, która wynosi 0,003034 i jest mniejsza od przyjętego poziomu istotności $alfa=0,1$, co oznacza, że są podstawy do odrzucenia hipotezy zerowej. Średnie w grupach płci różnią się między sobą. 
+W Excelu najprościej przeprowadzić ten test wykorzystując funkcję `T.TEST` zakładając rozkład dwustronny oraz równość wariancji. Funkcja w rezultacie zwraca wartość p, która wynosi 0,003034 i jest mniejsza od przyjętego poziomu istotności $alfa=0,1$, co oznacza, że są podstawy do odrzucenia hipotezy zerowej. Średnie w grupach płci różnią się między sobą. 
 
 ### Test istotności proporcji
 
