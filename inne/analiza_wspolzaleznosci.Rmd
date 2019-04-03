@@ -8,7 +8,7 @@ output:
 
 $X$ - zmienna losowa o $k$ wariantach cechy ($i=1,2,...,k$)
 
-$Y$ - zmienna losowa o $r$ wariantach cechy ($j=1,2,...,j$)
+$Y$ - zmienna losowa o $r$ wariantach cechy ($j=1,2,...,r$)
 
 $n_{i \cdot}$ - liczba jednostek, które mają wariant $x_i$ zmiennej $X$
 
@@ -16,35 +16,27 @@ $n_{\cdot j}$ - liczba jednostek, które mają wariant $y_j$ zmiennej $Y$
 
 $n_{ij}$ - liczba jednostek, które posiadają jednocześnie wariant $x_i$ zmiennej $X$ i które mają wariant $y_j$ zmiennej $Y$
 
-$n$ - liczba wszystkich jednostek
+$n=\sum\limits_{i=1}^{k}{n_{i.}}=\sum\limits_{j=1}^{r}{n_{.j}}=\sum\limits_{i=1}^{k}\sum\limits_{j=1}^{r}{n_{ij}}$ - liczba wszystkich jednostek
 
-$\chi^2$ - statystyka chi-kwadrat
+$\chi^2=\sum\limits_{i=1}^{k}\sum\limits_{j=1}^{r}{\frac{(n_{ij}-\hat{n}_{ij})^2}{\hat{n}_{ij}}}$ - statystyka chi-kwadrat
 
-$\hat{n}_{ij}$ - liczebności teoretyczne (oczekiwane), oznaczające brak zależności
+$\hat{n}_{ij}=\frac{n_{i.} \cdot n_{.j}}{n}$ - liczebności teoretyczne (oczekiwane)
 
-$T_{xy}=T_{yx}$ - współczynnik zbieżności Czuprowa
+$T_{xy}=T_{yx}=\sqrt{\frac{\chi^2}{n \cdot \sqrt{(k-1)(r-1)}}}$ - współczynnik zbieżności Czuprowa
 
-$V$ - współczynnik V Cramera
+$V=\sqrt{\frac{\chi^2}{n \cdot min(k-1,r-1)}}$ - współczynnik V Cramera
 
-$C$ - współczynnik kontyngencji C Pearsona
+$cov(x,y)=cov(y,x)=\frac{1}{n}\sum\limits_{i=1}^{n}{(x_{i}-\bar{x})\cdot(y_{i}-\bar{y})}$ - kowariancja
 
-$C_{kor}$ - skorygowany współczynnik kontyngencji C Pearsona
-
-$\varphi$ - współczynnik Yule'a
-
-$\varphi_{kor}$ - skorygowany współczynnik Yule'a
-
-$r_{xy}=r_{yx}$ - współczynnik korelacji liniowej Pearsona
+$r_{xy}=r_{yx}=\frac{cov(X,Y)}{S_{x}\cdot S_{y}}=\frac{\sum\limits_{i=1}^{n}{(x_{i}-\bar{x})\cdot(y_{i}-\bar{y})}}{\sqrt{\sum\limits_{i=1}^{n}{(x_{i}-\bar{x})^2\cdot(y_{i}-\bar{y})^2}}}$ - współczynnik korelacji liniowej Pearsona
 
 $r_S$ - współczynnik korelacji rang Spearmana
-
-$cov(x,y)=cov(y,x)$ - kowariancja
 
 # Regresja dwóch zmiennych
 
 Funkcja regresji I rodzaju opisująca zależność zmiennej losowej $Y$ od $X$:
 
-$\hat{Y}=f(X)=\alpha_0+\alpha_1X+\xi$
+$Y=f(X)=\alpha_0+\alpha_1X+\xi$
 
 $\hat{Y}$ - teoretyczne wartości funkcji regresji $\hat{Y}=f(X)$ odpowiadające danemu poziomowi realizacji zmiennej X
 
@@ -54,7 +46,7 @@ $\xi$ - składnik losowy
 
 Funkcja regresji I rodzaju opisująca zależność zmiennej losowej $X$ od $Y$:
 
-$\hat{X}=g(Y)=\beta_0+\beta_1Y+\xi'$
+$X=g(Y)=\beta_0+\beta_1Y+\xi'$
 
 $\hat{X}$ - teoretyczne wartości funkcji regresji $\hat{X}=g(Y)$ odpowiadające danemu poziomowi realizacji zmiennej Y
 
@@ -70,19 +62,19 @@ $\hat{y_i}$ - teoretyczne wartości zmiennej $y$
 
 $a_0$ - wyraz wolny
 
-$a_1$ - współczynnik regresji liniowej
+$a_1$ - współczynnik kierunkowy regresji liniowej
 
 $x_i$ - wartości zmiennej $x$, gdzie $i = 1,2,...,n$ - kolejne numery jednostek
 
-$u_i$ - reszta
+$u_i=y_{i}-\hat{y}_{i}$ - reszta
 
-$s^2(u_i)$ - wariancja składnika resztowego, wariancja resztowa
+$s^2(u_i)=\frac{\sum\limits_{i=1}^{n}{(y_{i}-\hat{y}_{i})^2}}{n-2}$ - wariancja składnika resztowego, wariancja resztowa
 
-$s(u_i)$ - odchylenie standardowe składnika resztowego
+$s(u_i)=\sqrt{\frac{\sum\limits_{i=1}^{n}{(y_{i}-\hat{y}_{i})^2}}{n-2}}$ - odchylenie standardowe składnika resztowego
 
-$s(a_0)$ - odchylenie standardowe zmiennej $a_0$
+$s(a_0)$ - średni błąd szacunku parametru $a_0$
 
-$s(a_1)$ - odchylenie standardowe zmiennej $a_1$
+$s(a_1)$ - średni błąd szacunku parametru $a_1$
 
 Oszacowaniem funkcji regresji I rodzaju $X$ względem $Y$ w populacji generalnej jest funkcja regresji $x$ względem $y$ w próbie losowej:
 
@@ -92,27 +84,27 @@ $\hat{x_i}$ - teoretyczne wartości zmiennej $x$
 
 $b_0$ - wyraz wolny
 
-$b_1$ - współczynnik regresji liniowej
+$b_1$ - współczynnik kierunkowy regresji liniowej
 
 $y_i$ - wartości zmiennej $y$, gdzie $i = 1,2,...,n$ - kolejne numery jednostek
 
-$z_i$ - reszta
+$z_i=x_{i}-\hat{x}_{i}$ - reszta
 
-$s^2(z_i)$ - wariancja składnika resztowego, wariancja resztowa
+$s^2(z_i)=\frac{\sum\limits_{i=1}^{n}{(x_{i}-\hat{x}_{i})^2}}{n-2}$ - wariancja składnika resztowego, wariancja resztowa
 
-$s(z_i)$ - odchylenie standardowe składnika resztowego
+$s(z_i)=\sqrt{\frac{\sum\limits_{i=1}^{n}{(x_{i}-\hat{x}_{i})^2}}{n-2}}$ - odchylenie standardowe składnika resztowego
 
-$s(b_0)$ - odchylenie standardowe zmiennej $b_0$
+$s(b_0)$ - średni błąd szacunku parametru $b_0$
 
-$s(b_1)$ - odchylenie standardowe zmiennej $b_1$
+$s(b_1)$ - średni błąd szacunku parametru $b_1$
 
 
-$\varphi^2_{xy}$ - współczynnik zbieżności
+$\varphi^2_{xy}=\frac{\sum\limits_{i=1}^{n}{(y_{i}-\hat{y}_{i})^2}}{\sum\limits_{i=1}^{n}{(y_{i}-\bar{y}_{i})^2}}$ - współczynnik zbieżności
 
-$r^2_{xy}$ - współczynnik określoności (determinacji)
+$r^2_{xy}=1-\frac{\sum\limits_{i=1}^{n}{(y_{i}-\hat{y}_{i})^2}}{\sum\limits_{i=1}^{n}{(y_{i}-\bar{y}_{i})^2}}$ - współczynnik określoności (determinacji)
 
 # Korelacja i regresja wielu zmiennych
 
-$r_{ij\cdot kl...z}$ - współczynnik korelacji cząstkowej
+$r_{ij\cdot kl...z}=r_{12\cdot 3}=\frac{r_{12}-r_{23}\cdot r_{13}}{\sqrt{(1-r_{23}^2)(1-r_{13}^2)}}$ - współczynnik korelacji cząstkowej
 
-$R_w$ - współczynnik korelacji wielorakiej
+$R_w=R_{1\cdot 23}=\sqrt{\frac{r_{12}^2+r_{13}^2-2r_{12}r_{13}r_{23}}{1-r_{23}^2}}$ - współczynnik korelacji wielorakiej
