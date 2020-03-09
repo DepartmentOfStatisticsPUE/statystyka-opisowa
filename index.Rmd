@@ -13,9 +13,7 @@ output:
 ```{r pakiety i ustawienia, include=FALSE, warning=FALSE, message=FALSE}
 options(scipen = 100)
 library(openxlsx)
-library(dplyr)
-library(ggplot2)
-library(tidyr)
+library(tidyverse)
 library(knitr)
 knitr::opts_chunk$set(cache = TRUE, 
                       echo = FALSE)

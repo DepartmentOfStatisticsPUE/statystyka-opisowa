@@ -33,72 +33,73 @@ Najdogodniejszym sposobem graficznej prezentacji rozkładu jest histogram przeds
 
 ## Rodzaje rozkładów
 
-Ze względu na liczbę punktów ekstremalnych i rodzaj zmienności:
+Ze względu na liczbę punktów ekstremalnych:
 
-```{r rodz-rozkl-1, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE}
-dist=data.frame(jedno=rbeta(20000,5,5),
-                bim=c(rnorm(10000,-1,1),rnorm(10000,2,1)),
-                wiel=c(rnorm(5000,-4,1),rnorm(5000,-1,1),rnorm(5000,2,1),rnorm(5000,6,1)),
-                sym=rbeta(20000,5,5),
-                prawo=rbeta(20000,2,5),
-                lewo=rbeta(20000,5,2))
+```{r, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE}
+set.seed(123)
 
-dist_s <- as.data.frame(scale(dist))
+dist <- data.frame(jedno=rbeta(20000,5,5),
+                   bim=c(rnorm(10000,-1,1),rnorm(10000,2,1)),
+                   wiel=c(rnorm(5000,-4,1),rnorm(5000,-1,1),rnorm(5000,2,1),rnorm(5000,6,1))) %>% 
+  gather() %>% 
+  mutate(key = factor(key, 
+                      levels = c("jedno", "bim", "wiel"), 
+                      labels = c("Rozkład jednomodalny", "Rozkład bimodalny", "Rozkład wielomodalny"), # c("Unimodal", "Bimodal", "Multimodal"), 
+                      ordered = T))
 
-dist_l <- gather(dist_s, rozklad, wart)
-
-dist_l$rozklad <- factor(dist_l$rozklad, levels = unique(dist_l$rozklad), labels = c("Rozkład jednomodalny", "Rozkład bimodalny", "Rozkład wielomodalny",
-                                                                                     "Rozkład symetryczny", "Rozkład prawostronnie \nasymteryczny", 
-                                                                                     "Rozkład lewostronnie \nasymetryczny"),
-                         ordered = T)
-
-ggplot(dist_l, aes(x=wart)) +
-  geom_histogram(binwidth = 0.05) +
-  facet_wrap(~ rozklad) +
+ggplot(dist, aes(x=value)) + 
+  geom_histogram(bins = 20) +
   xlab("Wartości") + ylab("Liczebność") +
-  theme_bw()
+  # xlab("Values") + ylab("Counts") +
+  facet_wrap(~ key, scales = "free") +
+  theme_bw() 
 
-# ggplot(dist_l, aes(x=wart)) + 
-#   geom_density() + 
-#   facet_wrap(~ rozklad) +
-#   xlab("Wartości") + ylab("Gęstość") +
-#   theme_bw()
+```
 
+Ze względu na rodzaj zmienności:
 
+```{r, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE}
+set.seed(123)
+
+dist <- data.frame(prawo=rgamma(10000,4),
+                   sym=rnorm(10000,6,2)) %>% 
+  mutate(lewo=-prawo+20) %>% 
+  gather() %>% 
+  mutate(key = factor(key, 
+                      levels = c("prawo", "sym", "lewo"), 
+                      labels = c("Rozkład prawostronnie \nasymteryczny", "Rozkład symetryczny", "Rozkład lewostronnie \nasymetryczny"), # c("Right-skewed", "Symetric", "Left-skewed"),
+                      ordered = T))
+
+ggplot(dist, aes(x=value)) + 
+  geom_histogram(bins = 15) +
+  xlab("Wartości") + ylab("Liczebność") +
+  # xlab("Values") + ylab("Counts") +
+  facet_wrap(~ key, scales = "free") +
+  theme_bw() 
 ```
 
 Ze względu na skupienie wokół średniej:
 
 ```{r rodz-rozkl-2, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE}
+set.seed(123)
 
-dist_k=data.frame(plato=rnorm(20000,0,4),
+dist <- data.frame(plato=rnorm(20000,0,4),
                 norm=rnorm(20000,0,1),
-                lepto=rnorm(20000,0,0.5))
+                lepto=rnorm(20000,0,0.5)) %>% 
+  gather() %>% 
+  mutate(key = factor(key, 
+                      levels = c("plato", "norm", "lepto"), 
+                      labels = c("Rozkład spłaszczony \n(platokurtyczny)", 
+                                 "Rozkład normalny \n(mezokurtyczny)", 
+                                 "Rozkład wysmukły \n(leptokurtyczny)"), # c("Platykurtic", "Mesokurtic (normal)", "Leptokurtic"),
+                      ordered = T))
 
-dist_lk <- gather(dist_k, rozklad, wart) %>%
-  mutate(wart=scale(wart))
-
-dist_lk$rozklad <- factor(dist_lk$rozklad, 
-                          levels = unique(dist_lk$rozklad), 
-                          labels = c("Rozkład spłaszczony \n(platokurtyczny)",
-                                     "Rozkład normalny \n(mezokurtyczny)",
-                                     "Rozkład wysmukły \n(leptokurtyczny)"),
-                          ordered = T)
-
-
-ggplot(dist_lk, aes(x=wart)) +
-  geom_histogram(binwidth = 0.01) +
-  facet_wrap(~ rozklad, scales="free_x") +
+ggplot(dist, aes(x=value)) + 
+  geom_histogram(binwidth = 0.2) +
   xlab("Wartości") + ylab("Liczebność") +
-  theme_bw()
-
-# ggplot(dist_lk, aes(x=wart)) + 
-#   geom_density() + 
-#   facet_wrap(~ rozklad, scales="free_x") +
-#   xlab("Wartości") + ylab("Gęstość") +
-#   theme_bw()
-
-
+  # xlab("Values") + ylab("Counts") +
+  facet_wrap(~ key) +
+  theme_bw() 
 ```
 
 W ten sposób możemy opisywać histogramy, natomiast w dalszej części zajęć dowiemy się jakie miary definiują te cechy.
