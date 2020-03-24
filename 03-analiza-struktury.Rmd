@@ -364,7 +364,7 @@ ggplot(wyn_stat, aes(x = id, ymin = min, lower = q1, middle = mediana, upper = q
 
 W miarach pozycyjnych opartych na kwartylach zróżnicowanie wartości od mediany mierzy **odchylenie ćwiartkowe**:
 
-$$Q=\frac{Q_{3}-Q_{1}}{2}$$
+$$Q=\frac{(Q_{3}-Q_{1})}{2}$$
 
 gdzie:
 
@@ -388,7 +388,7 @@ Podobnie jak w przypadku klasycznego współczynnika zmienności korzystamy z um
 
 Ostatnią miarą opartą na kwartylach jest **pozycyjny współczynnik asymetrii**, który określa kierunek i siłę asymetrii jednostek znajdujących się między pierwszym i trzecim kwartylem:
 
-$$A_{Q}=\frac{Q_{1}+Q_{3}-2 \cdot Q_2}{2 \cdot Q}$$
+$$A_{Q}=\frac{(Q_{1}+Q_{3}-2 \cdot Q_2)}{(2 \cdot Q)}$$
 
 gdzie: 
 
