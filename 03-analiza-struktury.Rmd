@@ -118,7 +118,7 @@ Podobnie jak w przypadku wariancji w Excelu znajdują się dwie funkcje do wyzna
 - ODCH.STAND.POPUL,
 - ODCH.STANDARD.PRÓBKI.
 
-Jak jednak porównać cechy, które mają różne średnie i odchylenia standardowe? 
+Jeśli średnie są takie same to do oceny zróżnicowania wystarczy odchylenie standardowe. Sytuacja się jednak komplikuje w przypadku występowania różnic pomiędzy średnimi. Jak zatem porównać zróżnicowanie cech, które mają różne średnie i odchylenia standardowe? 
 
 Przeprowadzono eksperyment, w którym 100 osobom zmierzono długość ręki i nogi.
 
@@ -167,7 +167,7 @@ Oczywiście wszystko zależy od tego jaką cechę analizujemy i jakie jest jej t
 
 Obliczając wartość współczynnika zmienności dla długości nogi otrzymamy `r round(rn_stat$sd[1]/rn_stat$sr[1]*100,2)`%, natomiast dla długości ręki `r round(rn_stat$sd[2]/rn_stat$sr[2]*100,2)`%. Na tej podstawie możemy stwierdzić, że długość ręki charakteryzuje się większym zróżnicowaniem.
 
-Klasyczny współczynnik zmienności nie ma oprogramowanej odpowiedniej funkcji w Excelu.
+Klasyczny współczynnik zmienności nie ma oprogramowanej odpowiedniej funkcji w Excelu. Można natomiast w prosty sposób tę wartość obliczyć.
 
 Odchylenie standardowe oraz średnią zestawiamy ze sobą także podczas wyznaczania **typowego obszaru zmienności**:
 
@@ -243,6 +243,8 @@ W Excelu znajduje się funkcja o nazwie:
 
 - KURTOZA.
 
+W rzeczywistości wynikiem działania tej funkcji jest eksces. W interpretacji zatem wynik odnosimy do wartości 0.
+
 Do wyznaczenia powyższych miar można także wykorzystać dodatek programu Excel: Analiza danych znajdujący się po prawej stronie we wstążce DANE. Jeśli nie widzimy tego dodatku to klikamy _Przycisk pakietu Office_ w lewym górnym rogu ekranu, następnie _Opcje_. W nowym oknie przechodzimy do _Dodatki_ i na dole okna przycisk _Przejdź_. Zaznaczamy _Analysis ToolPak_ i wybieramy _OK_.
 
 _Przykład_
@@ -286,7 +288,7 @@ knitr::kable(r_1_7_stat_t)
 
 ## Miary pozycyjne
 
-Podstawą miar pozycyjnych jest podział cechy zbiorowości na cztery równe części. Punkty podziału wskazują nam kwartyle. Najpopularniejszą z miar pozycyjnych jest **mediana** (kwartyl 2, wartość środkowa, $Q_2$), która wyznacza wartość dla której 50% jednostek zbiorowości ma wartości cechy niższe bądź równe medianie, a 50% równe bądź wyższe od mediany.
+Podstawowe miary pozycyjne nie są obliczane z wykorzystaniem wszystkich obserwacji, jak ma to miejsce w przypadku miar klasycznych, tylko szukamy obserwacji która wskazuje wartość wybranej miary klasycznej. Najpopularniejszą z miar pozycyjnych jest **mediana** (kwartyl 2, wartość środkowa, $Q_2$), która wyznacza wartość dla której 50% jednostek zbiorowości ma wartości cechy niższe bądź równe medianie, a 50% równe bądź wyższe od mediany.
 
 Medianę wyznacza się poprzez posortowanie wartości cechy rosnąco i wybór wartości środkowej (jeśli $N$ jest nieparzyste) lub średniej z wartości środkowych (jeśli $N$ jest parzyste).
 
