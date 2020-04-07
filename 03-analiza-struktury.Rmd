@@ -792,7 +792,7 @@ $$H_1: m < m_0$$
 
 gdzie $m_0$ - hipotetyczna wartość średniej w populacji generalnej.
 
-Weryfikacja testu statystycznego polega na obliczeniu wartości statystyki testowej oraz kwantyla odpowiedniego rozkładu i sprawdzenie czy wartość statystyki testowej wpada do przedziału odrzucenia. Jeśli wartość statystyki testowej jest większa od wartości kwantyla rozkładu (np. $|t|>t_\alpha$) to są podstawy do odrzucenia hipotezy zerowej, natomiast w przypadku kiedy $|t|<t_\alpha$ to nie ma podstaw do odrzucenia hipotezy zerowej.
+Weryfikacja testu statystycznego polega na obliczeniu wartości statystyki testowej oraz kwantyla odpowiedniego rozkładu i sprawdzenie czy wartość statystyki testowej wpada do przedziału odrzucenia. Jeśli wartość statystyki testowej jest większa od wartości kwantyla rozkładu (np. $|t| \geq t_\alpha$) to są podstawy do odrzucenia hipotezy zerowej, natomiast w przypadku kiedy $|t|<t_\alpha$ to nie ma podstaw do odrzucenia hipotezy zerowej.
 
 ```{r echo=FALSE, fig.width=16}
 library(patchwork)
@@ -849,7 +849,7 @@ $$t=\frac{(\bar{x}-m_0)}{s}\sqrt{n}$$
 
 i ma rozkład t-Studenta o $n-1$ stopniach swobody.
 
-Jeśli wartość statystyki testowej jest większa od wartości kwantyla rozkładu ($|t|>t_\alpha$) to są podstawy do odrzucenia hipotezy zerowej, natomiast w przypadku kiedy $|t|<t_\alpha$ nie ma podstaw do odrzucenia hipotezy zerowej.
+Jeśli wartość statystyki testowej jest większa od wartości kwantyla rozkładu ($|t| \geq t_\alpha$) to są podstawy do odrzucenia hipotezy zerowej, natomiast w przypadku kiedy $|t|<t_\alpha$ nie ma podstaw do odrzucenia hipotezy zerowej.
 
 Hipotezę zerową w teście t dla jednej średniej można także zweryfikować na podstawie przedziału ufności. Nie będzie podstaw do odrzucenia hipotezy zerowej jeśli weryfikowana wartość $m_0$ będzie znajdować się w wyznaczonym przedziale ufności. Jeśli będzie poza nim to są podstawy do odrzucenia $H_0$.
 
@@ -883,7 +883,7 @@ Natomiast w sytuacji, w której $m_0$ zostałoby przyjęte na poziomie 32 ton to
 
 **Zadania**
 
-1. Na grupie 25 kobiet przeprowadzono badanie dotyczące zarobków i zebrano następujące wyniki: 4330, 3063, 3012, 3486, 3415, 3097, 2451, 3418, 2970, 4050, 2828, 4076, 3011, 3575, 3939, 3089, 3733, 3347, 2719, 3238, 4372, 3272, 2909, 3368, 3598. Przyjmują↓c poziom istotności równy 0.1 zweryfikuj hipotezę, że średnie zarobki kobiet w populacji nie różnią się istotnie od 3500 zł.
+1. Na grupie 25 kobiet przeprowadzono badanie dotyczące zarobków i zebrano następujące wyniki: 4330, 3063, 3012, 3486, 3415, 3097, 2451, 3418, 2970, 4050, 2828, 4076, 3011, 3575, 3939, 3089, 3733, 3347, 2719, 3238, 4372, 3272, 2909, 3368, 3598. Przyjmując poziom istotności równy 0.1 zweryfikuj hipotezę, że średnie zarobki kobiet w populacji nie różnią się istotnie od 3500 zł.
 
 2. W 17 szkołach podstawowych przeprowadzono wśród uczniów testy kompetencji. Otrzymano następujące wyniki punktowe: 84, 82, 96, 78, 73, 83, 82, 77, 83, 80, 78, 85, 80, 71, 66, 79, 91. Zweryfikuj hipotezę, że średni wynik testu kompetencji w szkołach podstawowych wynosi 80 punktów przyjmując poziom istotności 0,01.
 
