@@ -31,8 +31,8 @@ $$\bar{x}=\frac{\sum\limits_{i=1}^{N}{x_{i}}}{N},$$
 gdzie: 
 
 - $\bar{x}$ - symbol średniej arytmetycznej, 
-- $x_{i}$ --- wariant cechy mierzalnej, 
-- $N$ --- liczebność badanej zbiorowości.
+- $x_{i}$ - wariant cechy mierzalnej, 
+- $N$ - liczebność badanej zbiorowości.
 
 Co sprawia, że średnia jest tak powszechną i uniwersalną miarą? Jest to liczba, która ma najwięcej wspólnego z każdą wartością cechy w zbiorowości. Innymi słowy, odległość wartości cechy od średniej jest najmniejsza z możliwych.
 
@@ -288,7 +288,7 @@ knitr::kable(r_1_7_stat_t)
 
 ## Miary pozycyjne
 
-Podstawowe miary pozycyjne nie są obliczane z wykorzystaniem wszystkich obserwacji, jak ma to miejsce w przypadku miar klasycznych, tylko szukamy obserwacji która wskazuje wartość wybranej miary klasycznej. Najpopularniejszą z miar pozycyjnych jest **mediana** (kwartyl 2, wartość środkowa, $Q_2$), która wyznacza wartość dla której 50% jednostek zbiorowości ma wartości cechy niższe bądź równe medianie, a 50% równe bądź wyższe od mediany.
+Podstawowe miary pozycyjne nie są obliczane z wykorzystaniem wszystkich obserwacji, jak ma to miejsce w przypadku miar klasycznych, tylko szukamy obserwacji która wskazuje wartość wybranej miary pozycyjnej. Najpopularniejszą z miar pozycyjnych jest **mediana** (kwartyl 2, wartość środkowa, $Q_2$), która wyznacza wartość dla której 50% jednostek zbiorowości ma wartości cechy niższe bądź równe medianie, a 50% równe bądź wyższe od mediany.
 
 Medianę wyznacza się poprzez posortowanie wartości cechy rosnąco i wybór wartości środkowej (jeśli $N$ jest nieparzyste) lub średniej z wartości środkowych (jeśli $N$ jest parzyste).
 
@@ -629,13 +629,7 @@ Po wyznaczeniu wartości kwartyli pozostałe miary liczymy w tradycyjny sposób.
 
 ## Przedziały ufności
 
-Dotyczas analizowane dane dotyczyły populacji, zatem obliczone wartości statystyk można uznać za precyzyjne i nieobciążone błędem. Natomiast większość prowadzonych badań ogranicza się do analizy jedynie fragmentu populacji. Wówczas, oprócz obliczenia interesującej nas miary ważne jest także podanie możliwego błędu. Popularną praktyką jest obliczanie **przedziałów ufności**, które prezentują zakres, w którym z określonym prawdopodobieństwem znajduje się prawdziwa wartość parametru. Zwykle bierze się pod uwagę następujące prawdopodobieństwa: 90%, 95% i 99%, niemniej można wybrać dowolną wartość z przedziału 0-100%. We wzorach operuje się pojeciem **poziomu istotności** oznaczanym przez $\alpha$. W tabeli przedstawiono relację przyjętego poziomu istotności, prawdopodobieństwa oraz wartości kwantyli rozkładu normalnego.
-
-| Prawdopodobieństwo | Poziom istotności | Kwantyl rozkł. norm.|
-|-------------------:|------------------:|--------------------:|
-| 99% (0,99) | 0,01 | 2,58 | 
-| 95% (0,95) | 0,05 | 1,96 |
-| 90% (0,90) | 0,10 | 1,64 |
+Dotyczas analizowane dane dotyczyły populacji, zatem obliczone wartości statystyk można uznać za precyzyjne i nieobciążone błędem. Natomiast większość prowadzonych badań ogranicza się do analizy jedynie fragmentu populacji. Wówczas, oprócz obliczenia interesującej nas miary ważne jest także podanie możliwego błędu. Popularną praktyką jest obliczanie **przedziałów ufności**, które prezentują zakres, w którym z określonym prawdopodobieństwem znajduje się prawdziwa wartość parametru. Zwykle bierze się pod uwagę następujące prawdopodobieństwa: 90%, 95% i 99%, niemniej można wybrać dowolną wartość z przedziału 0-100%. We wzorach operuje się pojeciem **poziomu istotności** oznaczanym przez $\alpha$. 
 
 Skupimy się na wyznaczaniu następujących przedziałów ufności:
 
@@ -643,6 +637,55 @@ Skupimy się na wyznaczaniu następujących przedziałów ufności:
 - dla średniej w populacji normalnym z nieznanym odchyleniem standardowym dla małej próby,
 - dla średniej w populacji normalnym z nieznanym odchyleniem standardowym dla dużej próby,
 - dla odsetka (proporcji, frakcji).
+
+W każdym przypadku będziemy musieli wyznaczyć kwantyl rozkładu, który odpowiada przyjętemu poziomowi prawdopodobieństwa i tym samym obszar, który pokryje wyznaczony przedział ufności. Dla rozkładu normalnego ta sytuacja jest przedstawiona na wykresie:
+
+```{r}
+ggplot(NULL, aes(c(-3,3))) +
+  geom_area(stat = "function", fun = dnorm, fill = "#E94246", xlim = c(-3, -1.96)) +
+  geom_area(stat = "function", fun = dnorm, fill = "#466AAD", xlim = c(-1.96, 1.96)) +
+  geom_area(stat = "function", fun = dnorm, fill = "#E94246", xlim = c(1.96, 3)) +
+  geom_vline(xintercept = 0, color = "#034e7b", size = 1.5) +
+  annotate("text", x = 0.3, y = 0.43, label = "średnia") +
+  labs(x = "", y = "") +
+  scale_y_continuous(breaks = NULL) +
+  scale_x_continuous(breaks = c(-1.96, 1.96), labels = c(expression(paste(-z(1-alpha/2),)), expression(paste(z(1-alpha/2),)))) +
+  theme_light() +
+  # annotate("text", x = -2.6, y = 0.3, label = "obszar \nodrzucenia H0") +
+  # annotate("text", x = 2.6, y = 0.3, label = "obszar \nodrzucenia H0") + 
+  ggtitle("Rozkład normalny")
+
+```
+
+W tabeli przedstawiono relację przyjętego prawdopodobieństwa, poziomu istotności oraz wartości kwantyli rozkładu normalnego.
+
+| Prawdopodobieństwo | Poziom istotności | Kwantyl rozkł. norm.|
+|-------------------:|------------------:|--------------------:|
+| 99% (0,99) | 0,01 | 2,58 | 
+| 95% (0,95) | 0,05 | 1,96 |
+| 90% (0,90) | 0,10 | 1,64 |
+
+W Excelu te wartości można wyznaczyć z wykorzystaniem funkcji: ROZKŁ.NORMALNY.S.ODWR(1-$\alpha$/2).
+
+Te wartości dla najpopularniejszych poziomów prawdopodobieństwa zawsze będą takie same. Natomiast w przypadku małych prób ($n < 30$) należy skorzystać z rozkładu [t-Studenta](https://pl.wikipedia.org/wiki/William_Sealy_Gosset). Kształt tego rozkładu jest zbliżony do normalnego, natomiast wartości kwantyli zależą od dwóch parametrów - przyjętego poziomu istotności oraz liczebności próby pomniejszonej o 1 (liczba stopni swobody).
+
+```{r}
+ggplot(NULL, aes(c(-3,3))) +
+  geom_area(stat = "function", fun = dt, fill = "#E94246", xlim = c(-3, -2.12), args = list(df = 16)) +
+  geom_area(stat = "function", fun = dt, fill = "#466AAD", xlim = c(-2.12, 2.12), args = list(df = 16)) +
+  geom_area(stat = "function", fun = dt, fill = "#E94246", xlim = c(2.12, 3), args = list(df = 16)) +
+  geom_vline(xintercept = 0, color = "#034e7b", size = 1.5) +
+  annotate("text", x = 0.3, y = 0.43, label = "średnia") +
+  labs(x = "", y = "") +
+  scale_y_continuous(breaks = NULL) +
+  scale_x_continuous(breaks = c(-2.12, 2.12), labels = c(expression(paste(-t(1-alpha/2, n-1),)), expression(paste(t(1-alpha/2, n-1),)))) +
+  theme_light() +
+  # annotate("text", x = -2.6, y = 0.3, label = "obszar \nodrzucenia H0") +
+  # annotate("text", x = 2.6, y = 0.3, label = "obszar \nodrzucenia H0") + 
+  ggtitle("Rozkład t-Studenta z 16 stopniami swobody")
+```
+
+Do wyznaczenia wartości kwantyla z rozkładu t-Studenta wykorzystuje się funkcje: ROZKŁ.T.ODWR(1-$\alpha$/2;$n$-1) lub ROZKŁ.T.ODWR.DS($\alpha$;$n$-1)
 
 ### Średnia w populacji normalnej ze znanym odchyleniem standardowym
 
@@ -751,6 +794,45 @@ gdzie $m_0$ - hipotetyczna wartość średniej w populacji generalnej.
 
 Weryfikacja testu statystycznego polega na obliczeniu wartości statystyki testowej oraz kwantyla odpowiedniego rozkładu i sprawdzenie czy wartość statystyki testowej wpada do przedziału odrzucenia. Jeśli wartość statystyki testowej jest większa od wartości kwantyla rozkładu (np. $|t|>t_\alpha$) to są podstawy do odrzucenia hipotezy zerowej, natomiast w przypadku kiedy $|t|<t_\alpha$ to nie ma podstaw do odrzucenia hipotezy zerowej.
 
+```{r echo=FALSE, fig.width=16}
+library(patchwork)
+
+lewostronny <- ggplot(NULL, aes(c(-3,3))) +
+  geom_area(stat = "function", fun = dnorm, fill = "#E94246", xlim = c(-3, -1.64)) +
+  geom_area(stat = "function", fun = dnorm, fill = "#466AAD", xlim = c(-1.64, 3)) +
+  labs(x = "z", y = "") +
+  scale_y_continuous(breaks = NULL) +
+  scale_x_continuous(breaks = -1.64, labels = expression(paste(-z(1-alpha)))) +
+  theme_light() +
+  annotate("text", x = -2.4, y = 0.3, label = "obszar \nodrzucenia H0") +
+  ggtitle("Lewostronny obszar odrzucenia")
+
+dwustronny <- ggplot(NULL, aes(c(-3,3))) +
+  geom_area(stat = "function", fun = dnorm, fill = "#E94246", xlim = c(-3, -1.96)) +
+  geom_area(stat = "function", fun = dnorm, fill = "#466AAD", xlim = c(-1.96, 1.96)) +
+  geom_area(stat = "function", fun = dnorm, fill = "#E94246", xlim = c(1.96, 3)) +
+  labs(x = "z", y = "") +
+  scale_y_continuous(breaks = NULL) +
+  scale_x_continuous(breaks = c(-1.96, 1.96), labels = c(expression(paste(-z(1-alpha/2),)), expression(paste(z(1-alpha/2),)))) +
+  theme_light() +
+  annotate("text", x = -2.6, y = 0.3, label = "obszar \nodrzucenia H0") +
+  annotate("text", x = 2.6, y = 0.3, label = "obszar \nodrzucenia H0") + 
+  ggtitle("Dwustronny obszar odrzucenia")
+
+prawostronny <- ggplot(NULL, aes(c(-3,3))) +
+  geom_area(stat = "function", fun = dnorm, fill = "#466AAD", xlim = c(-3, 1.64)) +
+  geom_area(stat = "function", fun = dnorm, fill = "#E94246", xlim = c(1.64, 3)) +
+  labs(x = "z", y = "") +
+  scale_y_continuous(breaks = NULL) +
+  scale_x_continuous(breaks = 1.64, labels = expression(paste(z(1-alpha)))) +
+  theme_light() +
+  annotate("text", x = 2.4, y = 0.3, label = "obszar \nodrzucenia H0") +
+  ggtitle("Prawostronny obszar odrzucenia")
+
+lewostronny + dwustronny + prawostronny
+  
+```
+
 Obecnie wszystkie programy do analiz statystycznych zwracają także wartość p czyli najmniejszy poziom istotności przy którym nie ma podstaw do odrzucenia hipotezy zerowej. Przyjmuje się, że jeśli $p < \alpha$ to są podstawy do odrzucenia hipotezy zerowej, natomiast w przypadku $p \geq \alpha$ nie ma podstaw do odrzucenia $H_0$. Jest to jednak bardzo uproszczona definicja i warto zgłębić temat np. korzystając z [Wikipedii](https://pl.wikipedia.org/wiki/Warto%C5%9B%C4%87_p).
 
 ### Test t dla jednej średniej
@@ -763,7 +845,7 @@ Sprawdzamy czy średnia w populacji jest równa określonej wartości. Testowany
 
 Statystyka testowa jest następująca:
 
-$$t=\frac{\bar{x}-m_0}{s}\sqrt{n}$$
+$$t=\frac{(\bar{x}-m_0)}{s}\sqrt{n}$$
 
 i ma rozkład t-Studenta o $n-1$ stopniach swobody.
 
@@ -798,6 +880,55 @@ Natomiast wartość kwantyla rozkładu t-Studenta z 23 stopniami swobody dla poz
 Z kolei przedział ufności dla średniej z plonów żyta to 27,46 do 30,46 ton i można zauważyć, że weryfikowana wartość $m_0$ znajduje się w tym przedziale. 
 
 Natomiast w sytuacji, w której $m_0$ zostałoby przyjęte na poziomie 32 ton to wówczas statystyka testowa wynosi -4,29 i wpada do obszaru odrzucenia w rozkładzie t-Studenta. Ponadto można zauważyć, że ta wartość znajduje się poza wyznaczonym przedziałem ufności. 
+
+**Zadania**
+
+1. Na grupie 25 kobiet przeprowadzono badanie dotyczące zarobków i zebrano następujące wyniki: 4330, 3063, 3012, 3486, 3415, 3097, 2451, 3418, 2970, 4050, 2828, 4076, 3011, 3575, 3939, 3089, 3733, 3347, 2719, 3238, 4372, 3272, 2909, 3368, 3598. Przyjmują↓c poziom istotności równy 0.1 zweryfikuj hipotezę, że średnie zarobki kobiet w populacji nie różnią się istotnie od 3500 zł.
+
+2. W 17 szkołach podstawowych przeprowadzono wśród uczniów testy kompetencji. Otrzymano następujące wyniki punktowe: 84, 82, 96, 78, 73, 83, 82, 77, 83, 80, 78, 85, 80, 71, 66, 79, 91. Zweryfikuj hipotezę, że średni wynik testu kompetencji w szkołach podstawowych wynosi 80 punktów przyjmując poziom istotności 0,01.
+
+### Test istotności proporcji
+
+Testowany jest jeden z poniższych układów hipotez:
+
+- $H_0:p=p_0;H_1:p\neq p_0$
+- $H_0:p=p_0;H_1:p > p_0$
+- $H_0:p=p_0;H_1:p < p_0$
+
+Statystyka testowa:
+
+$$z=\frac{(\frac{m}{n}-p_0)}{\sqrt{\frac{p_0(1-p_0)}{n}}}$$
+
+Statystyka testowa ma rozkład normalny standaryzowany.
+
+**Przykład**
+
+W pewnym mieście przeprowadzono badanie aktywności zawodowej. Przebadano 980 osób, spośród których 674 zadeklarowały się jako osoby pracujące. Na poziomie istotności 0,1 zweryfikuj hipotezę, że odsetek pracujących w tym mieście jest równy 72%.
+
+Układ hipotez jest następujący:
+
+- $H_0: p = 0,72$
+- $H_1: p \neq 0,72$
+
+```{r}
+p0 <- 0.72
+n <- 980
+m_n <- 674/n
+
+z <- (m_n-p0)/sqrt((p0*(1-p0))/n)
+```
+
+W pierwszej kolejności obliczamy wartość średnią, odchylenie standardowe i na tej podstawie wartość statystyki testowej:
+
+$$z=\frac{(\frac{m}{n}-p_0)}{\sqrt{\frac{p_0(1-p_0)}{n}}}=\frac{(0,69-0,72)}{\sqrt{\frac{0,72(1-0,72)}{980}}}=-2,25$$
+
+Natomiast wartość kwantyla rozkładu normalnego dla poziomu istotności $\alpha=0,1$ wynosi 1,64 (`ROZKŁ.NORMALNY.S.ODWR(1-0,1/2)`). W takim razie obszar odrzucenia hipotezy zerowej to przedział od $-\infty$ do -1,64 i od 1,64 do $+\infty$. Wartość statystyki testowej znajduje się w tym przedziale, zatem są podstawy do odrzucenia hipotezy zerowej - odsetek pracujących w całym mieście istotnie różni się od 72%.
+
+**Zadania**
+
+1. Wysunięto przypuszczenie, że palacze papierosów stanowią 40% populacji. W celu sprawdzenia tej hipotezy wylosowano 500 osób. Okazało się, że wśród nich było 230 palaczy. Zweryfikować postawioną hipotezę na poziomie istotności 0,05.
+
+2. W pewnym powiecie na 119 przedsiębiorstw z sekcji PKD C w badaniu DG 1 wzięło udział 14 przedsiębiorstw. Na poziomie istotności 0,05 zweryfikuj hipotezę, że odsetek przedsiębiorstw biorących udział w badaniu wynosi 10%.
 
 ### Test t dla dwóch średnich niezależnych
 
@@ -834,20 +965,6 @@ m <- c(4182, 4258, 3840, 4266, 3494, 2862, 3611, 3594, 2874, 4025, 3486, 3710, 3
 ```
 
 W Excelu najprościej przeprowadzić ten test wykorzystując funkcję `T.TEST` zakładając rozkład dwustronny oraz równość wariancji. Funkcja w rezultacie zwraca wartość p, która wynosi 0,003034 i jest mniejsza od przyjętego poziomu istotności $alfa=0,1$, co oznacza, że są podstawy do odrzucenia hipotezy zerowej. Średnie w grupach płci różnią się między sobą. 
-
-### Test istotności proporcji
-
-Testowany jest jeden z poniższych układów hipotez:
-
-- $H_0:p=p_0;H_1:p\neq p_0$
-- $H_0:p=p_0;H_1:p > p_0$
-- $H_0:p=p_0;H_1:p < p_0$
-
-Statystyka testowa:
-
-$$Z=\frac{\frac{m}{n}-p_0}{\sqrt{\frac{p_0(1-p_0)}{n}}}$$
-
-Statystyka testowa ma rozkład normalny standaryzowany.
 
 ### Test istotności dwóch proporcji
 
