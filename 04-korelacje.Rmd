@@ -129,7 +129,10 @@ ggplot(rossmann_1, aes(x=sprzedaz, y=liczba_klientow)) +
   xlab("Sprzedaż") + ylab("Liczba klientów") +
   theme_bw()
 
-cov <- mean((rossmann_1$sprzedaz-mean(rossmann_1$sprzedaz))*(rossmann_1$liczba_klientow-mean(rossmann_1$liczba_klientow)))
+sr_sprzedaz <- mean(rossmann_1$sprzedaz)
+sr_liczba_klientow <- mean(rossmann_1$liczba_klientow)
+
+cov <- mean((rossmann_1$sprzedaz-sr_sprzedaz)*(rossmann_1$liczba_klientow-sr_liczba_klientow))
 
 ```
 
@@ -139,13 +142,32 @@ Wartością liczbową, która określa kierunek korelacji jest **kowariancja**. 
 
 $$cov(x,y)=cov(y,x)=\frac{1}{n}\sum\limits_{i=1}^{n}{(x_{i}-\bar{x})\cdot(y_{i}-\bar{y})}$$
 
+Znak kowariancji determinuje kierunek zależności, który jest ustalany na podstawie iloczynu różnic pomiędzy wartościami średnich a analizowanymi cechami. Sumowane są wartości dodatnie i ujemne, co pokazuje poniższy wykres:
+
+```{r}
+ggplot(rossmann_1, aes(x=sprzedaz, y=liczba_klientow)) + 
+  geom_vline(xintercept = sr_sprzedaz, color = "red", size = 1.1) +
+  geom_hline(yintercept = sr_liczba_klientow, color = "green", size = 1.1) +
+  annotate("text", x = 3500, y = 430, label = "+", color = "blue", size = 40, alpha = 0.4) +
+  annotate("text", x = 3500, y = 800, label = "-", color = "blue", size = 40, alpha = 0.4) +
+  annotate("text", x = 7000, y = 430, label = "-", color = "blue", size = 40, alpha = 0.4) +
+  annotate("text", x = 7000, y = 800, label = "+", color = "blue", size = 40, alpha = 0.4) +
+  annotate("text", x = sr_sprzedaz+720, y = 1100, label = "średnia sprzedaż", color = "red") +
+  annotate("text", x = 8700, y = sr_liczba_klientow+30, label = "średnia liczba klientów", color = "green") +
+  geom_point() +
+  xlab("Sprzedaż") + ylab("Liczba klientów") +
+  theme_bw()
+```
+
 Jeśli kowariancja będzie:
 
 - $cov(x,y)=0$ --- brak zależności,
 - $cov(x,y)<0$ --- ujemna zależność,
 - $cov(x,y)>0$ --- dodatnia zależność.
 
-W przypadku sklepu nr 1 kowariancja wynosi `r round(cov)`, co oczywiście pociąga za sobą dodatnią zależność. Na podstawie kowariancji nie możemy natomiast wyznaczyć siły zależności ponieważ jest wyznaczona w dziwnych jednostkach - osobo-euro. Standaryzując kowariancję z wykorzystaniem odchylenia standardowego każdej cechy otrzymamy **współczynnik korelacji liniowej Pearsona**:
+W przypadku sklepu nr 1 kowariancja wynosi `r round(cov)`, co oczywiście pociąga za sobą dodatnią zależność. Na podstawie kowariancji nie możemy natomiast wyznaczyć siły zależności ponieważ jest wyznaczona w dziwnych jednostkach - osobo-euro. Poza tym może przyjąć wartości z całego zakresu liczb rzeczywistych: $(-\infty;+\infty)$.
+
+Standaryzując kowariancję z wykorzystaniem odchylenia standardowego każdej cechy otrzymamy **współczynnik korelacji liniowej Pearsona**:
 
 $$r_{xy}=r_{yx}=\frac{cov(X,Y)}{S_{x}\cdot S_{y}}$$
 
@@ -179,4 +201,8 @@ _Zadania_
 
 Przeanalizuj sprzedaż oraz liczbę klientów w sklepie nr 7 w maju. Utwórz wykres rozrzutu oraz oblicz i zinterpretuj współczynnik korelacji liniowej Pearsona korzystając z funkcji Excela.
 
-Patrz też: [Korelacja](https://www.mathsisfun.com/data/correlation.html)
+[Kilka wyjaśnień](https://www.mathsisfun.com/data/correlation.html)
+
+[Gra - zgadnij współczynnik korelacji](http://guessthecorrelation.com/)
+
+[Pozorne korelacje](https://www.tylervigen.com/spurious-correlations)
