@@ -110,7 +110,7 @@ W naszym przykładzie współczynnik V-Cramera jest równy współczynnikowi T-C
 
 Niestety, aktualnie w MS Excel nie ma funkcji, które umożliwiają obliczenie statystyki $\chi^2$. Istnieje natomiast funkcja `CHI.TEST`, która liczy statystykę $\chi^2$ ale jej nie zwraca. Informuje jedynie o istotności statystycznej, która wykracza poza zakres materiału realizowanego w ramach tych zajęć.
 
-_Zadania_
+_Zadanie_
 
 Oceń siłę zależności pomiędzy faktem wejścia promocji, a liczbą klientów (poniżej/powyżej średniej) w sklepie numer 7.
 
@@ -195,14 +195,14 @@ W Excelu można wyznaczyć wyłącznie współczynnik korelacji liniowej Pearson
 
 - PEARSON(tablica1, tablica2).
 
-Korelacja nie oznacza przyczynowości - mogą występować inne czynniki będące przyczyną silnej zależności cech.
+Korelacja nie oznacza przyczynowości - informuje jedynie o współwystępowaniu cech. Do analizy przyczyno-skutkowej służą metody regresji.
 
-_Zadania_
+[Kilka dodatkowych wyjaśnień](https://www.mathsisfun.com/data/correlation.html)
 
-Przeanalizuj sprzedaż oraz liczbę klientów w sklepie nr 7 w maju. Utwórz wykres rozrzutu oraz oblicz i zinterpretuj współczynnik korelacji liniowej Pearsona korzystając z funkcji Excela.
-
-[Kilka wyjaśnień](https://www.mathsisfun.com/data/correlation.html)
+[Pozorne korelacje](https://www.tylervigen.com/spurious-correlations)
 
 [Gra - zgadnij współczynnik korelacji](http://guessthecorrelation.com/)
 
-[Pozorne korelacje](https://www.tylervigen.com/spurious-correlations)
+_Zadanie_
+
+Przeanalizuj sprzedaż oraz liczbę klientów w sklepie nr 7 w maju. Utwórz wykres rozrzutu oraz oblicz i zinterpretuj współczynnik korelacji liniowej Pearsona korzystając z funkcji Excela.
