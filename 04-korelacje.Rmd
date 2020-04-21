@@ -116,7 +116,7 @@ Oceń siłę zależności pomiędzy faktem wejścia promocji, a liczbą klientó
 
 ## Cechy ciągłe
 
-W przypadku cech ciągłych chcemy określić siłę oraz kierunek zależności pomiędzy dwoma zmiennymi. Silnie skorelowane ze sobą zmienne zachowują się "jak gdyby równocześnie się poruszały".
+W odróżnieniu do cech jakościowych, w przypadku cech ciągłych oprócz siły zależności określamy także kierunek tej zależności pomiędzy dwoma zmiennymi. Silnie skorelowane ze sobą zmienne zachowują się "jak gdyby równocześnie się poruszały".
 
 Sprawdźmy czy liczba klientów jest skorelowana ze sprzedażą w sklepie nr 1. Pierwszym krokiem w analizie korelacji jest stworzenie wykresu rozrzutu:
 
@@ -136,7 +136,21 @@ cov <- mean((rossmann_1$sprzedaz-sr_sprzedaz)*(rossmann_1$liczba_klientow-sr_lic
 
 ```
 
-Na tej podstawie możemy już stwierdzić, że zależność jest liniowa oraz dodatnia - wzrost wartości jednej cechy pociąga za sobą wzrost wartości drugiej cechy. Z korelacją ujemną mielibyśmy do czynienia, gdy wartości jednej cechy by rosły, a drugiej malały. 
+Na tej podstawie możemy już stwierdzić, że zależność jest dodatnia - wzrost wartości jednej cechy pociąga za sobą wzrost wartości drugiej cechy:
+
+- wzrost temperatury, większa sprzedaż lodów;
+- wzrost wynagrodzenia, zwiększenie wydatków;
+- mniej czasu spędzonego na działaniach marketingowych, mniej klientów.
+
+[Więcej przykładów](https://examples.yourdictionary.com/positive-correlation-examples.html)
+
+Z korelacją ujemną mielibyśmy do czynienia, gdy wartości jednej cechy by rosły, a drugiej malały. Przykłady ujemnej korelacji:
+
+- liczba nieobecności na zajęciach jest zwykle związana z niższymi ocenami;
+- większa prędkość pociągu, krótszy czas dotarcia do stacji końcowej;
+- spadek temperatury, wzrost sprzedaży grzejników.
+
+[Więcej przykładów](https://examples.yourdictionary.com/negative-correlation-examples.html)
 
 Wartością liczbową, która określa kierunek korelacji jest **kowariancja**. Wyznaczenie kowariancji polega na policzeniu różnic wartości obu cech od średniej, a następnie ich przemnożeniu i uśrednieniu, zgodnie ze wzorem:
 
