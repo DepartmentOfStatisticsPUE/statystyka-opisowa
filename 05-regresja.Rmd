@@ -8,7 +8,7 @@ Celem regresji jest określenie, na podstawie dostępnych informacji, nieznanej 
 
 Podobnie jak w analizie korelacji punktem wyjścia w regresji prostej jest utworzenie wykresu rozrzutu. Ażeby móc zastosować model regresji musi występować związek korelacyjny pomiędzy zmiennymi oraz musi to być związek liniowy. Następnie na podstawie kryteriów merytorycznych określamy zmienną objaśnianą ($y$) oraz zmienną objaśniającą ($x$).
 
-W celu stworzenia modelu opisującego taką zależność stosuje się Klasyczną Metodę Najmniejszych Kwadratów (KMNK), w której minimalizujemy odległość punktów od dopasowywanej prostej. Weźmy pod uwagę prosty przykład dochodów i wydatków:
+Weźmy pod uwagę prosty przykład dochodów i wydatków:
 
 ```{r}
 d <- data.frame(wydatki=c(2300,1800,2400,2300,2800,2000,2100),
@@ -17,7 +17,7 @@ d <- data.frame(wydatki=c(2300,1800,2400,2300,2800,2000,2100),
 d %>% knitr::kable()
 ```
 
-Zależność wydatków od dochodów wydaje się oczywista i na wykresie będzie przedstawiała się w następujący sposób:
+Zależność wydatków od dochodów wydaje się oczywista - za $y$ przyjmiemy wydatki, a $x$ to będą dochody. Na wykresie ta zależność przedstawia się w następujący sposób:
 
 ```{r}
 ggplot(d, aes(x = dochody, y = wydatki)) + 
@@ -28,6 +28,12 @@ ggplot(d, aes(x = dochody, y = wydatki)) +
   ylim(1600,3100) +
   theme_light()
 ```
+
+Interesuje nas tworzenie modelu uproszającego rzeczywistość do poziomu wzoru na prostą, której ogólna postać jest następująca:
+
+$$y=a_1 \cdot x+a_0$$
+
+W przypadku tylko dwóch punktów wyznaczenie współczynników $a_1$ i $a_0$ nie stanowiłoby żadnego problemu. Natomiast dla podanego przykładu trzeba posłużyć się  Klasyczną Metodą Najmniejszych Kwadratów (KMNK), w której minimalizujemy odległość punktów od dopasowywanej prostej. 
 
 Spróbujmy teraz dopasować kilka prostych - mogą one przebiegać na wiele różnych sposobów.
 
