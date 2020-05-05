@@ -29,7 +29,7 @@ ggplot(d, aes(x = dochody, y = wydatki)) +
 
 Ażeby móc zastosować model regresji musi występować związek korelacyjny pomiędzy zmiennymi oraz musi to być związek liniowy. Następnie na podstawie kryteriów merytorycznych określamy zmienną objaśnianą ($y$) oraz zmienną objaśniającą ($x$).
 
-Zależność wydatków od dochodów wydaje się oczywista - za $y$ przyjmiemy wydatki, a $x$ to będą dochody. Dobrą praktyką jest umieszczanie zmiennej objaśnianej na osi OY, a zmiennej objaśniającej na osi OY. Interesuje nas tworzenie modelu uproszającego rzeczywistość do poziomu wzoru na prostą, której ogólna postać jest następująca:
+Zależność wydatków od dochodów wydaje się oczywista - za $y$ przyjmiemy wydatki, a $x$ to będą dochody. Dobrą praktyką jest umieszczanie zmiennej objaśnianej na osi OY, a zmiennej objaśniającej na osi OX. Interesuje nas tworzenie modelu uproszającego rzeczywistość do poziomu wzoru na prostą, której ogólna postać jest następująca:
 
 $$y_i=a_1 \cdot x_i+a_0$$
 
@@ -96,7 +96,8 @@ d %>%
   pivot_longer(1:3) %>% 
   group_by(name) %>% 
   summarise(suma_kwadratow_reszt=round(sum(value))) %>% 
-  arrange(suma_kwadratow_reszt)
+  arrange(suma_kwadratow_reszt) %>% 
+  knitr::kable()
 ```
 
 Jak możemy zauważyć najmniejsza wartość sumy kwadratów reszt obserwowana jest dla linii w kolorze czerwonym. Interesuje nas teraz wzór tej prostej. Przyjmując wcześniejsze oznaczenia ogólna postać prostej regresji jest następująca:
@@ -119,7 +120,7 @@ Po podstawieniu pierwszej wartości dochodu - 2400 zł do tego wzoru otrzymamy t
 
 $$\hat{y_1}=1,357\cdot 2400 - 1421,429=1835,371$$
 
-Ta wartość leży na czerwonej prostej i różni się od rzeczywistej wartości wydatków uzyskanych przez tę osobę, która wynosi 1800 zł. Zatem różnica pomiędzy wartością rzeczywistą a modelową nazywana resztą wynosi w tym przypadku:
+Ta wartość leży na czerwonej prostej i różni się od rzeczywistej wartości wydatków uzyskanych przez tę osobę, która wynosi 1800 zł. Różnica pomiędzy wartością rzeczywistą a modelową nazywana jest resztą i wynosi w tym przypadku:
 
 $$u_1=1800-1835,371=-35,371$$
 
@@ -131,7 +132,7 @@ Wiedząc już jaka intuicja przyświeca analizie regresji przejedziemy do analiz
 
 Na podstawie wartości sprzedaży oraz liczby klientów w danym sklepie Rossmann i chcielibyśmy wyznaczyć możliwy poziom sprzedaży przy danej liczbie klientów np. 1000 klientów. 
 
-W analizowanym przez nas przypadku sklepu Rossmann zmienną objaśnianą będzie poziom sprzedaży ($y$), który będziemy wyjaśniać liczbą klientów ($x$). Naszym celem jest znalezienie wzoru prostej, która będzie przebiegać możliwie najbliżej wszystkich punktów wykresu. Musimy wyznaczyć współczynnik kierunkowy tej prostej ($a_1$) oraz punkt przecięcia z osią OY ($a_0$).
+W analizowanym przez nas przypadku sklepu Rossmann zmienną objaśnianą będzie poziom sprzedaży (y), który będziemy wyjaśniać liczbą klientów (x). Naszym celem jest znalezienie wzoru prostej, która będzie przebiegać możliwie najbliżej wszystkich punktów wykresu. Musimy wyznaczyć współczynnik kierunkowy tej prostej ($a_1$) oraz punkt przecięcia z osią OY ($a_0$).
 
 ```{r ross-reg, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
 
