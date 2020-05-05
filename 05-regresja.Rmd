@@ -4,9 +4,7 @@ Metoda regresji wykorzystywana jest do funkcyjnego odwzorowania zależności pom
 
 ## Regresja prosta
 
-Celem regresji jest określenie, na podstawie dostępnych informacji, nieznanej wartości analizowanej cechy. Znamy wartości sprzedaży oraz liczby klientów w danym sklepie Rossmann i chcielibyśmy wyznaczyć możliwy poziom sprzedaży przy danej liczbie klientów np. 1000 klientów. 
-
-Podobnie jak w analizie korelacji punktem wyjścia w regresji prostej jest utworzenie wykresu rozrzutu. Ażeby móc zastosować model regresji musi występować związek korelacyjny pomiędzy zmiennymi oraz musi to być związek liniowy. Następnie na podstawie kryteriów merytorycznych określamy zmienną objaśnianą ($y$) oraz zmienną objaśniającą ($x$).
+Celem regresji jest zbudowanie na podstawie dostępnych informacji modelu opisującego rzeczywistość. Taki model pełni funkcję poznawczą - dostarcza wiedzy na temat zjawiska, a także umożliwa prognozowanie (predykcję) nieznanej wartości analizowanej cechy.
 
 Weźmy pod uwagę prosty przykład dochodów i wydatków:
 
@@ -17,7 +15,7 @@ d <- data.frame(wydatki=c(2300,1800,2400,2300,2800,2000,2100),
 d %>% knitr::kable()
 ```
 
-Zależność wydatków od dochodów wydaje się oczywista - za $y$ przyjmiemy wydatki, a $x$ to będą dochody. Na wykresie ta zależność przedstawia się w następujący sposób:
+Podobnie jak w analizie korelacji punktem wyjścia w regresji prostej jest utworzenie wykresu rozrzutu.
 
 ```{r}
 ggplot(d, aes(x = dochody, y = wydatki)) + 
@@ -29,9 +27,11 @@ ggplot(d, aes(x = dochody, y = wydatki)) +
   theme_light()
 ```
 
-Interesuje nas tworzenie modelu uproszającego rzeczywistość do poziomu wzoru na prostą, której ogólna postać jest następująca:
+Ażeby móc zastosować model regresji musi występować związek korelacyjny pomiędzy zmiennymi oraz musi to być związek liniowy. Następnie na podstawie kryteriów merytorycznych określamy zmienną objaśnianą ($y$) oraz zmienną objaśniającą ($x$).
 
-$$y=a_1 \cdot x+a_0$$
+Zależność wydatków od dochodów wydaje się oczywista - za $y$ przyjmiemy wydatki, a $x$ to będą dochody. Dobrą praktyką jest umieszczanie zmiennej objaśnianej na osi OY, a zmiennej objaśniającej na osi OY. Interesuje nas tworzenie modelu uproszającego rzeczywistość do poziomu wzoru na prostą, której ogólna postać jest następująca:
+
+$$y_i=a_1 \cdot x_i+a_0$$
 
 W przypadku tylko dwóch punktów wyznaczenie współczynników $a_1$ i $a_0$ nie stanowiłoby żadnego problemu. Natomiast dla podanego przykładu trzeba posłużyć się  Klasyczną Metodą Najmniejszych Kwadratów (KMNK), w której minimalizujemy odległość punktów od dopasowywanej prostej. 
 
@@ -109,9 +109,29 @@ Wobec tego wartości empiryczne/rzeczywiste (y) będą opisane formułą:
 
 $$y_{i}=a_{1}x_{i}+a_{0}+u_{i}$$
 
-w której $u_i$ oznacza składnik resztowy wyliczany jako $u_{i}=y_{i}-\hat{y}_{i}$. 
+w której $u_i$ oznacza składnik resztowy wyliczany jako $u_{i}=y_{i}-\hat{y}_{i}$.
 
-W analizowanym przez nas przypadku sklepu Rossmann zmienną objaśnianą będzie poziom sprzedaży ($y$), który będziemy wyjaśniać liczbą klientów ($x$). Naszym celem jest znalezienie wzoru prostej, która będzie przebiegać możliwie najbliżej wszystkich punktów wykresu. Musimy wyznaczyć współczynnik kierunkowy tej prostej ($a_1$) oraz punkt przecięcia z osią OY ($a_0$) określany mianem wyrazu wolnego.
+Model zależności wydatków od dochodu ma następującą postać:
+
+$$\hat{y_i}=1,357x_i-1421,429$$
+
+Po podstawieniu pierwszej wartości dochodu - 2400 zł do tego wzoru otrzymamy teoretyczną/modelową wartość wydatków:
+
+$$\hat{y_1}=1,357\cdot 2400 - 1421,429=1835,371$$
+
+Ta wartość leży na czerwonej prostej i różni się od rzeczywistej wartości wydatków uzyskanych przez tę osobę, która wynosi 1800 zł. Zatem różnica pomiędzy wartością rzeczywistą a modelową nazywana resztą wynosi w tym przypadku:
+
+$$u_1=1800-1835,371=-35,371$$
+
+Można zatem powiedzieć, że stworzony model nie różni się zbytnio od rzeczywistości w przypadku tej obserwacji. Na podstawie dwóch powyższych wartości możliwe jest wyznaczenie wartości rzeczywistej:
+
+$$y_1=1,357\cdot 2400 - 1421,429 - 35,371=1800$$
+
+Wiedząc już jaka intuicja przyświeca analizie regresji przejedziemy do analizy wybranego sklepu Rossmann i na tej podstawie wyznaczymy parametry modelu, a także je zinterpretujemy. Stworzony model zostanie też wykorzystany do predykcji.
+
+Na podstawie wartości sprzedaży oraz liczby klientów w danym sklepie Rossmann i chcielibyśmy wyznaczyć możliwy poziom sprzedaży przy danej liczbie klientów np. 1000 klientów. 
+
+W analizowanym przez nas przypadku sklepu Rossmann zmienną objaśnianą będzie poziom sprzedaży ($y$), który będziemy wyjaśniać liczbą klientów ($x$). Naszym celem jest znalezienie wzoru prostej, która będzie przebiegać możliwie najbliżej wszystkich punktów wykresu. Musimy wyznaczyć współczynnik kierunkowy tej prostej ($a_1$) oraz punkt przecięcia z osią OY ($a_0$).
 
 ```{r ross-reg, echo=FALSE, fig.height=5, fig.width=8, warning=FALSE, message=FALSE}
 
@@ -139,11 +159,11 @@ $$a_{0}=\bar{y}-a_{1}\bar{x}$$
 
 gdzie:
 
-- $r$ --- współczynnik korelacji liniowej Pearsona pomiędzy cechą $x$ i $y$,
-- $S_y$ --- odchylenie standardowe dla cechy $y$,
-- $S_x$ --- odchylenie standardowe dla cechy $x$,
-- $\bar{y}$ --- średnia dla cechy $y$,
-- $\bar{x}$ --- średnia dla cechy $x$.
+- $r$ - współczynnik korelacji liniowej Pearsona pomiędzy cechą $x$ i $y$,
+- $S_y$ - odchylenie standardowe dla cechy $y$,
+- $S_x$ - odchylenie standardowe dla cechy $x$,
+- $\bar{y}$ - średnia dla cechy $y$,
+- $\bar{x}$ - średnia dla cechy $x$.
 
 Na tej podstawie ustalamy, że interesująca nas prosta ma następujący wzór:
 
