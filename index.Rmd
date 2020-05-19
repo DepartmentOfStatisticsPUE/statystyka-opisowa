@@ -14,9 +14,10 @@ output:
 options(scipen = 100)
 library(openxlsx)
 library(tidyverse)
+library(lubridate)
 library(knitr)
 knitr::opts_chunk$set(cache = TRUE, 
-                      echo = FALSE)
+                      echo = FALSE, message = F, warning = F)
 ```
 
 

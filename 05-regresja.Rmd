@@ -176,7 +176,7 @@ Z kolei wyraz wolny ($a_0$) to wartość zmiennej objaśnianej (y), w sytuacji w
 
 Kolejnym elementem analizy regresji jest ocena dopasowania modelu. W tym celu posługujemy się kilkoma miarami.
 
-Pierwszą miarą, która opisuje dopasowanie funkcji regresji do danych empirycznych jest **odchylenie standardowe składnika resztowego**, które jest pierwiastkiem z sumy kwadratów reszt podzielonej przez liczbę obserwacji pomniejszoną o 2. To pomniejszenie mianownika wynika z faktu, że w modelu mamy dwa współczynniki $a_1$ i $a_0$, które w ten sposób uwzględniamy. Formalnie można to zapisać w następujący sposób: 
+Pierwszą miarą, która opisuje dopasowanie funkcji regresji do danych empirycznych jest **odchylenie standardowe składnika resztowego**, które jest pierwiastkiem z sumy kwadratów reszt podzielonej przez liczbę obserwacji pomniejszoną o 2. To pomniejszenie mianownika wynika z faktu, że w modelu wykorzystaliśmy 2 średnie do wyznaczenia współczynnika kierunkowego (średnia z cechy x i y). Formalnie można to zapisać w następujący sposób: 
 
 $$S_{u}=\sqrt{\frac{\sum\limits_{i=1}^{n}{(y_{i}-\hat{y}_{i})^2}}{n-2}}$$
 
@@ -184,7 +184,7 @@ lub
 
 $$S_{u}=\sqrt{\frac{\sum\limits_{i=1}^{n}{u_i^2}}{n-2}}$$
 
-Miara ta określa, o ile, przeciętnie biorąc ($+/-$), wartości empiryczne zmiennej objaśnianej odchylają się od wartości teoretycznych tej zmiennej, obliczonej na podstawie funkcji regresji. W analizowanym przypadku możemy stwierdzić, że znane wartości sprzedaży odchylają się od wartości teoretycznych średnio o $+/-$ 351,57 euro. 
+Miara ta określa, o ile, przeciętnie biorąc ($+/-$), wartości empiryczne zmiennej objaśnianej odchylają się od wartości teoretycznych tej zmiennej, obliczonej na podstawie funkcji regresji. Mniejsze wartości są bardziej pożądane ponieważ wskazują, że obserwacje są bliżej wyznaczonej prostej regresji. W analizowanym przypadku możemy stwierdzić, że znane wartości sprzedaży odchylają się od wartości teoretycznych średnio o $+/-$ 351,57 euro. 
 
 Odchylenie standardowe składnika resztowego jest także miarą błędu prognozy. Przykładowo, chcemy sprawdzić jak będzie kształtować się sprzedaż przy liczbie klientów równej 1000 osób. Po podstawieniu tej wartości do funkcji regresji otrzymamy:
 
@@ -222,7 +222,7 @@ $$\varphi^2=1-R^2$$
 
 Współczynnik zbieżności $\varphi^2$ określa, jaka część wariancji badanej zmiennej objaśnianej nie została wyjaśniona przez funkcję regresji. Oczywiste jest więc, że korzystna sytuacja występuje wówczas, gdy $\varphi^2$ jest bliższy zera.
 
-W przyjętym przez nas modelu regresji $\phi^2=11\%$, co oznacza, że 11% zmienności sprzedaży nie została wyjaśniona przez funkcję regresji. Można także powiedzieć, że 11% zmienności sprzedaży stanowią czynniki losowe nie wyjaśniane przez funkcję regresji.
+W przyjętym przez nas modelu regresji $\varphi^2=11\%$, co oznacza, że 11% zmienności sprzedaży nie została wyjaśniona przez funkcję regresji. Można także powiedzieć, że 11% zmienności sprzedaży stanowią czynniki losowe nie wyjaśniane przez funkcję regresji.
 
 Ostatnim elementem analizy jest ocena jakości parametrów funkcji regresji $a_1$ i $a_0$. Równanie regresji wyznaczyliśmy na podstawie dostępnych danych, ale nie znamy równania tej prostej w populacji. W związku z czym mogliśmy się trochę pomylić przy obliczaniu współczynników $a_1$ i $a_0$. W celu oceny skali tych błędów wyznacza się **błędy średnie szacunku ocen parametrów funkcji regresji** według wzorów:
 
@@ -248,6 +248,10 @@ W analizowanym przez nas modelu wartość parametru $a_1$ odchyla się od jego w
 
 - **Sposób nr 1**
 
+Zaznaczamy punkty na wykresie rozrzutu i klikamy prawym przyciskiem myszy. Wybieramy **Dodaj linię trendu**, a następnie zaznaczamy opcje Wyświetl równanie na wykresie oraz Wyświetl wartości R-kwadrat na wykresie.
+
+- **Sposób nr 2**
+
 Parametry funkcji regresji można także wyznaczyć korzystając z wbudowanej funkcji programu Excel --- REGLINP. Składnia jest następująca:
 
 - REGLINP(wektor_y; wektor_x; stała; statystyka)
@@ -270,10 +274,6 @@ W rezultacie otrzymujemy tabelę o wymiarach 2x5, która zawiera następujące e
 | Współczynnik determinacji ($R^2$)                       | Odchylenie standardowe składnika resztowego ($S_{u}$) |
 | Statystyka F ($F$)                                      | Liczba stopni swobody ($n-2$)                         |
 | Regresyjna suma kwadratów ($\sum{(\hat{y}-\bar{y})^2}$) | Suma kwadratów reszt ($\sum{(y-\hat{y})^2}$)          |
-
-- **Sposób nr 2**
-
-Zaznaczamy punkty na wykresie rozrzutu i klikamy prawym przyciskiem myszy. Wybieramy **Dodaj linię trendu**, a następnie zaznaczamy opcje Wyświetl równanie na wykresie oraz Wyświetl wartości R-kwadrat na wykresie.
 
 - **Sposób nr 3**
 
@@ -331,7 +331,29 @@ $$\hat{y}_{i}=a_{1}t_{i}+a_{0}$$
 
 Po oszacowaniu parametrów $a_1$ i $a_0$ nieco inaczej je zinterpretujemy. Wartość parametru $a_1$ informuje o średniej zmianie cechy $y$ z okresu na okres, z kolei $a_0$ to wartość wynikająca z modelu dla okresu poprzedzającego analizę.
 
-Spróbujmy określić możliwą sprzedaż w styczniu 2015 roku dla sklepu nr 7. W tym zagregowaliśmy dane do postaci miesięcznej. Model regresji ma następującą postać:
+Spróbujmy określić możliwą sprzedaż w styczniu 2015 roku dla sklepu nr 7. W tym zagregowaliśmy dane do postaci miesięcznej. 
+
+```{r}
+rossmann_7 <- filter(rossmann_1_7, sklep_id==7)
+
+rossmann_m <- rossmann_7 %>% 
+  mutate(data=as_date(data),
+         miesiac=month(data)) %>% 
+  group_by(miesiac) %>% 
+  summarise(sprzedaz_suma=sum(sprzedaz))
+
+ggplot(rossmann_m, aes(x=miesiac, y=sprzedaz_suma)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlab("Miesiąc") + 
+  ylab("Suma miesięcznej sprzedaży") +
+  scale_x_continuous(breaks = 1:12) +
+  # ylim(100000,170000) +
+  theme_light()
+```
+
+
+Model regresji ma następującą postać:
 
 $$\hat{y}_{i}=4850t_{i}+196592$$
 
@@ -368,6 +390,23 @@ $$\hat{y}_{14}=4850\cdot14+196592=264489$$
 
 
 $$D(y_{14}^{P})=20031\sqrt{1+\frac{1}{12}+\frac{(14-6,5)^2}{143}}=24341$$
+Możemy zaobserwować, że błąd prognozy nie zmienia się w sposób liniowy:
+
+```{r}
+prog <- data.frame(t=13:36) %>% 
+  mutate(dp=20031*sqrt(1+1/12+((t-6.5)^2)/143),
+         dp_lag=lag(dp),
+         diff=dp-dp_lag)
+
+ggplot(prog, aes(x=t, y = dp)) + 
+  geom_point() +
+  geom_smooth(method = "lm", se = F, color = "grey80") +
+  xlab("Numer progonozwanego okresu") + 
+  ylab("Błąd prognozy") +
+  scale_x_continuous(breaks = 13:36) +
+  ylim(10000,60000) +
+  theme_light()
+```
 
 _Zadania_
 
