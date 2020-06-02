@@ -3,16 +3,27 @@
 Badanie szeregu dynamicznego umożliwia dokładne określenie zmian jakie zachodzą w kolejnych okresach. Za przykład posłuży sprzedaż piwa w województwie wielkopolskim w kolejnych okresach.
 
 ```{r, echo=FALSE}
-piwa <- read.xlsx("zbiory/piwa.xlsx")
+piwa <- readxl::read_xlsx("zbiory/piwa.xlsx")
 
 piwa_wlkp <- piwa %>%
   filter(wojewodztwo=="Wielkopolskie") %>%
   group_by(miesiac) %>%
-  summarise(liczba_sztuk=sum(sztuki))
+  summarise(liczba_sztuk=sum(sztuki)) %>% 
+  ungroup() %>% 
+  mutate(miesiac=factor(miesiac, labels = c("Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień"), ordered = T))
 
 piwa_wlkp %>%
-  kable
+  knitr::kable()
 
+```
+
+```{r}
+ggplot(piwa_wlkp, aes(x=miesiac, y=liczba_sztuk)) + 
+  geom_point() + 
+  ylim(0,3000) +
+  xlab("Liczba sztuk") + 
+  ylab("Miesiąc") +
+  theme_light()
 ```
 
 
